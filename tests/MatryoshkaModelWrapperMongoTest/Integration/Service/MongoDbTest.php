@@ -52,10 +52,10 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
                     'resultset'   => 'Matryoshka\Model\ResultSet\HydratingResultSet',
                     'object'      => 'MongoObject',
                     'type'        => 'MatryoshkaTest\Model\Service\TestAsset\MyModel',
+                    'hydrator'    => 'Zend\Stdlib\Hydrator\ObjectProperty'
                 ),
             ),
         );
-
 
         $sm = $this->serviceManager = new ServiceManager\ServiceManager(
             new ServiceManagerConfig(array(
@@ -63,7 +63,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
                     'Matryoshka\Model\Service\ModelAbstractServiceFactory',
                     'Matryoshka\Model\Wrapper\Mongo\Service\MongoDbAbstractServiceFactory',
                     'Matryoshka\Model\Wrapper\Mongo\Service\MongoCollectionAbstractServiceFactory',
-                )
+                ),
             ))
         );
 
@@ -71,6 +71,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $sm->setService('MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway', new \MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway);
         $sm->setService('Matryoshka\Model\ResultSet\ArrayObjectResultSet', new \Matryoshka\Model\ResultSet\ArrayObjectResultSet);
         $sm->setService('Matryoshka\Model\ResultSet\HydratingResultSet', new \Matryoshka\Model\ResultSet\HydratingResultSet);
+        $sm->setService('Zend\Stdlib\Hydrator\ObjectProperty', new \Zend\Stdlib\Hydrator\ObjectProperty);
         $sm->setService('MongoObject', new MongoObject);
 
 

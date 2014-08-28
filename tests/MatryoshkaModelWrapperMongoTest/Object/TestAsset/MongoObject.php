@@ -9,8 +9,8 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\IntStrategy;
 use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
+use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
 
 class MongoObject extends AbstractMongoObject
 {
@@ -27,6 +27,7 @@ class MongoObject extends AbstractMongoObject
     function __construct()
     {
         $this->hydrator = parent::getHydrator();
-        $this->hydrator->addStrategy('age', new IntStrategy());
+        $intStrategy = new SetTypeStrategy('int', 'int');
+        $this->hydrator->addStrategy('age', $intStrategy);
     }
 }

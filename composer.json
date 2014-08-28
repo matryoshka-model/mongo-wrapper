@@ -17,7 +17,8 @@
         "phpunit/phpunit": "4.0.*",
         "phpmd/phpmd": "1.5.*",
         "satooshi/php-coveralls": "dev-master",
-        "zendframework/zendframework": "dev-master"
+        "zendframework/zendframework": "dev-master",
+        "matryoshka-model/matryoshka": "dev-develop"
     },
     "authors": [
         {
