@@ -18,7 +18,7 @@
         "phpmd/phpmd": "1.5.*",
         "satooshi/php-coveralls": "dev-master",
         "zendframework/zendframework": "dev-master",
-        "matryoshka-model/matryoshka": "dev-develop"
+        "matryoshka-model/matryoshka": "dev-develop as 0.1.1-dev"
     },
     "authors": [
         {
