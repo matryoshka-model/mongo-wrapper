@@ -1,5 +1,8 @@
 ---
 
+before_script:
+  - ./.travis/prepare.sh
+
 language: php
 
 php:
