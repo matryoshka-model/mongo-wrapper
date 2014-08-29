@@ -24,6 +24,6 @@ class DeleteMongoCriteria implements DeletableCriteriaInterface
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();
-        return $dataGatewayMongo->remove(array());
+        return $dataGatewayMongo->remove([]);
     }
 }

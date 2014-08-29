@@ -1,13 +1,12 @@
 {
     "name": "matryoshka-model/mongo-wrapper",
     "description": "MongoDB matryoshka wrapper",
-    "homepage": "https://github.com/matryoshka-model/mongo-wrapper-wrappers",
-    "minimum-stability": "dev",
+    "homepage": "https://github.com/matryoshka-model/mongo-wrapper",
     "license": "BSD-2-Clause",
     "require": {
         "php": ">=5.4.0",
         "ext-mongo": "*",
-        "matryoshka-model/matryoshka": "~0.1.1",
+        "matryoshka-model/matryoshka": "~0.1",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-inputfilter": "2.*",
         "zendframework/zend-paginator": "2.*",
@@ -17,8 +16,7 @@
         "phpunit/phpunit": "4.0.*",
         "phpmd/phpmd": "1.5.*",
         "satooshi/php-coveralls": "dev-master",
-        "zendframework/zendframework": "dev-master",
-        "matryoshka-model/matryoshka": "dev-develop as 0.1.1-dev"
+        "zendframework/zendframework": "dev-master"
     },
     "authors": [
         {

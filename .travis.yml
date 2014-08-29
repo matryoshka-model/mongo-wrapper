@@ -1,8 +1,5 @@
 ---
 
-before_script:
-  - ./.travis/prepare.sh
-
 language: php
 
 php:
@@ -18,9 +15,5 @@ branches:
     - master
     - develop
 
-install:
-  - composer self-update
-  - composer install --dev --prefer-source
-
 script:
- - vendor/bin/phpunit
+ - ./.travis/run.sh

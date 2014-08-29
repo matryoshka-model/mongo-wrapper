@@ -30,41 +30,41 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $config = array(
-            'mongodb' => array(
-                'MongoDb\Mangione' => array(
+        $config = [
+            'mongodb' => [
+                'MongoDb\Mangione' => [
                     'database' => 'test',
-                ),
-            ),
-            'mongocollection' => array(
-                'MongoDataGateway\User' => array(
+                ],
+            ],
+            'mongocollection' => [
+                'MongoDataGateway\User' => [
                     'database'   => 'MongoDb\Mangione',
                     'collection' => 'userMatrioska'
-                ),
-                'MongoDataGateway\Restaurant' => array(
+                ],
+                'MongoDataGateway\Restaurant' => [
                     'database'   => 'MongoDb\Mangione',
                     'collection' => 'restaurantMatrioska'
-                ),
-            ),
-            'model' => array(
-                'ServiceModelUser' => array(
+                ],
+            ],
+            'model' => [
+                'ServiceModelUser' => [
                     'datagateway' => 'MongoDataGateway\User',
                     'resultset'   => 'Matryoshka\Model\ResultSet\HydratingResultSet',
                     'object'      => 'MongoObject',
                     'type'        => 'MatryoshkaTest\Model\Service\TestAsset\MyModel',
                     'hydrator'    => 'Zend\Stdlib\Hydrator\ObjectProperty'
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
         $sm = $this->serviceManager = new ServiceManager\ServiceManager(
-            new ServiceManagerConfig(array(
-                'abstract_factories' => array(
+            new ServiceManagerConfig([
+                'abstract_factories' => [
                     'Matryoshka\Model\Service\ModelAbstractServiceFactory',
                     'Matryoshka\Model\Wrapper\Mongo\Service\MongoDbAbstractServiceFactory',
                     'Matryoshka\Model\Wrapper\Mongo\Service\MongoCollectionAbstractServiceFactory',
-                ),
-            ))
+                ],
+            ])
         );
 
         $sm->setService('Config', $config);

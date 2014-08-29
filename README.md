@@ -1,6 +1,6 @@
 # MongoDB matryoshka wrapper
 
-...
+Develop: [![Build Status](https://travis-ci.org/matryoshka-model/mongo-wrapper.svg?branch=develop)](https://travis-ci.org/matryoshka-model/mongo-wrapper)
 
 ---
 
