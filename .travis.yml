@@ -17,3 +17,7 @@ branches:
 
 script:
  - ./.travis/run.sh
+
+notifications:
+  irc: "irc.freenode.org#matryoshka.dev"
+  email: false
