@@ -1,6 +1,6 @@
 {
     "name": "matryoshka-model/mongo-wrapper",
-    "description": "MongoDB matryoshka wrapper",
+    "description": "MongoDB Matryoshka wrapper",
     "homepage": "https://github.com/matryoshka-model/mongo-wrapper",
     "license": "BSD-2-Clause",
     "require": {

@@ -1,4 +1,4 @@
-# MongoDB matryoshka wrapper
+# MongoDB Matryoshka wrapper
 
 | Master  | Develop |
 |:-------------:|:-------------:|
