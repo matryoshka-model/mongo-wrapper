@@ -36,8 +36,7 @@ class MongoDateStrategy implements StrategyInterface
     {
         if ($value instanceof DateTime) {
             $value = new MongoDate($value->format('U'));
-        }
-        else {
+        } else {
 
             $value = null;
         }
@@ -53,8 +52,7 @@ class MongoDateStrategy implements StrategyInterface
         if ($value instanceof MongoDate) {
 
             $value = new DateTime(date($this->getFormat(), $value->sec));
-        }
-        else {
+        } else {
 
             $value = null;
         }
@@ -78,4 +76,4 @@ class MongoDateStrategy implements StrategyInterface
     }
 
 
-} 
+}

@@ -24,7 +24,7 @@ class MongoObject extends AbstractMongoObject
      */
     public $age;
 
-    function __construct()
+    public function __construct()
     {
         $this->hydrator = parent::getHydrator();
         $intStrategy = new SetTypeStrategy('int', 'int');

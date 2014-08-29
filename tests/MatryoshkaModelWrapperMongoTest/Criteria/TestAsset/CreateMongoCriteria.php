@@ -28,5 +28,3 @@ class CreateMongoCriteria implements WritableCriteriaInterface
         return $dataGatewayMongo->save($data);
     }
 }
-
-
