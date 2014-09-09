@@ -19,7 +19,6 @@ use Zend\Stdlib\Hydrator\AbstractHydrator;
  */
 class ActiveRecordCriteria extends AbstractCriteria
 {
-
     /**
      * @var array
      */
@@ -107,5 +106,4 @@ class ActiveRecordCriteria extends AbstractCriteria
 
         return true;
     }
-
 }
