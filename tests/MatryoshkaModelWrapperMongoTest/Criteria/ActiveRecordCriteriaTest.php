@@ -24,15 +24,17 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     protected $modelInterfaceMock;
 
+    protected $mongoCollectionMock;
+
     public function setUp()
     {
-        $mongoCursorMock = $this->getMockBuilder('MongoCursor')
+
+        $mongoCollectionMock = $this->getMockBuilder('\MongoCollection')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $modelMock = $this->getMockBuilder('\Matryoshka\Model\Model')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->mongoCollectionMock = $mongoCollectionMock;
+
 
         $modelInterfaceMock = $this->getMockBuilder('\Matryoshka\Model\ModelInterface')
             ->disableOriginalConstructor()
@@ -42,32 +44,69 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
                     'getInputFilter',
                     'getHydrator',
                     'getObjectPrototype',
-                    'getResultSetPrototype',
-                    'find'
+                    'getResultSetPrototype'
                 ]
             )
             ->getMock();
 
-        $modelInterfaceMock->expects($this->any())
-            ->method('find')
-            ->will($this->returnValue($mongoCursorMock));
 
         $modelInterfaceMock->expects($this->any())
             ->method('getDataGateway')
-            ->will($this->returnValue($modelMock));
+            ->will($this->returnValue($mongoCollectionMock));
+
 
         $this->modelInterfaceMock = $modelInterfaceMock;
     }
 
     public function testApply()
     {
+        $testId = 1;
+        $testReturn = ['foo', 'bar'];
+        $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mongoCursorMock->expects($this->at(0))
+            ->method('limit')
+            ->with($this->equalTo(1))
+            ->will($this->returnValue($testReturn));
+
+        $this->mongoCollectionMock->expects($this->at(0))
+            ->method('find')
+            ->with($this->equalTo(['_id' => $testId]))
+            ->will($this->returnValue($mongoCursorMock));
+
         $rs = new ArrayObjectResultSet();
-        $model = new Model($this->modelInterfaceMock, $rs);
+        $model = new Model($this->mongoCollectionMock, $rs);
         $hyd = new ObjectProperty();
         $model->setHydrator($hyd);
         $ar = new ActiveRecordCriteria();
-        $ar->setId(1);
+        $ar->setId($testId);
         $res = $ar->apply($model);
-        var_dump($res);
+
+        $this->assertEquals($testReturn, $res);
+    }
+
+
+    public function testApplyWrite()
+    {
+        $ar = new ActiveRecordCriteria();
+
+        $testId = 1;
+        $testData = ['_id' => $testId];
+
+        $this->mongoCollectionMock->expects($this->at(0))
+            ->method('save')
+            ->with($this->equalTo($testData), $this->equalTo($ar->getSaveOptions()));
+
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($this->mongoCollectionMock, $rs);
+        $hyd = new ObjectProperty();
+        $model->setHydrator($hyd);
+
+        $ar->setId($testId);
+        $res = $ar->applyWrite($model, $testData);
+
+        $this->assertTrue($res);
     }
 }
