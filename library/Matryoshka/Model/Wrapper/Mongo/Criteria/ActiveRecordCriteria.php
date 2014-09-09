@@ -54,7 +54,7 @@ class ActiveRecordCriteria extends AbstractCriteria
             unset($data['_id']);
         }
 
-        //FIXME: handle result
+        // FIXME: handle result
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
         $model->getDataGateway()->save($tmp, $this->getSaveOptions());
         $data = $tmp;

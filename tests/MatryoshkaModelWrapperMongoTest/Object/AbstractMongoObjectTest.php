@@ -23,17 +23,17 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
         $this->mongoObject = new MongoObject();
     }
 
-    public function testGetHydratorNotPreSet()
+    public function testGetNotPresetHydrator()
     {
         $this->assertInstanceOf('Zend\Stdlib\Hydrator\ObjectProperty', $this->mongoObject->getHydrator());
     }
 
-    public function testGetInputFilterNotPreSet()
+    public function testGetNotPresetInputFilter()
     {
         $this->assertInstanceOf('Zend\InputFilter\InputFilter', $this->mongoObject->getInputFilter());
     }
 
-    public function testGetIdNotPreSet()
+    public function testGetNotPresetId()
     {
         $this->assertNull($this->mongoObject->getId());
     }
@@ -44,13 +44,14 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($mongoObject, $this->mongoObject);
     }
 
-    public function testIsObjectExists()
+    public function testObjectExistsInDatabase()
     {
         $this->assertFalse($this->mongoObject->objectExistsInDatabase());
     }
 
     /**
      * @expectedException Exception
+     * @testdox Set exception
      */
     public function testException__set()
     {
@@ -59,6 +60,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Exception
+     * @testdox Get exception
      */
     public function testException__get()
     {
@@ -67,12 +69,16 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException Exception
+     * @testdox Set exception
      */
     public function testException__unset()
     {
         unset($this->mongoObject->test);
     }
 
+    /**
+     * @testdox Isset exception
+     */
     public function testException__isset()
     {
         $this->assertFalse(isset($this->mongoObject->test));
