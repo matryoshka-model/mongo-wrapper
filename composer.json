@@ -6,7 +6,7 @@
     "require": {
         "php": ">=5.4.0",
         "ext-mongo": "*",
-        "matryoshka-model/matryoshka": "~0.2",
+        "matryoshka-model/matryoshka": "~0.2.0",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-inputfilter": "2.*",
         "zendframework/zend-paginator": "2.*",
@@ -14,11 +14,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "4.0.*",
-        "phpmd/phpmd": "1.5.*",
         "satooshi/php-coveralls": "dev-master",
         "zendframework/zendframework": "dev-master",
         "squizlabs/php_codesniffer": "1.*"
-
     },
     "authors": [
         {
