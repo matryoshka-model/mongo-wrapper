@@ -7,14 +7,14 @@
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 
-namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
+namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy;
 
 use Zend\Stdlib\Hydrator\NamingStrategy\NamingStrategyInterface;
 
 /**
- * Class NamingStrategy
+ * Class IdNameStrategy
  */
-class NamingStrategy implements NamingStrategyInterface
+class IdNameStrategy implements NamingStrategyInterface
 {
     protected $namingMap = [
         '_id'  => 'id'

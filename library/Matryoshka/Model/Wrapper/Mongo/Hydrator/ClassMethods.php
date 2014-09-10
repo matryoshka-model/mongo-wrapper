@@ -11,7 +11,7 @@ namespace Matryoshka\Model\Wrapper\Mongo\Hydrator;
 
 use Matryoshka\Model\Hydrator\ClassMethods as MatryoshkaClassMethods;
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy;
-use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\NamingStrategy;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy;
 
 /**
  * Class ClassMethods
@@ -24,7 +24,7 @@ class ClassMethods extends MatryoshkaClassMethods
     public function __construct()
     {
         parent::__construct();
-        $this->setNamingStrategy(new NamingStrategy());
+        $this->setNamingStrategy(new IdNameStrategy());
         $this->addStrategy('_id', new MongoIdStrategy());
     }
 }
