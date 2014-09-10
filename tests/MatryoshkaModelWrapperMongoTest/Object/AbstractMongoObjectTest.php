@@ -10,7 +10,6 @@
 namespace MatryoshkaModelWrapperMongoTest\Object;
 
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
-use MatryoshkaModelWrapperMongoTest\Object\TestAsset\ObjectPropertyMongoObject;
 
 /**
  * Class AbstractMongoObjectTest
@@ -24,28 +23,27 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mongoObject = new ObjectPropertyMongoObject();
+        $this->mongoObject = new MongoObject();
     }
 
-    public function testGetNotPresetHydrator()
+    public function testGetSetModel()
     {
-        $this->assertInstanceOf('Zend\Stdlib\Hydrator\ObjectProperty', $this->mongoObject->getHydrator());
+        $abstractModelMock  = $this->getMockForAbstractClass('Matryoshka\Model\AbstractModel');
+
+        $this->assertInstanceOf('\MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject', $this->mongoObject->setModel($abstractModelMock));
+
+        $this->assertSame($abstractModelMock, $this->mongoObject->getModel());
+
+        $modelInterfaceMock = $this->getMockForAbstractClass('Matryoshka\Model\ModelInterface');
+        $this->setExpectedException('Matryoshka\Model\Exception\InvalidArgumentException');
+        $this->mongoObject->setModel($modelInterfaceMock);
+
     }
+
 
     public function testGetNotPresetInputFilter()
     {
         $this->assertInstanceOf('Zend\InputFilter\InputFilter', $this->mongoObject->getInputFilter());
-    }
-
-    public function testGetNotPresetId()
-    {
-        $this->assertNull($this->mongoObject->getId());
-    }
-
-    public function testSetId()
-    {
-        $mongoObject = $this->mongoObject->setId('test');
-        $this->assertSame($mongoObject, $this->mongoObject);
     }
 
     public function testObjectExistsInDatabase()
@@ -53,38 +51,56 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->mongoObject->objectExistsInDatabase());
     }
 
-    /**
-     * @expectedException \Exception
-     * @testdox Set exception
-     */
-    public function testException__set()
+    public function testSave()
     {
-        $this->mongoObject->test = 4;
+        $abstractModelMock  = $this->getMockBuilder('Matryoshka\Model\AbstractModel')
+                                    ->disableOriginalConstructor()
+                                    ->setMethods(['save'])
+                                    ->getMock();
+        $result = null;
+
+        $abstractModelMock->expects($this->at(0))
+                           ->method('save')
+                           ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'), $this->identicalTo($this->mongoObject))
+                           ->will($this->returnValue($result));
+
+        $this->mongoObject->setModel($abstractModelMock);
+
+        $this->assertSame($result, $this->mongoObject->save());
+        $this->assertTrue($this->mongoObject->objectExistsInDatabase());
     }
 
-    /**
-     * @expectedException \Exception
-     * @testdox Get exception
-     */
-    public function testException__get()
+
+    public function testDelete()
     {
-        $test =  $this->mongoObject->test;
+        $abstractModelMock  = $this->getMockBuilder('Matryoshka\Model\AbstractModel')
+                            ->disableOriginalConstructor()
+                            ->setMethods(['save', 'delete'])
+                            ->getMock();
+        $result = null;
+
+        $abstractModelMock->expects($this->at(0))
+                        ->method('save')
+                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'), $this->identicalTo($this->mongoObject))
+                        ->will($this->returnValue($result));
+
+
+        $abstractModelMock->expects($this->at(1))
+                        ->method('delete')
+                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'))
+                        ->will($this->returnValue($result));
+
+        $this->mongoObject->setModel($abstractModelMock);
+        $this->mongoObject->save();
+
+        $this->assertSame($result, $this->mongoObject->delete());
+        $this->assertFalse($this->mongoObject->objectExistsInDatabase());
     }
 
-    /**
-     * @expectedException \Exception
-     * @testdox Set exception
-     */
-    public function testException__unset()
+    public function testDeleteShouldThrowExceptionWhenObjectDoesntExistInDatabase()
     {
-        unset($this->mongoObject->test);
+        $this->setExpectedException('Matryoshka\Model\Exception\RuntimeException');
+        $this->mongoObject->delete();
     }
 
-    /**
-     * @testdox Isset exception
-     */
-    public function testException__isset()
-    {
-        $this->assertFalse(isset($this->mongoObject->test));
-    }
 }
