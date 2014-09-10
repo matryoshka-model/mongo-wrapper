@@ -16,6 +16,10 @@ use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 use Zend\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 
+/**
+ * Class MongoDbTest
+ * @group integration
+ */
 class MongoDbTest extends \PHPUnit_Framework_TestCase
 {
     /**
