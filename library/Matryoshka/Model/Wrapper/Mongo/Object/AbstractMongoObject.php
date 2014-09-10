@@ -45,6 +45,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Set Model
+     *
      * @param ModelInterface $model
      * @return $this
      */
@@ -85,6 +86,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Get Id
+     *
      * @return string
      */
     public function getId()
@@ -94,6 +96,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Set Id
+     *
      * @param string $id
      * @return $this
      */
@@ -105,6 +108,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Object Exists In Database
+     *
      * @return boolean
      */
     public function objectExistsInDatabase()
@@ -114,6 +118,8 @@ abstract class AbstractMongoObject implements
 
     /**
      * Save
+     *
+     * @return null|int
      */
     public function save()
     {
@@ -123,7 +129,8 @@ abstract class AbstractMongoObject implements
 
     /**
      * Delete
-     * @return void
+     *
+     * @return null|int
      * @throws Exception\RuntimeException
      */
     public function delete()
@@ -140,6 +147,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Get
+     *
      * @param $name
      * @throws \InvalidArgumentException
      * @return void
@@ -151,6 +159,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Set
+     *
      * @param string $name
      * @param mixed $value
      * @throws \InvalidArgumentException
@@ -163,6 +172,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Isset
+     *
      * @param string $name
      * @return bool
      */
@@ -173,6 +183,7 @@ abstract class AbstractMongoObject implements
 
     /**
      * Unset
+     *
      * @param string $name
      * @throws \InvalidArgumentException
      * @return void

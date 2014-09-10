@@ -103,7 +103,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->setId($testId);
         $res = $ar->applyWrite($model, $testData);
 
-        $this->assertTrue($res);
+        $this->assertNull($res);
     }
 
     /**
@@ -171,7 +171,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->setId($testId);
         $res = $ar->applyDelete($model);
 
-        $this->assertTrue($res);
+        $this->assertNull($res);
     }
 
     /**
@@ -201,5 +201,29 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $hyd = new ObjectProperty();
         $model->setHydrator($hyd);
         $ar->applyDelete($model);
+    }
+
+    public function testHandleMongoResult()
+    {
+        $activeRecordCriteria = new ActiveRecordCriteria();
+
+        $reflection = new \ReflectionClass($activeRecordCriteria);
+        $reflMethod = $reflection->getMethod('handleMongoResult');
+        $reflMethod->setAccessible(true);
+
+        $result = $reflMethod->invoke($activeRecordCriteria, null);
+        $this->assertNull($result);
+
+        $result = $reflMethod->invoke($activeRecordCriteria, true);
+        $this->assertNull($result);
+
+        $result = $reflMethod->invoke($activeRecordCriteria, []);
+        $this->assertNull($result);
+
+        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 1]);
+        $this->assertEquals(1, $result);
+
+        $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException');
+        $result = $reflMethod->invoke($activeRecordCriteria, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
     }
 }
