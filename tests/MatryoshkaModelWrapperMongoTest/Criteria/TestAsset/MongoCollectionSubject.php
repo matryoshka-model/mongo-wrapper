@@ -9,9 +9,8 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
-class MongoCollectionSubject {
-
-
+class MongoCollectionSubject
+{
     protected $observer;
 
     public function __construct($observer)

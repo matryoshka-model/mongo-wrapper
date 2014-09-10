@@ -35,6 +35,10 @@ class ActiveRecordCriteria extends AbstractCriteria
         return $dataGateway->find(['_id' => $this->extractId($model)])->limit(1);
     }
 
+    /**
+     * @param ModelInterface $model
+     * @return mixed
+     */
     protected function extractId(ModelInterface $model)
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
@@ -60,7 +64,7 @@ class ActiveRecordCriteria extends AbstractCriteria
         $result = $model->getDataGateway()->save($tmp, $this->getSaveOptions());
         $data = $tmp;
         $this->hydrateId($model, $data['_id'], $data);
-        return $this->handleMongoResult($result);
+        return $this->handleResult($result);
     }
 
     /**
@@ -81,6 +85,12 @@ class ActiveRecordCriteria extends AbstractCriteria
         return $this;
     }
 
+    /**
+     * @param ModelInterface $model
+     * @param $value
+     * @param null $data
+     * @return mixed
+     */
     protected function hydrateId(ModelInterface $model, $value, $data = null)
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
@@ -105,10 +115,14 @@ class ActiveRecordCriteria extends AbstractCriteria
         }
 
         $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
-        return $this->handleMongoResult($result);
+        return $this->handleResult($result);
     }
 
-    protected function handleMongoResult($result)
+    /**
+     * @param $result
+     * @return int|null
+     */
+    protected function handleResult($result)
     {
         //No info available
         if ($result === true) {

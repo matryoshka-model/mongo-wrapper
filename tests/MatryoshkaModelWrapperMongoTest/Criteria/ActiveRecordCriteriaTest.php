@@ -203,12 +203,12 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->applyDelete($model);
     }
 
-    public function testHandleMongoResult()
+    public function testHandleResult()
     {
         $activeRecordCriteria = new ActiveRecordCriteria();
 
         $reflection = new \ReflectionClass($activeRecordCriteria);
-        $reflMethod = $reflection->getMethod('handleMongoResult');
+        $reflMethod = $reflection->getMethod('handleResult');
         $reflMethod->setAccessible(true);
 
         $result = $reflMethod->invoke($activeRecordCriteria, null);
@@ -224,6 +224,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $result);
 
         $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException');
-        $result = $reflMethod->invoke($activeRecordCriteria, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
+        $reflMethod->invoke($activeRecordCriteria, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
     }
 }
