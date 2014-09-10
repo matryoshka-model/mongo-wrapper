@@ -14,6 +14,7 @@ use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use Zend\Stdlib\Hydrator\ObjectProperty;
+use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 
 /**
  * Class ActiveRecordCriteriaTest
@@ -121,27 +122,28 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->applyWrite($model, $testData);
     }
 
-//    public function testApplyWriteWithoutId()
-//    {
-//        $ar = new ActiveRecordCriteria();
-//        $testId = null;
-//        $testData = ['_id' => $testId];
-//        $testUnsetData = [];
-//
-//        $this->mongoCollectionMock->expects($this->at(0))
-//            ->method('save')
-//            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
-//
-//        // FIXME: an _id have to be assigned by the save mocked method (side effect)
-//
-//        $rs = new ArrayObjectResultSet();
-//        $model = new Model($this->mongoCollectionMock, $rs);
-//        $hyd = new ObjectProperty();
-//        $model->setHydrator($hyd);
-//        $ar->setId(1);
-//
-//        $res = $ar->applyWrite($model, $testData);
-//    }
+   public function testApplyWriteWithoutId()
+   {
+       $ar = new ActiveRecordCriteria();
+       $testId = null;
+       $testData = ['_id' => $testId];
+       $testUnsetData = [];
+
+       $this->mongoCollectionMock->expects($this->at(0))
+           ->method('save')
+           ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
+
+       $mock = new MongoCollectionSubject($this->mongoCollectionMock);
+
+       $rs = new ArrayObjectResultSet();
+       $model = new Model($mock, $rs);
+       $hyd = new ObjectProperty();
+       $model->setHydrator($hyd);
+
+       $res = $ar->applyWrite($model, $testData);
+
+       $this->assertInstanceOf('\MongoId', $ar->getId());
+   }
 
     public function testSaveOptions()
     {
