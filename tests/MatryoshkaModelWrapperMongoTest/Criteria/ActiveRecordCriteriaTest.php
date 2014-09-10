@@ -12,12 +12,11 @@ namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria;
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
  * Class ActiveRecordCriteriaTest
- *
- * @author Lorenzo Fontana <fontanalorenzo@me.com>
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,7 +30,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     {
         $mongoCollectionMock = $this->getMockBuilder('\MongoCollection')
             ->disableOriginalConstructor()
-            ->setMethods(['save', 'find'])
+            ->setMethods(['save', 'find', 'remove'])
             ->getMock();
 
         $this->mongoCollectionMock = $mongoCollectionMock;
@@ -106,6 +105,22 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($res);
     }
 
+    /**
+     * @expectedException \Matryoshka\Model\Exception\RuntimeException
+     */
+    public function testApplyWriteWithBadHydrator()
+    {
+        $ar = new ActiveRecordCriteria();
+        $testId = 1;
+        $testData = ['_id' => $testId];
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($this->mongoCollectionMock, $rs);
+        $hyd = new BadHydrator();
+        $model->setHydrator($hyd);
+        $ar->setId($testId);
+        $ar->applyWrite($model, $testData);
+    }
+
 //    public function testApplyWriteWithoutId()
 //    {
 //        $ar = new ActiveRecordCriteria();
@@ -127,4 +142,62 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 //
 //        $res = $ar->applyWrite($model, $testData);
 //    }
+
+    public function testSaveOptions()
+    {
+        $saveOptions = ['foo', 'bar'];
+        $ar = new ActiveRecordCriteria();
+        $ar->setSaveOptions($saveOptions);
+
+        $this->assertEquals($saveOptions, $ar->getSaveOptions());
+    }
+
+    public function testApplyDelete()
+    {
+        $ar = new ActiveRecordCriteria();
+        $testId = 1;
+        $testData = ['_id' => $testId];
+
+        $this->mongoCollectionMock->expects($this->at(0))
+            ->method('remove')
+            ->with($this->equalTo($testData));
+
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($this->mongoCollectionMock, $rs);
+        $hyd = new ObjectProperty();
+        $model->setHydrator($hyd);
+        $ar->setId($testId);
+        $res = $ar->applyDelete($model);
+
+        $this->assertTrue($res);
+    }
+
+    /**
+     * @expectedException \Matryoshka\Model\Exception\RuntimeException
+     */
+    public function testApplyDeleteWithBadHydrator()
+    {
+        $ar = new ActiveRecordCriteria();
+        $testId = 1;
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($this->mongoCollectionMock, $rs);
+        $hyd = new BadHydrator();
+        $model->setHydrator($hyd);
+        $ar->setId($testId);
+        $ar->applyDelete($model);
+    }
+
+
+    /**
+     * @expectedException \Matryoshka\Model\Exception\RuntimeException
+     */
+    public function testApplyDeleteWithoutId()
+    {
+        $ar = new ActiveRecordCriteria();
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($this->mongoCollectionMock, $rs);
+        $hyd = new ObjectProperty();
+        $model->setHydrator($hyd);
+        $ar->applyDelete($model);
+    }
 }

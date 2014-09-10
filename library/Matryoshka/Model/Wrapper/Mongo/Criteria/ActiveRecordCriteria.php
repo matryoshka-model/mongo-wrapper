@@ -38,7 +38,7 @@ class ActiveRecordCriteria extends AbstractCriteria
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
                 throw new Exception\RuntimeException(
-                    'Hydrator must be an instance of Zend\Stdlib\Hydrator\AbstractHydrator'
+                    'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
                 );
         }
 
@@ -84,7 +84,7 @@ class ActiveRecordCriteria extends AbstractCriteria
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
             throw new Exception\RuntimeException(
-                'Hydrator must be an instance of Zend\Stdlib\Hydrator\AbstractHydrator'
+                'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
             );
         }
 
@@ -98,7 +98,9 @@ class ActiveRecordCriteria extends AbstractCriteria
     public function applyDelete(ModelInterface $model)
     {
         if (!$this->id) {
-            throw new Exception\RuntimeException('An id must be set in order to delete an object');
+            throw new Exception\RuntimeException(
+                'An id must be set in order to delete an object'
+            );
         }
 
         //FIXME: handle result
