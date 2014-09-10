@@ -11,14 +11,15 @@ namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
 use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
+use Matryoshka\Model\Wrapper\Mongo\Object\ClassMethodsTrait;
 use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
 
 /**
- * Class ObjectPropertyMongoObject
+ * Class ClassMethodsMongoObject
  */
-class ObjectPropertyMongoObject extends AbstractMongoObject
+class ClassMethodsMongoObject extends AbstractMongoObject
 {
-    use ObjectPropertyTrait;
+    use ClassMethodsTrait;
 
     /**
      * @var String

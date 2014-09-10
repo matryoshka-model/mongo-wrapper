@@ -9,8 +9,12 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object;
 
+use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\ObjectPropertyMongoObject;
 
+/**
+ * Class AbstractMongoObjectTest
+ */
 class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -40,7 +44,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 
     public function testSetId()
     {
-        $mongoObject = $this->mongoObject->setId("test");
+        $mongoObject = $this->mongoObject->setId('test');
         $this->assertSame($mongoObject, $this->mongoObject);
     }
 
@@ -50,7 +54,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      * @testdox Set exception
      */
     public function testException__set()
@@ -59,7 +63,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      * @testdox Get exception
      */
     public function testException__get()
@@ -68,7 +72,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \Exception
      * @testdox Set exception
      */
     public function testException__unset()

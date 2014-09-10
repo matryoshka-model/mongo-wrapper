@@ -9,4 +9,7 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
+/**
+ * Class MongoObject
+ */
 class MongoObject extends ObjectPropertyMongoObject {}

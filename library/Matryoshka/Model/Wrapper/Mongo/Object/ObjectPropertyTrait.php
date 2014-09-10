@@ -12,6 +12,9 @@ namespace Matryoshka\Model\Wrapper\Mongo\Object;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 use Zend\Stdlib\Hydrator\HydratorAwareTrait;
 
+/**
+ * Trait ObjectPropertyTrait
+ */
 trait ObjectPropertyTrait
 {
     use HydratorAwareTrait;
@@ -91,6 +94,4 @@ trait ObjectPropertyTrait
     {
         throw new \InvalidArgumentException('Not a valid field in this object: ' . $name);
     }
-
-
 }

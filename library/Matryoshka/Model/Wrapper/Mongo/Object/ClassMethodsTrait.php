@@ -12,6 +12,9 @@ namespace Matryoshka\Model\Wrapper\Mongo\Object;
 use Zend\Stdlib\Hydrator\HydratorAwareTrait;
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
 
+/**
+ * Trait ClassMethodsTrait
+ */
 trait ClassMethodsTrait
 {
     use HydratorAwareTrait;
@@ -91,6 +94,4 @@ trait ClassMethodsTrait
     {
         throw new \InvalidArgumentException('Object using ClassMethods hydrator cannot have public property');
     }
-
-
 }

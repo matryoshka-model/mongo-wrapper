@@ -85,7 +85,7 @@ abstract class AbstractMongoObject implements
     {
         $criteria = new ActiveRecordCriteria();
         $result = $this->getModel()->save($criteria, $this);
-        $this->existsInDatabase = $result === null || $result;
+        $this->existsInDatabase = (bool) ($result === null || $result);
         return $result;
     }
 
@@ -98,7 +98,7 @@ abstract class AbstractMongoObject implements
     public function delete()
     {
         if (!$this->objectExistsInDatabase()) {
-            throw new Exception\RuntimeException("The asset must exists in database to be deleted");
+            throw new Exception\RuntimeException('The asset must exists in database to be deleted');
         }
 
         $criteria = new ActiveRecordCriteria();
