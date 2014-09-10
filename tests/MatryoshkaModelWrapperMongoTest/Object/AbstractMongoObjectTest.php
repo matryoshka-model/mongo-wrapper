@@ -9,7 +9,7 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object;
 
-use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
+use MatryoshkaModelWrapperMongoTest\Object\TestAsset\ObjectPropertyMongoObject;
 
 class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mongoObject = new MongoObject();
+        $this->mongoObject = new ObjectPropertyMongoObject();
     }
 
     public function testGetNotPresetHydrator()

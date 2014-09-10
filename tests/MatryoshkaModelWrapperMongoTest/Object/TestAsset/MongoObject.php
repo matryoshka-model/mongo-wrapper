@@ -9,25 +9,4 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
-use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
-
-class MongoObject extends AbstractMongoObject
-{
-    /**
-     * @var String
-     */
-    public $name;
-
-    /**
-     * @var int
-     */
-    public $age;
-
-    public function __construct()
-    {
-        $this->hydrator = parent::getHydrator();
-        $intStrategy = new SetTypeStrategy('int', 'int');
-        $this->hydrator->addStrategy('age', $intStrategy);
-    }
-}
+class MongoObject extends ObjectPropertyMongoObject {}
