@@ -1,4 +1,4 @@
-# MongoDB Matryoshka wrapper
+# MongoDB Matryoshka wrapper [![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
 
 | Master  | Develop |
 |:-------------:|:-------------:|
