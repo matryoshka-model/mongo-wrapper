@@ -7,9 +7,6 @@
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 
-namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
+namespace Matryoshka\Model\Wrapper\Mongo\Criteria\Exception;
 
-/**
- * Class MongoObject
- */
-class MongoObject extends ObjectPropertyMongoObject {}
+class MongoResultException extends \RuntimeException {}

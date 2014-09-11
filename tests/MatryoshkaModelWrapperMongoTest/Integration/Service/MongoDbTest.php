@@ -16,6 +16,10 @@ use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 use Zend\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
 
+/**
+ * Class MongoDbTest
+ * @group integration
+ */
 class MongoDbTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -32,18 +36,18 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
     {
         $config = [
             'mongodb' => [
-                'MongoDb\Mangione' => [
-                    'database' => 'test',
+                'MongoDb\MongoWrapperTest' => [
+                    'database' => 'mongowrappertest',
                 ],
             ],
             'mongocollection' => [
                 'MongoDataGateway\User' => [
-                    'database'   => 'MongoDb\Mangione',
-                    'collection' => 'userMatrioska'
+                    'database'   => 'MongoDb\MongoWrapperTest',
+                    'collection' => 'user'
                 ],
                 'MongoDataGateway\Restaurant' => [
-                    'database'   => 'MongoDb\Mangione',
-                    'collection' => 'restaurantMatrioska'
+                    'database'   => 'MongoDb\MongoWrapperTest',
+                    'collection' => 'restaurant'
                 ],
             ],
             'model' => [

@@ -11,31 +11,65 @@ namespace Matryoshka\Model\Wrapper\Mongo\Paginator;
 
 use Zend\Paginator\Adapter\AdapterInterface;
 use Matryoshka\Model\ResultSet\HydratingResultSet;
+use MongoCursor;
 
 class MongoPaginatorAdapter implements AdapterInterface
 {
 
+    /**
+     * @var MongoCursor
+     */
     protected $cursor;
-    protected $resultSet;
 
-    public function __construct(HydratingResultSet $resultSet)
+    /**
+     * @var HydratingResultSet
+     */
+    protected $resultSetPrototype;
+
+    /**
+     * @var int
+     */
+    protected $count;
+
+    /**
+     * @param MongoCursor $cursor
+     * @param HydratingResultSet $resultSetPrototype
+     */
+    public function __construct(MongoCursor $cursor, HydratingResultSet $resultSetPrototype = null)
     {
-        $this->resultSet = $resultSet;
-        $this->cursor    = $resultSet->getDataSource();
+        $this->cursor    = $cursor;
+        $this->resultSetPrototype = $resultSetPrototype ? $resultSetPrototype : new HydratingResultSet();
+
+        $this->cursor->limit(null)->skip(null);
+        $this->count     = $this->cursor->count();
     }
 
+    /**
+     * Returns the total number of results for this query
+     *
+     * @return int
+     */
     public function count()
     {
-        $this->cursor->limit(null)->skip(null);
-        return $this->cursor->count();
+        return $this->count;
     }
 
+    /**
+     * Returns an result set of items for a page.
+     *
+     * @param  int $offset           Page offset
+     * @param  int $itemCountPerPage Number of items per page
+     * @return HydratingResultSet
+     */
     public function getItems($offset, $itemCountPerPage)
     {
         $this->cursor->skip($offset);
         $this->cursor->limit($itemCountPerPage);
-        $this->resultSet->initialize($this->cursor);
-        return $this->resultSet->toArray();
+
+        $resultSet = clone $this->resultSetPrototype;
+        $resultSet->initialize($this->cursor);
+
+        return $resultSet;
     }
 
 }
