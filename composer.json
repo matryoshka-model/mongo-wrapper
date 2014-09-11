@@ -59,5 +59,9 @@
             "dev-master": "0.3.x-dev",
             "dev-develop": "0.4.x-dev"
         }
+    },
+    "suggest": {
+        "matryoshka-model/matryoshka": "Model service layer that normalize and standardize your model's interface use",
+        "matryoshka-model/zf2-matryoshka-module": "ZF2 module for matryoshka library"
     }
 }
