@@ -15,7 +15,8 @@ use Zend\ServiceManager\ServiceManager;
 /**
  * Class MongoDbAbstractServiceFactoryTest
  */
-class MongoDbAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase {
+class MongoDbAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * @var \Zend\ServiceManager\ServiceManager
      */
@@ -128,4 +129,3 @@ class MongoDbAbstractServiceFactoryTest extends \PHPUnit_Framework_TestCase {
         $sl->get($service);
     }
 }
- 
