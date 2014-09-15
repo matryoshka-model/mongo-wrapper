@@ -16,10 +16,12 @@ use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException;
 
 /**
- * Class ObjectGatewayCriteria
+ * Class ActiveRecordCriteria
  */
 class ActiveRecordCriteria extends AbstractCriteria
 {
+    use HandleResultTrait;
+
     /**
      * @var array
      */
@@ -59,7 +61,6 @@ class ActiveRecordCriteria extends AbstractCriteria
             unset($data['_id']);
         }
 
-        // FIXME: handle result
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
         $result = $model->getDataGateway()->save($tmp, $this->getSaveOptions());
         $data = $tmp;
@@ -116,30 +117,5 @@ class ActiveRecordCriteria extends AbstractCriteria
 
         $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
         return $this->handleResult($result);
-    }
-
-    /**
-     * @param $result
-     * @return int|null
-     */
-    protected function handleResult($result)
-    {
-        //No info available
-        if ($result === true) {
-            return null;
-        }
-
-        if (is_array($result)) {
-            if (isset($result['ok']) && $result['ok']) { //This should almost always be 1 (unless last_error itself failed)
-                return isset($result['n']) ? (int) $result['n'] : null;
-            }
-
-            if (isset($result['err']) && $result['err'] !== null) {
-                throw new MongoResultException($result['errmsg'], $result['code']);
-            }
-        }
-
-        return null;
-
     }
 }

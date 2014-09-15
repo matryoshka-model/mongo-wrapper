@@ -85,34 +85,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testIntegrationMongoDbDelete()
-    {
-        $criteria  = new DeleteMongoCriteria();
 
-        /* @var $serviceUser \Matryoshka\Model\Model */
-        $serviceUser = $this->serviceManager->get('ServiceModelUser');
-        $result = $serviceUser->delete($criteria);
-
-        $this->assertTrue($result);
-    }
-
-    /**
-     * @depends testIntegrationMongoDbDelete
-     */
-    public function testIntegrationMongoDbFindEmpty()
-    {
-        $criteria  = new FindMongoCriteria();
-
-        /* @var $serviceUser \Matryoshka\Model\Model */
-        $serviceUser = $this->serviceManager->get('ServiceModelUser');
-        $result = $serviceUser->find($criteria);
-
-        $this->assertEmpty($result->toArray());
-    }
-
-    /**
-     * @depends testIntegrationMongoDbDelete
-     */
     public function testIntegrationMongoDbInsert()
     {
         $criteria  = new CreateMongoCriteria();
@@ -120,8 +93,9 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         /* @var $serviceUser \Matryoshka\Model\Model */
         $serviceUser = $this->serviceManager->get('ServiceModelUser');
         $result = $serviceUser->save($criteria, $this->obj);
-        $this->assertTrue($result);
+        $this->assertEquals(1, $result);
     }
+
 
     /**
      * @depends testIntegrationMongoDbInsert
@@ -135,5 +109,33 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $result = $serviceUser->find($criteria);
 
         $this->assertNotEmpty($result->toArray());
+    }
+
+    /**
+     * @depends testIntegrationMongoDbFind
+     */
+    public function testIntegrationMongoDbDelete()
+    {
+        $criteria  = new DeleteMongoCriteria();
+
+        /* @var $serviceUser \Matryoshka\Model\Model */
+        $serviceUser = $this->serviceManager->get('ServiceModelUser');
+        $result = $serviceUser->delete($criteria);
+        $this->assertGreaterThanOrEqual(1, $result);
+    }
+
+
+    /**
+     * @depends testIntegrationMongoDbDelete
+     */
+    public function testIntegrationMongoDbFindEmpty()
+    {
+        $criteria  = new FindMongoCriteria();
+
+        /* @var $serviceUser \Matryoshka\Model\Model */
+        $serviceUser = $this->serviceManager->get('ServiceModelUser');
+        $result = $serviceUser->find($criteria);
+
+        $this->assertEmpty($result->toArray());
     }
 }

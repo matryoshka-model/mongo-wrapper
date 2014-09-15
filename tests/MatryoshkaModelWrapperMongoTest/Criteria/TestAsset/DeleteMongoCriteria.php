@@ -11,12 +11,14 @@ namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\DeletableCriteriaInterface;
 use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
 /**
  * Class DeleteMongoCriteria
  */
 class DeleteMongoCriteria implements DeletableCriteriaInterface
 {
+    use HandleResultTrait;
     /**
      * {@inheritdoc}
      */
@@ -24,6 +26,7 @@ class DeleteMongoCriteria implements DeletableCriteriaInterface
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();
-        return $dataGatewayMongo->remove([]);
+        $result = $dataGatewayMongo->remove([]);
+        return $this->handleResult($result);
     }
 }
