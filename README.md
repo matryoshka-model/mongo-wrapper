@@ -24,15 +24,15 @@ Add the following to your `composer.json` file:
 
 ##### NOTES
 
-Since **mongo-wrapper** uses `self.version` for its (matryoshka library)[https://github.com/matryoshka-model/matryoshka] dependency composer will install **matryoshka** 0.4.0.
+Since **mongo-wrapper** uses `self.version` for its [matryoshka library](https://github.com/matryoshka-model/matryoshka) dependency composer will install **matryoshka** 0.4.0.
 
 ## Versioning
 
-This library is versioned in parallel with matryoshka library (which follows (semantic versioning)[https://github.com/matryoshka-model/matryoshka]).
+This library is versioned in parallel with matryoshka library (which follows [semantic versioning](https://github.com/matryoshka-model/matryoshka)).
 
 ##### NOTES
 
-On the master branch you will find major releases while the next minor release is on the develop branch (see `extras` field in the `composer.json` file for further details).
+On the **master branch** you will find **major releases** while the **next minor release** is on the **develop branch** (see `extras` field in the `composer.json` file for further details, i.e. aliases).
 
 ---
 
