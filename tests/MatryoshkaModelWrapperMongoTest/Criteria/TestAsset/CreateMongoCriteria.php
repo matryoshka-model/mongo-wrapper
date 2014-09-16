@@ -29,6 +29,6 @@ class CreateMongoCriteria implements WritableCriteriaInterface
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();
         $result = $dataGatewayMongo->save($data);
-        return $this->handleResult($result, true);
+        return $this->handleResult($result);
     }
 }

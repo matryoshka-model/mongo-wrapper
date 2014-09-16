@@ -116,6 +116,6 @@ class ActiveRecordCriteria extends AbstractCriteria
         }
 
         $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
-        return $this->handleResult($result);
+        return $this->handleResult($result, true);
     }
 }

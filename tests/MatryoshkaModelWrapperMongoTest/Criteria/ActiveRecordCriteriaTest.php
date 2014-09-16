@@ -223,6 +223,12 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 1]);
         $this->assertEquals(1, $result);
 
+        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 2, 'updatedExisting' => true]);
+        $this->assertEquals(2, $result);
+
+        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 3], true);
+        $this->assertEquals(3, $result);
+
         $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException');
         $reflMethod->invoke($activeRecordCriteria, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
     }
