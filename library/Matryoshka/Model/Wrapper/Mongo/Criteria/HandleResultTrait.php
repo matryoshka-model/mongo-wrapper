@@ -17,9 +17,10 @@ trait HandleResultTrait
 {
     /**
      * @param $result
+     * @param $isRemoveOperation
      * @return int|null
      */
-    protected function handleResult($result, $isInsert = false)
+    protected function handleResult($result, $isRemoveOperation = false)
     {
         //No info available
         if ($result === true) {
@@ -27,11 +28,12 @@ trait HandleResultTrait
         }
 
         if (is_array($result)) {
-            if (isset($result['ok']) && $result['ok']) { //This should almost always be 1 (unless last_error itself failed)
-                if ($isInsert) {
-                    return 1; //Mongo returns 0 on insert operation
-                } else {
+            // $result['ok'] should always be 1 (unless last_error itself failed)
+            if (isset($result['ok']) && $result['ok']) {
+                if ($isRemoveOperation || isset($result['updatedExisting'])) {
                     return isset($result['n']) ? (int) $result['n'] : null;
+                } else {
+                    return 1; // MongoDB returns 0 on insert operation
                 }
             }
 

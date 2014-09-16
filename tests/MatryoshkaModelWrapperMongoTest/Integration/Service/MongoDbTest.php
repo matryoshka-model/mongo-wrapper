@@ -9,12 +9,16 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Integration\Service;
 
+use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
+use Matryoshka\Model\ResultSet\HydratingResultSet;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\CreateMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\DeleteMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\FindMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
+use MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway;
 use Zend\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
  * Class MongoDbTest
@@ -72,19 +76,17 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         );
 
         $sm->setService('Config', $config);
-        $sm->setService('MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway', new \MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway);
-        $sm->setService('Matryoshka\Model\ResultSet\ArrayObjectResultSet', new \Matryoshka\Model\ResultSet\ArrayObjectResultSet);
-        $sm->setService('Matryoshka\Model\ResultSet\HydratingResultSet', new \Matryoshka\Model\ResultSet\HydratingResultSet);
-        $sm->setService('Zend\Stdlib\Hydrator\ObjectProperty', new \Zend\Stdlib\Hydrator\ObjectProperty);
+        $sm->setService('MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway', new FakeDataGateway());
+        $sm->setService('Matryoshka\Model\ResultSet\ArrayObjectResultSet', new ArrayObjectResultSet());
+        $sm->setService('Matryoshka\Model\ResultSet\HydratingResultSet', new HydratingResultSet());
+        $sm->setService('Zend\Stdlib\Hydrator\ObjectProperty', new ObjectProperty());
         $sm->setService('MongoObject', new MongoObject);
-
 
         $this->obj       = new MongoObject();
         $this->obj->name = "testMatrioska";
         $this->obj->age  = "8";
 
     }
-
 
     public function testIntegrationMongoDbInsert()
     {
