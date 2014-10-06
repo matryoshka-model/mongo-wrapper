@@ -28,7 +28,7 @@ Since **mongo-wrapper** uses `self.version` for its [matryoshka library](https:/
 
 ## Configuration
 
-This library provides two abstract factories for `Zend\ServiceManager` to make MongoClient and MongoCollection available as services. In order to use them in a ZF2 application, register the provided factories through the `service_manager` configuration node:
+This library provides two abstract factories for `Zend\ServiceManager` to make MongoDb and MongoCollection available as services. In order to use them in a ZF2 application, register the provided factories through the `service_manager` configuration node:
 
 ```php
 'service_manager'    => [
@@ -55,7 +55,7 @@ Then in your configuration you can add the `mongodb` and `mongocollection` nodes
         'database'   => 'Application\MongoDb',
         'collection' => 'yourCollectionName'
     ],
-    ... 
+    ...
 ],
 ```
 
