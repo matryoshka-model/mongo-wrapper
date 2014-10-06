@@ -46,11 +46,6 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\InputFilter\InputFilter', $this->mongoObject->getInputFilter());
     }
 
-    public function testObjectExistsInDatabase()
-    {
-        $this->assertFalse($this->mongoObject->objectExistsInDatabase());
-    }
-
     public function testSave()
     {
         $abstractModelMock  = $this->getMockBuilder('Matryoshka\Model\AbstractModel')
@@ -59,7 +54,7 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
                                     ->getMock();
         $result = null;
 
-        $abstractModelMock->expects($this->at(0))
+        $abstractModelMock->expects($this->atLeastOnce())
                            ->method('save')
                            ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'), $this->identicalTo($this->mongoObject))
                            ->will($this->returnValue($result));
@@ -67,7 +62,6 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
         $this->mongoObject->setModel($abstractModelMock);
 
         $this->assertSame($result, $this->mongoObject->save());
-        $this->assertTrue($this->mongoObject->objectExistsInDatabase());
     }
 
 
@@ -78,23 +72,15 @@ class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
                             ->setMethods(['save', 'delete'])
                             ->getMock();
         $result = null;
-
-        $abstractModelMock->expects($this->at(0))
-                        ->method('save')
-                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'), $this->identicalTo($this->mongoObject))
-                        ->will($this->returnValue($result));
-
-
-        $abstractModelMock->expects($this->at(1))
+        $abstractModelMock->expects($this->atLeastOnce())
                         ->method('delete')
                         ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'))
                         ->will($this->returnValue($result));
 
         $this->mongoObject->setModel($abstractModelMock);
-        $this->mongoObject->save();
+        $this->mongoObject->setId('id');
 
         $this->assertSame($result, $this->mongoObject->delete());
-        $this->assertFalse($this->mongoObject->objectExistsInDatabase());
     }
 
     public function testDeleteShouldThrowExceptionWhenObjectDoesntExistInDatabase()

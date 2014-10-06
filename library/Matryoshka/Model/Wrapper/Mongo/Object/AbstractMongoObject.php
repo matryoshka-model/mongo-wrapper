@@ -35,8 +35,6 @@ abstract class AbstractMongoObject implements
     use InputFilterAwareTrait;
     use ModelAwareTrait;
 
-    protected $existsInDatabase = false;
-
     /**
      * Set Model
      *
@@ -67,16 +65,6 @@ abstract class AbstractMongoObject implements
     }
 
     /**
-     * Object Exists In Database
-     *
-     * @return boolean
-     */
-    public function objectExistsInDatabase()
-    {
-        return $this->existsInDatabase;
-    }
-
-    /**
      * Save
      *
      * @return null|int
@@ -85,7 +73,6 @@ abstract class AbstractMongoObject implements
     {
         $criteria = new ActiveRecordCriteria();
         $result = $this->getModel()->save($criteria, $this);
-        $this->existsInDatabase = (bool) ($result === null || $result);
         return $result;
     }
 
@@ -97,14 +84,13 @@ abstract class AbstractMongoObject implements
      */
     public function delete()
     {
-        if (!$this->objectExistsInDatabase()) {
-            throw new Exception\RuntimeException('The asset must exists in database to be deleted');
+        if (!$this->getId()) {
+            throw new Exception\RuntimeException('An ID must be set prior to calling delete()');
         }
 
         $criteria = new ActiveRecordCriteria();
         $criteria->setId($this->getId());
         $result = $this->getModel()->delete($criteria);
-        $this->existsInDatabase = !($result === null || $result);
         return $result;
     }
 }
