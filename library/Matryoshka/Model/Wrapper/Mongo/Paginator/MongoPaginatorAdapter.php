@@ -9,9 +9,9 @@
 
 namespace Matryoshka\Model\Wrapper\Mongo\Paginator;
 
-use Zend\Paginator\Adapter\AdapterInterface;
-use Matryoshka\Model\ResultSet\HydratingResultSet;
 use MongoCursor;
+use Zend\Paginator\Adapter\AdapterInterface;
+use Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet;
 
 class MongoPaginatorAdapter implements AdapterInterface
 {
