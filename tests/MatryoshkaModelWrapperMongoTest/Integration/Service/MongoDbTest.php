@@ -169,9 +169,9 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $result = $serviceUser->find(new FindMongoCriteria);
         $this->assertCount(3, $result);
 
-        $result = $serviceUser->find(new CallableCriteria(function(ModelInterface $model){
-            return $model->getDataGateway()->find(['foo' => 2]);
-        }));
+        $findCriteria = new FindMongoCriteria();
+        $findCriteria->limit(1);
+        $result = $serviceUser->find($findCriteria);
         $this->assertCount(1, $result);
     }
 }

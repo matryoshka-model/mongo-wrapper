@@ -26,7 +26,7 @@ class FindMongoCriteria extends AbstractCriteria
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();
-        return $dataGatewayMongo->find();
+        return $dataGatewayMongo->find()->limit($this->limit)->skip($this->offset);
     }
 
 }
