@@ -26,6 +26,39 @@ Add the following to your `composer.json` file:
 
 Since **mongo-wrapper** uses `self.version` for its [matryoshka library](https://github.com/matryoshka-model/matryoshka) dependency composer will install **matryoshka** 0.4.0.
 
+## Configuration
+
+This library provides two abstract factories for `Zend\ServiceManager` to make MongoClient and MongoCollection available as services. In order to use them in a ZF2 application, register the provided factories through the `service_manager` configuration node:
+
+```php
+'service_manager'    => [
+    'abstract_factories' => array(
+        'Matryoshka\Model\Wrapper\Mongo\Service\MongoDbAbstractServiceFactory',
+        'Matryoshka\Model\Wrapper\Mongo\Service\MongoCollectionAbstractServiceFactory',
+    ),
+],
+```
+
+Then in your configuration you can add the `mongodb` and `mongocollection` nodes and configure them as in example:
+
+```php
+'mongodb' => [
+    'Application\MongoDb' => [
+        'hosts' => '127.0.0.1:27017',
+        'database' => 'yourDatabase'
+    ],
+    ...
+],
+
+'mongocollection'    => [
+    'Application\DataGateway\YourCollectionName' => [
+        'database'   => 'Application\MongoDb',
+        'collection' => 'yourCollectionName'
+    ],
+    ... 
+],
+```
+
 ## Versioning
 
 This library is versioned in parallel with matryoshka library (which follows [semantic versioning](https://github.com/matryoshka-model/matryoshka)).
