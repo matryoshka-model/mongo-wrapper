@@ -1,4 +1,6 @@
-# Matryoshka wrapper for MongoDB [![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)&nbsp;
+# Matryoshka wrapper for MongoDB
+
+[![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)&nbsp;[![Dependency Status](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f/badge.svg)](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f)&nbsp;[![Total Downloads](https://poser.pugx.org/matryoshka-model/mongo-wrapper/downloads.svg)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
 
 | Master  | Develop |
 |:-------------:|:-------------:|
@@ -18,7 +20,7 @@ Add the following to your `composer.json` file:
 ```
 "require": {
     "php": ">=5.4",
-    "matryoshka-model/mongo-wrapper": "~0.5.0",
+    "matryoshka-model/mongo-wrapper": "~0.5.0"
 }
 ```
 
@@ -76,20 +78,6 @@ Main built-in components:
 ##### NOTES
 
 It's important to always use the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) does not implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
-
-## Versioning
-
-This library is versioned in parallel with [matryoshka library](https://github.com/matryoshka-model/matryoshka) (which follows [semantic versioning](http://semver.org)).
-
-- **Master branch**
-
-    Last stable release
-
-- **Develop branch**
-
-    Next minor release
-
-See `extras` field in the `composer.json` file for further details, i.e. aliases.
 
 ---
 
