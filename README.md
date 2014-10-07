@@ -1,4 +1,4 @@
-# Matryoshka wrapper for MongoDB [![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
+# Matryoshka wrapper for MongoDB [![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)&nbsp;
 
 | Master  | Develop |
 |:-------------:|:-------------:|
@@ -61,16 +61,25 @@ Then in your configuration you can add the `mongodb` and `mongocollection` nodes
 
 ## Usage
 
-This wrapper provides extensions and default implementations for using `MongoCollection` as datagateway.
+This wrapper provides extensions and default implementations for using `MongoCollection` as a datagateway.
 
-Built-in components:
+Main built-in components:
 
-- `Matryoshka\Model\Wrapper\Mongo\Object`: `AbstractMongoObject` is an Active Record implementation, use it in combination with `ClassMethodsTrait` or `ObjectPropertyTrait` in child classes.
-- `Matryoshka\Model\Wrapper\Mongo\Paginator`: `MongoPaginatorAdapter` is a Paginator Adapter that can be used within paginable criterias.
-- `Matryoshka\Model\Wrapper\Mongo\ResultSet`: `HydratingResultSet` makes the counting functionality working with `MongoCursor` datasources 
+- `Matryoshka\Model\Wrapper\Mongo\Object`
+
+    Extend `AbstractMongoObject` to create an [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation and use `ClassMethodsTrait` or `ObjectPropertyTrait`
+
+- `Matryoshka\Model\Wrapper\Mongo\Paginator`
+
+    `MongoPaginatorAdapter` is a paginator adapter that can be used within paginable criterias
+
+- `Matryoshka\Model\Wrapper\Mongo\ResultSet`
+
+    `HydratingResultSet` makes the counting functionality working with `MongoCursor` datasources
 
 ##### NOTES
-It's important to use always the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) doesn't implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
+
+It's important to always use the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) does not implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
 
 ## Versioning
 
