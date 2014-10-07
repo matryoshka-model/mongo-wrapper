@@ -69,26 +69,53 @@ $ ./vendor/bin/phpunit
 
 See `extras` field in the `composer.json` file for further details, i.e. aliases.
 
-### Our simple workflow
+## Workflow
 
-Suppose the last stable version is `0.4.0`. Then the `develop` branch corresponds to version `0.5.x-dev`.
+Matryoshka MongoDB wrapper is versioned following matryoshka library versions.
+
+Suppose the last stable version of MongoDB wrapper is `0.4.0`. Then its `develop` branch corresponds to version `0.5.x-dev`.
 
 1. Commit and push on `develop` branch
 
-   Remember to update branch alias and matryoshka dependency. E.g.,
+   Remember to update branch alias and matryoshka dependency in the `composer.json`. E.g.,
 
    ```json
-   "require": {
+   {
+     ...
+     "require": {
+       "php": ">=5.4",
+       "matryoshka-model/matryoshka": "~0.5.0"
+     },
+     "extra": {
+       "branch-alias": {
+         "dev-master": "0.5.x-dev",
+         "dev-develop": "0.6.x-dev"
+       }
+     }
+     ...
    }
    ```
 
 2. Pull request against the `master` branch
 
-3. Tag release, i.e. `<MAJOR.MINOR.PATCH>`
+3. Tag release `v0.5.0`
 
 4. Checkout again the `develop` branch
 
-5. Update [matryoshka](https://github.com/matryoshka-model/matryoshka) dependency in `composer.json` to
+5. Setup [matryoshka](https://github.com/matryoshka-model/matryoshka) dependency in `composer.json` to permit the development of the following version
+
+    ```json
+    {
+         ...
+         "require": {
+           "php": ">=5.4",
+           "matryoshka-model/matryoshka": "0.6.x-dev"
+         }
+         ...
+     }
+    ```
+
+    This way executing a `composer update -o` on the `develop` branch of MongoDB wrapper you'll have the code on `develop` branch of matryoshka library.
 
 ## Contributing process
 
