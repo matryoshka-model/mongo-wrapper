@@ -22,10 +22,6 @@ Add the following to your `composer.json` file:
 }
 ```
 
-##### NOTES
-
-Since **mongo-wrapper** uses `self.version` for its [matryoshka library](https://github.com/matryoshka-model/matryoshka) dependency composer will install **matryoshka** 0.5.0.
-
 ## Configuration
 
 This library provides two abstract factories for `Zend\ServiceManager` to make MongoDb and MongoCollection available as services. In order to use them in a ZF2 application, register the provided factories through the `service_manager` configuration node:
@@ -83,11 +79,17 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
 ## Versioning
 
-This library is versioned in parallel with matryoshka library (which follows [semantic versioning](https://github.com/matryoshka-model/matryoshka)).
+This library is versioned in parallel with [matryoshka library](https://github.com/matryoshka-model/matryoshka) (which follows [semantic versioning](http://semver.org)).
 
-##### NOTES
+- **Master branch**
 
-On the **master branch** you will find **major releases** while the **next minor release** is on the **develop branch** (see `extras` field in the `composer.json` file for further details, i.e. aliases).
+    Last stable release
+
+- **Develop branch**
+
+    Next minor release
+
+See `extras` field in the `composer.json` file for further details, i.e. aliases.
 
 ---
 
