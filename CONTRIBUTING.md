@@ -73,7 +73,9 @@ See `extras` field in the `composer.json` file for further details, i.e. aliases
 
 Matryoshka MongoDB wrapper is versioned following matryoshka library versions.
 
-Suppose the last stable version of MongoDB wrapper is `0.4.0`. Then its `develop` branch corresponds to version `0.5.x-dev`.
+Suppose you want to release a new version.
+
+Scenario: the last stable version of MongoDB wrapper is `0.4.0`, then its `develop` branch corresponds to version `0.5.x-dev`.
 
 1. Commit and push on `develop` branch
 
@@ -115,7 +117,7 @@ Suppose the last stable version of MongoDB wrapper is `0.4.0`. Then its `develop
      }
     ```
 
-    This way executing a `composer update -o` on the `develop` branch of MongoDB wrapper you'll have the code on `develop` branch of matryoshka library.
+    This way executing a `composer update -o` in your local MongoDB wrapper repository your vendor will contain the `develop` of matryoshka library.
 
 ## Contributing process
 
