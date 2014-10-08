@@ -66,6 +66,7 @@
     },
     "suggest": {
         "matryoshka-model/matryoshka": "Model service layer that normalize and standardize your model's interface use",
-        "matryoshka-model/zf2-matryoshka-module": "ZF2 module for matryoshka library"
+        "matryoshka-model/zf2-matryoshka-module": "ZF2 module for matryoshka library",
+        "matryoshka-model/rest-wrapper": "Matryoshka wrapper aimed at creating restful APIs"
     }
 }
