@@ -18,8 +18,8 @@ class ClassMethodsTest  extends \PHPUnit_Framework_TestCase
     {
         $hydrator = new ClassMethods();
 
+        $this->assertFalse($hydrator->getUnderscoreSeparatedKeys());
         $this->assertInstanceOf('\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy', $hydrator->getNamingStrategy());
         $this->assertInstanceOf('\Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy', $hydrator->getStrategy('_id'));
     }
-
 }

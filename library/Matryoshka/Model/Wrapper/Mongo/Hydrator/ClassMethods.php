@@ -21,9 +21,9 @@ class ClassMethods extends MatryoshkaClassMethods
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($underscoreSeparatedKeys = false)
     {
-        parent::__construct();
+        parent::__construct($underscoreSeparatedKeys);
         $this->setNamingStrategy(new IdNameStrategy());
         $this->addStrategy('_id', new MongoIdStrategy());
     }
