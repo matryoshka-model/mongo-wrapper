@@ -61,9 +61,9 @@ This wrapper provides extensions and default implementations for using `MongoCol
 
 Main built-in components:
 
-- `Matryoshka\Model\Wrapper\Mongo\Object`
+- Inject a `Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria` instance into your `Matryoshka\Model\Object\AbstractActiveRecord` objects
 
-    Extend `AbstractMongoObject` to create an [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation and use `ClassMethodsTrait` or `ObjectPropertyTrait`
+    This way the Matryoshka [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation works with your MongoDB collections
 
 - `Matryoshka\Model\Wrapper\Mongo\Paginator`
 
