@@ -6,7 +6,6 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\ResultSet;
 
 use Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet;
@@ -21,7 +20,7 @@ class HydratingResultSetTest extends \PHPUnit_Framework_TestCase
         /**
          * @see http://php.net/manual/en/mongocursor.count.php
          */
-       $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
+        $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -35,5 +34,4 @@ class HydratingResultSetTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(11, $resultSet->count());
     }
-
 }

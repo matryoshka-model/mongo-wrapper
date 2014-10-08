@@ -6,7 +6,6 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Integration;
 
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
@@ -36,7 +35,10 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
 
         $abstractModelMock->expects($this->atLeastOnce())
                            ->method('save')
-                           ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'), $this->identicalTo($this->mongoObject))
+                           ->with(
+                               $this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'),
+                               $this->identicalTo($this->mongoObject)
+                           )
                            ->will($this->returnValue($result));
 
         $this->mongoObject->setModel($abstractModelMock);
@@ -68,5 +70,4 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('Matryoshka\Model\Exception\RuntimeException');
         $this->mongoObject->delete();
     }
-
 }

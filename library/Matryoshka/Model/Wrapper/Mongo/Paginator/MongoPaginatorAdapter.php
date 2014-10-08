@@ -6,13 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace Matryoshka\Model\Wrapper\Mongo\Paginator;
 
 use MongoCursor;
 use Zend\Paginator\Adapter\AdapterInterface;
 use Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet;
 
+/**
+ * Class MongoPaginatorAdapter
+ */
 class MongoPaginatorAdapter implements AdapterInterface
 {
 
@@ -37,11 +39,11 @@ class MongoPaginatorAdapter implements AdapterInterface
      */
     public function __construct(MongoCursor $cursor, HydratingResultSet $resultSetPrototype = null)
     {
-        $this->cursor    = $cursor;
+        $this->cursor = $cursor;
         $this->resultSetPrototype = $resultSetPrototype ? $resultSetPrototype : new HydratingResultSet();
 
         $this->cursor->limit(null)->skip(null);
-        $this->count     = $this->cursor->count();
+        $this->count = $this->cursor->count();
     }
 
     /**
@@ -71,5 +73,4 @@ class MongoPaginatorAdapter implements AdapterInterface
 
         return $resultSet;
     }
-
 }

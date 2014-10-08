@@ -6,7 +6,6 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\DeletableCriteriaInterface;

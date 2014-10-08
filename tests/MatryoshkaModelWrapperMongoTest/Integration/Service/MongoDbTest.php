@@ -6,21 +6,17 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Integration\Service;
 
-use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\CreateMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\DeleteMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\FindMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 use MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway;
-use Zend\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\ServiceManager;
 use Zend\Stdlib\Hydrator\ObjectProperty;
-use Matryoshka\Model\Criteria\CallableCriteria;
-use Matryoshka\Model\ModelInterface;
 
 /**
  * Class MongoDbTest

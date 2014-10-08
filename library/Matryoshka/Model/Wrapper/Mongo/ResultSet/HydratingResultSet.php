@@ -8,8 +8,8 @@
  */
 namespace Matryoshka\Model\Wrapper\Mongo\ResultSet;
 
-use MongoCursor;
 use Matryoshka\Model\ResultSet\HydratingResultSet as BaseResultSet;
+use MongoCursor;
 
 /**
  * Class HydratingResultSet

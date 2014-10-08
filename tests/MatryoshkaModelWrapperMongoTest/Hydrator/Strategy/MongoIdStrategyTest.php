@@ -6,10 +6,13 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
 
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy;
+
+/**
+ * Class MongoIdStrategyTest
+ */
 class MongoIdStrategyTest  extends \PHPUnit_Framework_TestCase
 {
 
@@ -36,5 +39,4 @@ class MongoIdStrategyTest  extends \PHPUnit_Framework_TestCase
         $result = $strategy->hydrate(null);
         $this->assertNull($result);
     }
-
 }

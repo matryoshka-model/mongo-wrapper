@@ -6,22 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
-use Matryoshka\Model\Wrapper\Mongo\Object\ClassMethodsTrait;
-use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
-use Matryoshka\Model\Object\AbstractActiveRecord;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
-echo 'ciao';
+
 /**
  * Class ClassMethodsMongoObject
  */
 class ClassMethodsMongoObject extends ObjectPropertyMongoObject
 {
-
     /**
      * Constructor
      */
@@ -31,26 +24,39 @@ class ClassMethodsMongoObject extends ObjectPropertyMongoObject
         parent::__construct();
     }
 
+    /**
+     * @return String
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     */
     public function setName($name)
     {
         $this->name = $name;
-        return $name;
+        return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getAge()
     {
         return $this->age;
     }
 
+    /**
+     * @param $age
+     * @return int
+     */
     public function setAge($age)
     {
-        return $this->age;
+        $this->age = $age;
+        return $this;
     }
-
-
 }

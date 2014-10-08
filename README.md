@@ -9,8 +9,6 @@
 
 ---
 
-...
-
 ## Installation
 
 Install it using [composer](http://getcomposer.org).

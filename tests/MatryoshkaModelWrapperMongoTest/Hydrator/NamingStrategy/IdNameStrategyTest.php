@@ -6,14 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\NamingStrategy;
 
-
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy;
+
+/**
+ * Class IdNameStrategyTest
+ */
 class IdNameStrategyTest  extends \PHPUnit_Framework_TestCase
 {
-
     public function testExtract()
     {
         $strategy = new IdNameStrategy();
@@ -27,5 +28,4 @@ class IdNameStrategyTest  extends \PHPUnit_Framework_TestCase
         $this->assertSame('id', $strategy->hydrate('_id'));
         $this->assertSame('foo', $strategy->hydrate('foo'));
     }
-
 }

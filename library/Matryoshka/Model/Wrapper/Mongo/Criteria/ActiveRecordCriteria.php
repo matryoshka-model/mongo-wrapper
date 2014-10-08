@@ -6,14 +6,12 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
 
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelInterface;
 use Zend\Stdlib\Hydrator\AbstractHydrator;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException;
 
 /**
  * Class ActiveRecordCriteria

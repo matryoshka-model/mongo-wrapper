@@ -6,13 +6,12 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
-use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
 use Matryoshka\Model\Object\AbstractActiveRecord;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
 
 /**
  * Class ObjectPropertyMongoObject
@@ -42,11 +41,18 @@ class ObjectPropertyMongoObject extends AbstractActiveRecord
         $this->setActiveRecordCriteriaPrototype(new ActiveRecordCriteria());
     }
 
+    /**
+     * @return mixed
+     */
     public function getId()
     {
         return $this->_id;
     }
 
+    /**
+     * @param mixed $id
+     * @return $this
+     */
     public function setId($id)
     {
         $this->_id = $id;
