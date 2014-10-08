@@ -9,35 +9,48 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
 use Matryoshka\Model\Wrapper\Mongo\Object\ClassMethodsTrait;
 use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
-
+use Matryoshka\Model\Object\AbstractActiveRecord;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
+echo 'ciao';
 /**
  * Class ClassMethodsMongoObject
  */
-class ClassMethodsMongoObject extends AbstractMongoObject
+class ClassMethodsMongoObject extends ObjectPropertyMongoObject
 {
-    use ClassMethodsTrait;
-
-    /**
-     * @var String
-     */
-    public $name;
-
-    /**
-     * @var int
-     */
-    public $age;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->hydrator = $this->getHydrator();
-        $intStrategy = new SetTypeStrategy('int', 'int');
-        $this->hydrator->addStrategy('age', $intStrategy);
+        $this->setHydrator(new ClassMethods());
+        parent::__construct();
     }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $name;
+    }
+
+    public function getAge()
+    {
+        return $this->age;
+    }
+
+    public function setAge($age)
+    {
+        return $this->age;
+    }
+
+
 }

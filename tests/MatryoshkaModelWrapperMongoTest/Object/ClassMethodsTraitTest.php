@@ -8,7 +8,6 @@
  */
 
 namespace MatryoshkaModelWrapperMongoTest\Object;
-
 /**
  * Class ClassMethodsTraitTest
  */

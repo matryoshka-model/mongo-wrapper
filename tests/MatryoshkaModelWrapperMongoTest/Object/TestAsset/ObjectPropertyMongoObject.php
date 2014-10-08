@@ -9,16 +9,18 @@
 
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
 use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
+use Matryoshka\Model\Object\AbstractActiveRecord;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
 
 /**
  * Class ObjectPropertyMongoObject
  */
-class ObjectPropertyMongoObject extends AbstractMongoObject
+class ObjectPropertyMongoObject extends AbstractActiveRecord
 {
-    use ObjectPropertyTrait;
+
+    public $_id;
 
     /**
      * @var String
@@ -35,8 +37,19 @@ class ObjectPropertyMongoObject extends AbstractMongoObject
      */
     public function __construct()
     {
-        $this->hydrator = $this->getHydrator();
         $intStrategy = new SetTypeStrategy('int', 'int');
-        $this->hydrator->addStrategy('age', $intStrategy);
+        $this->getHydrator()->addStrategy('age', $intStrategy);
+        $this->setActiveRecordCriteriaPrototype(new ActiveRecordCriteria());
+    }
+
+    public function getId()
+    {
+        return $this->_id;
+    }
+
+    public function setId($id)
+    {
+        $this->_id = $id;
+        return $this;
     }
 }
