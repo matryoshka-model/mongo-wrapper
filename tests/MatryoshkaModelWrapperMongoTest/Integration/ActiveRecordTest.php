@@ -7,7 +7,7 @@
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 
-namespace MatryoshkaModelWrapperMongoTest\Object;
+namespace MatryoshkaModelWrapperMongoTest\Integration;
 
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 
@@ -24,26 +24,6 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->mongoObject = new MongoObject();
-    }
-
-    public function testGetSetModel()
-    {
-        $abstractModelMock  = $this->getMockForAbstractClass('Matryoshka\Model\AbstractModel');
-
-        $this->assertInstanceOf('\MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject', $this->mongoObject->setModel($abstractModelMock));
-
-        $this->assertSame($abstractModelMock, $this->mongoObject->getModel());
-
-        $modelInterfaceMock = $this->getMockForAbstractClass('Matryoshka\Model\ModelInterface');
-        $this->setExpectedException('Matryoshka\Model\Exception\InvalidArgumentException');
-        $this->mongoObject->setModel($modelInterfaceMock);
-
-    }
-
-
-    public function testGetNotPresetInputFilter()
-    {
-        $this->assertInstanceOf('Zend\InputFilter\InputFilter', $this->mongoObject->getInputFilter());
     }
 
     public function testSave()
