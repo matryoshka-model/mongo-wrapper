@@ -12,9 +12,9 @@ namespace MatryoshkaModelWrapperMongoTest\Object;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 
 /**
- * Class AbstractMongoObjectTest
+ * Class ActiveRecordTest
  */
-class AbstractMongoObjectTest extends \PHPUnit_Framework_TestCase
+class ActiveRecordTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var MongoObject
