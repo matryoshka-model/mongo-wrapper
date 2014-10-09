@@ -59,23 +59,48 @@ Then in your configuration you can add the `mongodb` and `mongocollection` nodes
 
 This wrapper provides extensions and default implementations for using `MongoCollection` as a datagateway.
 
-Main built-in components:
+Main concepts:
 
-- Inject a `Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria` instance into your `Matryoshka\Model\Object\AbstractActiveRecord` objects
+1. Inject a `Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria` instance into your `Matryoshka\Model\Object\AbstractActiveRecord` objects
 
-    This way the Matryoshka [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation works with your MongoDB collections
+    This way the matryoshka [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation will work with your MongoDB collections
 
-- `Matryoshka\Model\Wrapper\Mongo\Paginator`
+2. `Matryoshka\Model\Wrapper\Mongo\Paginator`
 
     `MongoPaginatorAdapter` is a paginator adapter that can be used within paginable criterias
 
-- `Matryoshka\Model\Wrapper\Mongo\ResultSet`
+3. `Matryoshka\Model\Wrapper\Mongo\ResultSet`
 
-    `HydratingResultSet` makes the counting functionality working with `MongoCursor` datasources
+    `HydratingResultSet` makes the counting functionality working correctly with `MongoCursor` datasources
 
 ##### NOTES
 
 It's important to always use the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) does not implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
+
+### Components
+
+- `Matryoshka\Model\Wrapper\Mongo\Criteria` contains:
+
+    The aforementioned `ActiveRecordCriteria` matryoshka criteria
+
+- `Matryoshka\Model\Wrapper\Mongo\Hydrator` contains:
+
+    - `ClassMethods`, an hydrator that can be used with matryoshka objects when you have MongoDB collections as datagateways
+    - `NamingStrategy\IdNameStrategy`, a strategy that can be overridden to setup the naming rules map of your fields
+    - `Strategy\*`, some common strategies for MongoDB
+
+- `Matryoshka\Model\Wrapper\Mongo\Paginator` contains:
+
+    The aforementioned `MongoPaginatorAdapter`
+
+- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains:
+
+    The aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor`s counting functionality working properly
+
+- `Matryoshka\Model\Wrapper\Mongo\Service` contains:
+
+    Abstract service factories generally aimed at instantiation of `\MongoCollection`s and `\MongoDb`s.
+    Use `mongocollection` and `mongodb` configuration node to respectively setup them.
 
 ---
 

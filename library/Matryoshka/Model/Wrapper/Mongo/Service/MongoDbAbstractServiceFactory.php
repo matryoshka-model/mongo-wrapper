@@ -69,9 +69,7 @@ class MongoDbAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         $config = $serviceLocator->get('Config');
-        if (!isset($config[$this->configKey])
-        || !is_array($config[$this->configKey])
-        ) {
+        if (!isset($config[$this->configKey]) || !is_array($config[$this->configKey])) {
             $this->config = [];
             return $this->config;
         }
