@@ -52,7 +52,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
                     'collection' => 'restaurant'
                 ],
             ],
-            'model' => [
+            'matryoshka-models' => [
                 'ServiceModelUser' => [
                     'datagateway' => 'MongoDataGateway\User',
                     'resultset'   => 'Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet',
