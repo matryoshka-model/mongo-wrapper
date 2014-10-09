@@ -77,30 +77,21 @@ Main concepts:
 
 It's important to always use the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) does not implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
 
-### Components
+## Components
 
-- `Matryoshka\Model\Wrapper\Mongo\Criteria` contains:
+- `Matryoshka\Model\Wrapper\Mongo\Criteria` directory contains the aforementioned `ActiveRecordCriteria` matryoshka criteria.
 
-    The aforementioned `ActiveRecordCriteria` matryoshka criteria
-
-- `Matryoshka\Model\Wrapper\Mongo\Hydrator` contains:
+- `Matryoshka\Model\Wrapper\Mongo\Hydrator` directory contains
 
     - `ClassMethods`, an hydrator that can be used with matryoshka objects when you have MongoDB collections as datagateways
     - `NamingStrategy\IdNameStrategy`, a strategy that can be overridden to setup the naming rules map of your fields
     - `Strategy\*`, some common strategies for MongoDB
 
-- `Matryoshka\Model\Wrapper\Mongo\Paginator` contains:
+- `Matryoshka\Model\Wrapper\Mongo\Paginator` directory contains the aforementioned `MongoPaginatorAdapter`
 
-    The aforementioned `MongoPaginatorAdapter`
+- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains the aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor`s counting functionality working properly
 
-- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains:
-
-    The aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor`s counting functionality working properly
-
-- `Matryoshka\Model\Wrapper\Mongo\Service` contains:
-
-    Abstract service factories generally aimed at instantiation of `\MongoCollection`s and `\MongoDb`s.
-    Use `mongocollection` and `mongodb` configuration node to respectively setup them.
+- `Matryoshka\Model\Wrapper\Mongo\Service` contains abstract service factories generally aimed at instantiation of `\MongoCollection` and `\MongoDb` objects. Use `mongocollection` and `mongodb` configuration nodes to respectively setup them (see [above](#configuration)).
 
 ---
 
