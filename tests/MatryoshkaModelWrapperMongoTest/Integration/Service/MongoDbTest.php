@@ -6,18 +6,16 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Integration\Service;
 
-use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use Matryoshka\Model\ResultSet\HydratingResultSet;
+use Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\CreateMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\DeleteMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\FindMongoCriteria;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 use MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway;
-use Zend\ServiceManager;
 use Zend\Mvc\Service\ServiceManagerConfig;
+use Zend\ServiceManager;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
@@ -54,10 +52,10 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
                     'collection' => 'restaurant'
                 ],
             ],
-            'model' => [
+            'matryoshka-models' => [
                 'ServiceModelUser' => [
                     'datagateway' => 'MongoDataGateway\User',
-                    'resultset'   => 'Matryoshka\Model\ResultSet\HydratingResultSet',
+                    'resultset'   => 'Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet',
                     'object'      => 'MongoObject',
                     'type'        => 'MatryoshkaTest\Model\Service\TestAsset\MyModel',
                     'hydrator'    => 'Zend\Stdlib\Hydrator\ObjectProperty'
@@ -77,8 +75,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
 
         $sm->setService('Config', $config);
         $sm->setService('MatryoshkaTest\Model\Service\TestAsset\FakeDataGateway', new FakeDataGateway());
-        $sm->setService('Matryoshka\Model\ResultSet\ArrayObjectResultSet', new ArrayObjectResultSet());
-        $sm->setService('Matryoshka\Model\ResultSet\HydratingResultSet', new HydratingResultSet());
+        $sm->setService('Matryoshka\Model\Wrapper\Mongo\ResultSet\HydratingResultSet', new HydratingResultSet());
         $sm->setService('Zend\Stdlib\Hydrator\ObjectProperty', new ObjectProperty());
         $sm->setService('MongoObject', new MongoObject);
 
@@ -86,6 +83,7 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $this->obj->name = "testMatrioska";
         $this->obj->age  = "8";
 
+        $sm->get('MongoDb\MongoWrapperTest')->drop();
     }
 
     public function testIntegrationMongoDbInsert()
@@ -108,8 +106,11 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
 
         /* @var $serviceUser \Matryoshka\Model\Model */
         $serviceUser = $this->serviceManager->get('ServiceModelUser');
+        $result = $serviceUser->save(new CreateMongoCriteria, $this->obj);
+
         $result = $serviceUser->find($criteria);
 
+        $this->assertCount(1, $result);
         $this->assertNotEmpty($result->toArray());
     }
 
@@ -139,5 +140,34 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $result = $serviceUser->find($criteria);
 
         $this->assertEmpty($result->toArray());
+    }
+
+    /**
+     * @depends testIntegrationMongoDbFindEmpty
+     */
+    public function testIntegrationMongoCursorCount()
+    {
+        $obj1 = clone $this->obj;
+        $obj1->foo = 1;
+
+        $obj2 = clone $this->obj;
+        $obj2->foo = 2;
+
+        $obj3 = clone $this->obj;
+        $obj3->foo = 3;
+
+        /* @var $serviceUser \Matryoshka\Model\Model */
+        $serviceUser = $this->serviceManager->get('ServiceModelUser');
+        $serviceUser->save(new CreateMongoCriteria, $obj1);
+        $serviceUser->save(new CreateMongoCriteria, $obj2);
+        $serviceUser->save(new CreateMongoCriteria, $obj3);
+
+        $result = $serviceUser->find(new FindMongoCriteria);
+        $this->assertCount(3, $result);
+
+        $findCriteria = new FindMongoCriteria();
+        $findCriteria->limit(1);
+        $result = $serviceUser->find($findCriteria);
+        $this->assertCount(1, $result);
     }
 }

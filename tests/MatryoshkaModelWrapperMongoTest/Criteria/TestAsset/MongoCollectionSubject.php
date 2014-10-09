@@ -6,13 +6,19 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
+/**
+ * Class MongoCollectionSubject
+ */
 class MongoCollectionSubject
 {
     protected $observer;
 
+    /**
+     * Ctor
+     * @param $observer
+     */
     public function __construct($observer)
     {
         $this->observer = $observer;
@@ -23,10 +29,10 @@ class MongoCollectionSubject
 	 * @link http://www.php.net/manual/en/mongocollection.save.php
 	 * @param mixed $a Array to save.
 	 * @param array $options Options for the save.
-	 * @throws MongoCursorException
+	 * @throws \MongoCursorException
 	 * @return mixed
 	 */
-    public function save(array &$a, array $options = array())
+    public function save(array &$a, array $options = [])
     {
         $return = $this->observer->save($a, $options);
         $a['_id'] = new \MongoId();

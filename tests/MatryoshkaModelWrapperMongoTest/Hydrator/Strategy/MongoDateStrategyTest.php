@@ -6,14 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
 
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoDateStrategy;
+
+/**
+ * Class MongoDateStrategyTest
+ */
 class MongoDateStrategyTest  extends \PHPUnit_Framework_TestCase
 {
-
-
     public function test__construct()
     {
         //Test default format
@@ -58,6 +59,4 @@ class MongoDateStrategyTest  extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($format, $strategy->getFormat());
     }
-
-
 }

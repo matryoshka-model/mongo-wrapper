@@ -6,38 +6,57 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
-use Matryoshka\Model\Wrapper\Mongo\Object\AbstractMongoObject;
-use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
-use Matryoshka\Model\Wrapper\Mongo\Object\ClassMethodsTrait;
-use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
 
 /**
  * Class ClassMethodsMongoObject
  */
-class ClassMethodsMongoObject extends AbstractMongoObject
+class ClassMethodsMongoObject extends ObjectPropertyMongoObject
 {
-    use ClassMethodsTrait;
-
-    /**
-     * @var String
-     */
-    public $name;
-
-    /**
-     * @var int
-     */
-    public $age;
-
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->hydrator = $this->getHydrator();
-        $intStrategy = new SetTypeStrategy('int', 'int');
-        $this->hydrator->addStrategy('age', $intStrategy);
+        $this->setHydrator(new ClassMethods());
+        parent::__construct();
+    }
+
+    /**
+     * @return String
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAge()
+    {
+        return $this->age;
+    }
+
+    /**
+     * @param $age
+     * @return int
+     */
+    public function setAge($age)
+    {
+        $this->age = $age;
+        return $this;
     }
 }

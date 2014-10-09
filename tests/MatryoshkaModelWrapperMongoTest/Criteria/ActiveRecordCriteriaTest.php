@@ -6,22 +6,20 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria;
 
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use Zend\Stdlib\Hydrator\ObjectProperty;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
  * Class ActiveRecordCriteriaTest
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $modelInterfaceMock;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
@@ -85,7 +83,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($testReturn, $res);
     }
 
-
     public function testApplyWrite()
     {
         $ar = new ActiveRecordCriteria();
@@ -122,28 +119,27 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->applyWrite($model, $testData);
     }
 
-   public function testApplyWriteWithoutId()
-   {
-       $ar = new ActiveRecordCriteria();
-       $testId = null;
-       $testData = ['_id' => $testId];
-       $testUnsetData = [];
+    public function testApplyWriteWithoutId()
+    {
+        $ar = new ActiveRecordCriteria();
+        $testId = null;
+        $testData = ['_id' => $testId];
+        $testUnsetData = [];
 
-       $this->mongoCollectionMock->expects($this->at(0))
-           ->method('save')
-           ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
+        $this->mongoCollectionMock->expects($this->at(0))
+            ->method('save')
+            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
 
-       $mock = new MongoCollectionSubject($this->mongoCollectionMock);
+        $mock = new MongoCollectionSubject($this->mongoCollectionMock);
 
-       $rs = new ArrayObjectResultSet();
-       $model = new Model($mock, $rs);
-       $hyd = new ObjectProperty();
-       $model->setHydrator($hyd);
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($mock, $rs);
+        $hyd = new ObjectProperty();
+        $model->setHydrator($hyd);
 
-       $res = $ar->applyWrite($model, $testData);
-
-       $this->assertInstanceOf('\MongoId', $ar->getId());
-   }
+        $ar->applyWrite($model, $testData);
+        $this->assertInstanceOf('\MongoId', $ar->getId());
+    }
 
     public function testSaveOptions()
     {
@@ -188,7 +184,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->setId($testId);
         $ar->applyDelete($model);
     }
-
 
     /**
      * @expectedException \Matryoshka\Model\Exception\RuntimeException

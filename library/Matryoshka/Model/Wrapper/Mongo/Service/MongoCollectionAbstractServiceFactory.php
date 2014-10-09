@@ -6,7 +6,6 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace Matryoshka\Model\Wrapper\Mongo\Service;
 
 use Zend\ServiceManager\AbstractFactoryInterface;
@@ -77,9 +76,7 @@ class MongoCollectionAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         $config = $serviceLocator->get('Config');
-        if (!isset($config[$this->configKey])
-        || !is_array($config[$this->configKey])
-        ) {
+        if (!isset($config[$this->configKey]) || !is_array($config[$this->configKey])) {
             $this->config = [];
             return $this->config;
         }

@@ -6,16 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Paginator;
 
 use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
+
 /**
  * Class MongoPaginatorAdapterTest
  */
 class MongoPaginatorAdapterTest extends \PHPUnit_Framework_TestCase
 {
-
     protected $adapter;
 
     protected $mongoCursorMock;
@@ -70,5 +69,4 @@ class MongoPaginatorAdapterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Matryoshka\Model\ResultSet\HydratingResultSetInterface', $resultSet);
     }
-
 }

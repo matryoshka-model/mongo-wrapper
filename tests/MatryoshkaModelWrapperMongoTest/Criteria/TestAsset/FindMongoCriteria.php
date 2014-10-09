@@ -6,7 +6,6 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\AbstractCriteria;
@@ -26,7 +25,7 @@ class FindMongoCriteria extends AbstractCriteria
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();
-        return $dataGatewayMongo->find();
+        return $dataGatewayMongo->find()->limit($this->limit)->skip($this->offset);
     }
 
 }

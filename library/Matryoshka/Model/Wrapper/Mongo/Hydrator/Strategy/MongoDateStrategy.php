@@ -6,13 +6,15 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
 
-use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
-use MongoDate;
 use DateTime;
+use MongoDate;
+use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
 
+/**
+ * Class MongoDateStrategy
+ */
 class MongoDateStrategy implements StrategyInterface
 {
     /**
@@ -20,10 +22,14 @@ class MongoDateStrategy implements StrategyInterface
      */
     protected $format;
 
+    /**
+     * Ctor
+     * @param null|string $format
+     */
     public function __construct($format = null)
     {
         $this->setFormat(DateTime::ISO8601);
-        if($format !== null) {
+        if ($format !== null) {
             $this->setFormat($format);
         }
     }
@@ -74,6 +80,4 @@ class MongoDateStrategy implements StrategyInterface
     {
         return $this->format;
     }
-
-
 }

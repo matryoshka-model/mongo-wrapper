@@ -1,4 +1,6 @@
-# Matryoshka wrapper for MongoDB [![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
+# Matryoshka wrapper for MongoDB
+
+[![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)&nbsp;[![Dependency Status](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f/badge.svg)](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f)&nbsp;[![Total Downloads](https://poser.pugx.org/matryoshka-model/mongo-wrapper/downloads.svg)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
 
 | Master  | Develop |
 |:-------------:|:-------------:|
@@ -6,8 +8,6 @@
 | [![Coverage Status](https://coveralls.io/repos/matryoshka-model/mongo-wrapper/badge.png?branch=master)](https://coveralls.io/r/matryoshka-model/mongo-wrapper)  | [![Coverage Status](https://coveralls.io/repos/matryoshka-model/mongo-wrapper/badge.png?branch=develop)](https://coveralls.io/r/matryoshka-model/mongo-wrapper)  |
 
 ---
-
-...
 
 ## Installation
 
@@ -18,21 +18,83 @@ Add the following to your `composer.json` file:
 ```
 "require": {
     "php": ">=5.4",
-    "matryoshka-model/mongo-wrapper": "~0.4.0",
+    "matryoshka-model/mongo-wrapper": "~0.5.0"
 }
 ```
 
+## Configuration
+
+This library provides two abstract factories for `Zend\ServiceManager` to make MongoDb and MongoCollection available as services. In order to use them in a ZF2 application, register the provided factories through the `service_manager` configuration node:
+
+```php
+'service_manager'    => [
+    'abstract_factories' => [
+        'Matryoshka\Model\Wrapper\Mongo\Service\MongoDbAbstractServiceFactory',
+        'Matryoshka\Model\Wrapper\Mongo\Service\MongoCollectionAbstractServiceFactory',
+    ],
+],
+```
+
+Then in your configuration you can add the `mongodb` and `mongocollection` nodes and configure them as in example:
+
+```php
+'mongodb' => [
+    'Application\MongoDb\YourDatabaseName' => [
+        'hosts' => '127.0.0.1:27017',
+        'database' => 'yourDatabaseName'
+    ],
+    ...
+],
+
+'mongocollection'    => [
+    'Application\DataGateway\YourCollectionName' => [
+        'database'   => 'Application\MongoDb\YourDatabaseName',
+        'collection' => 'yourCollectionName'
+    ],
+    ...
+],
+```
+
+## Usage
+
+This wrapper provides extensions and default implementations for using `MongoCollection` as a datagateway.
+
+Main concepts:
+
+1. Inject a `Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria` instance into your `Matryoshka\Model\Object\AbstractActiveRecord` objects
+
+    This way the matryoshka [Active Record](http://www.martinfowler.com/eaaCatalog/activeRecord.html) implementation will work with your MongoDB collections
+
+2. `Matryoshka\Model\Wrapper\Mongo\Paginator`
+
+    `MongoPaginatorAdapter` is a paginator adapter that can be used within paginable criterias
+
+3. `Matryoshka\Model\Wrapper\Mongo\ResultSet`
+
+    `HydratingResultSet` makes the counting functionality working correctly with `MongoCursor` datasources
+
 ##### NOTES
 
-Since **mongo-wrapper** uses `self.version` for its [matryoshka library](https://github.com/matryoshka-model/matryoshka) dependency composer will install **matryoshka** 0.4.0.
+It's important to always use the `HydratingResultSet` class included in this package because [`MongoCursor`](http://php.net/manual/en/class.mongocursor.php) does not implement the [`Countable`](http://php.net/manual/en/class.countable.php) and [`MongoCursor::count()`](http://php.net/manual/en/mongocursor.count.php) must be called passing `true` as parameter.
 
-## Versioning
+## Components
 
-This library is versioned in parallel with matryoshka library (which follows [semantic versioning](https://github.com/matryoshka-model/matryoshka)).
+- `Matryoshka\Model\Wrapper\Mongo\Criteria` directory contains the aforementioned `ActiveRecordCriteria` matryoshka criteria.
 
-##### NOTES
+- `Matryoshka\Model\Wrapper\Mongo\Hydrator` directory contains
 
-On the **master branch** you will find **major releases** while the **next minor release** is on the **develop branch** (see `extras` field in the `composer.json` file for further details, i.e. aliases).
+    - `ClassMethods`, an hydrator that can be used with matryoshka objects when you have MongoDB collections as datagateways
+    
+    - `NamingStrategy\IdNameStrategy`, a strategy that can be overridden to setup the naming rules map of your fields
+    
+    - `Strategy\*`, some common strategies for MongoDB.
+    
+
+- `Matryoshka\Model\Wrapper\Mongo\Paginator` directory contains the aforementioned `MongoPaginatorAdapter` adapter.
+
+- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains the aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor` counting functionality working properly.
+
+- `Matryoshka\Model\Wrapper\Mongo\Service` contains abstract service factories generally aimed at instantiation of `\MongoCollection` and `\MongoDb` objects. Use `mongocollection` and `mongodb` configuration nodes to respectively setup them (see [above](#configuration)).
 
 ---
 
