@@ -89,7 +89,7 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
 - `Matryoshka\Model\Wrapper\Mongo\Paginator` directory contains the aforementioned `MongoPaginatorAdapter`
 
-- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains the aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor`s counting functionality working properly
+- `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains the aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor` counting functionality working properly
 
 - `Matryoshka\Model\Wrapper\Mongo\Service` contains abstract service factories generally aimed at instantiation of `\MongoCollection` and `\MongoDb` objects. Use `mongocollection` and `mongodb` configuration nodes to respectively setup them (see [above](#configuration)).
 
