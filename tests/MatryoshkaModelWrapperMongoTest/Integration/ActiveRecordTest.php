@@ -8,10 +8,12 @@
  */
 namespace MatryoshkaModelWrapperMongoTest\Integration;
 
+use Matryoshka\Model\ModelInterface;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 
 /**
  * Class ActiveRecordTest
+ * @group integration
  */
 class ActiveRecordTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,12 +29,11 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
 
     public function testSave()
     {
-        $abstractModelMock  = $this->getMockBuilder('Matryoshka\Model\AbstractModel')
+        $abstractModelMock = $this->getMockBuilder('Matryoshka\Model\AbstractModel')
                                     ->disableOriginalConstructor()
                                     ->setMethods(['save'])
                                     ->getMock();
         $result = null;
-
         $abstractModelMock->expects($this->atLeastOnce())
                            ->method('save')
                            ->with(
@@ -41,6 +42,7 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
                            )
                            ->will($this->returnValue($result));
 
+        /** @var $abstractModelMock ModelInterface */
         $this->mongoObject->setModel($abstractModelMock);
 
         $this->assertSame($result, $this->mongoObject->save());
@@ -59,6 +61,7 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
                         ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'))
                         ->will($this->returnValue($result));
 
+        /** @var $abstractModelMock ModelInterface */
         $this->mongoObject->setModel($abstractModelMock);
         $this->mongoObject->setId('id');
 
