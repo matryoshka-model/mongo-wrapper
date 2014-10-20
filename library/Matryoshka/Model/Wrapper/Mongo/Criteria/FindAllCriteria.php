@@ -86,7 +86,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
      */
     public function getPaginatorAdapter(ModelInterface $model)
     {
-        return new MongoPaginatorAdapter($this->apply($model));
+        return new MongoPaginatorAdapter($this->apply($model), $model->getResultSetPrototype());
     }
 
 }
