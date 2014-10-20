@@ -12,11 +12,13 @@ use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelInterface;
 use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Criteria\AbstractCriteria;
+use Matryoshka\Model\Criteria\PaginableCriteriaInterface;
+use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
 
 /**
  * Class FindAllCriteria
  */
-class FindAllCriteria extends AbstractCriteria
+class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInterface
 {
     /**
      * Mongo selection criteria
@@ -78,4 +80,13 @@ class FindAllCriteria extends AbstractCriteria
 
         return $cursor->limit($this->limit)->skip($this->offset);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaginatorAdapter(ModelInterface $model)
+    {
+        return new MongoPaginatorAdapter($this->apply($model));
+    }
+
 }
