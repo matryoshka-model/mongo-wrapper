@@ -40,13 +40,10 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Matryoshka": "library/",
-            "MatryoshkaModelWrapperMongoTest": "tests/"
-        },
-        "classmap": [
-            "./"
-        ]
+        "psr-4": {
+        	"Matryoshka\\Model\\Wrapper\\Mongo\\": "library/",
+        	"MatryoshkaModelWrapperMongoTest\\": "tests/"
+        }
     },
     "keywords": [
         "model",
