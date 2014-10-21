@@ -57,7 +57,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     public function testApply()
     {
         $testId = 1;
-        $testReturn = ['foo', 'bar'];
         $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
             ->disableOriginalConstructor()
             ->getMock();
@@ -65,7 +64,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $mongoCursorMock->expects($this->at(0))
             ->method('limit')
             ->with($this->equalTo(1))
-            ->will($this->returnValue($testReturn));
+            ->will($this->returnValue($mongoCursorMock));
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('find')
@@ -80,7 +79,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar->setId($testId);
         $res = $ar->apply($model);
 
-        $this->assertEquals($testReturn, $res);
+        $this->assertEquals($mongoCursorMock, $res);
     }
 
     public function testApplyWrite()
@@ -196,35 +195,5 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $hyd = new ObjectProperty();
         $model->setHydrator($hyd);
         $ar->applyDelete($model);
-    }
-
-    public function testHandleResult()
-    {
-        $activeRecordCriteria = new ActiveRecordCriteria();
-
-        $reflection = new \ReflectionClass($activeRecordCriteria);
-        $reflMethod = $reflection->getMethod('handleResult');
-        $reflMethod->setAccessible(true);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, null);
-        $this->assertNull($result);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, true);
-        $this->assertNull($result);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, []);
-        $this->assertNull($result);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 1]);
-        $this->assertEquals(1, $result);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 2, 'updatedExisting' => true]);
-        $this->assertEquals(2, $result);
-
-        $result = $reflMethod->invoke($activeRecordCriteria, ['ok' => 1, 'n' => 3], true);
-        $this->assertEquals(3, $result);
-
-        $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException');
-        $reflMethod->invoke($activeRecordCriteria, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
     }
 }
