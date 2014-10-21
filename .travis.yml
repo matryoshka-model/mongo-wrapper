@@ -26,9 +26,7 @@ after_script:
  - php vendor/bin/coveralls
 
 notifications:
-  irc: "irc.freenode.org#matryoshka.dev"
   email: false
-
 
 matrix:
   fast_finish: true
