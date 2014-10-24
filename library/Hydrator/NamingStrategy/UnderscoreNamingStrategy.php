@@ -9,11 +9,13 @@
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy;
 
 use Zend\Stdlib\Hydrator\NamingStrategy\NamingStrategyInterface;
+use Zend\Stdlib\Hydrator\NamingStrategy\UnderscoreNamingStrategy as ZendUnderscoreNamingStrategy;
+
 
 /**
- * Class IdNameStrategy
+ * Class UnderscoreNamingStrategy
  */
-class IdNameStrategy implements NamingStrategyInterface
+class UnderscoreNamingStrategy extends ZendUnderscoreNamingStrategy
 {
     protected $namingMap = [
         '_id'  => 'id'
@@ -25,7 +27,7 @@ class IdNameStrategy implements NamingStrategyInterface
     public function extract($name)
     {
         $key = array_search($name, $this->namingMap);
-        return $key ? $key : $name;
+        return parent::extract($key ? $key : $name);
     }
 
     /**
@@ -36,6 +38,6 @@ class IdNameStrategy implements NamingStrategyInterface
         if (isset($this->namingMap[$name])) {
             return $this->namingMap[$name];
         }
-        return $name;
+        return parent::hydrate($name);
     }
 }

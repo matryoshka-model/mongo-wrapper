@@ -9,8 +9,9 @@
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator;
 
 use Matryoshka\Model\Hydrator\ClassMethods as MatryoshkaClassMethods;
-use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy;
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\UnderscoreNamingStrategy;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\DefaultNamingStrategy;
 
 /**
  * Class ClassMethods
@@ -23,7 +24,17 @@ class ClassMethods extends MatryoshkaClassMethods
     public function __construct($underscoreSeparatedKeys = false)
     {
         parent::__construct($underscoreSeparatedKeys);
-        $this->setNamingStrategy(new IdNameStrategy());
         $this->addStrategy('_id', new MongoIdStrategy());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnderscoreSeparatedKeys($underscoreSeparatedKeys)
+    {
+        $this->underscoreSeparatedKeys = (bool) $underscoreSeparatedKeys;
+        $this->setNamingStrategy($this->underscoreSeparatedKeys ? new UnderscoreNamingStrategy : new DefaultNamingStrategy);
+
+        return $this;
     }
 }

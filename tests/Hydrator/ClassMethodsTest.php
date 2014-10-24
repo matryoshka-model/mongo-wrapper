@@ -21,12 +21,41 @@ class ClassMethodsTest  extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($hydrator->getUnderscoreSeparatedKeys());
         $this->assertInstanceOf(
-            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy',
+            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\DefaultNamingStrategy',
             $hydrator->getNamingStrategy()
         );
         $this->assertInstanceOf(
             '\Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy',
             $hydrator->getStrategy('_id')
+        );
+
+        $hydrator = new ClassMethods(true);
+
+        $this->assertTrue($hydrator->getUnderscoreSeparatedKeys());
+        $this->assertInstanceOf(
+            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\UnderscoreNamingStrategy',
+            $hydrator->getNamingStrategy()
+        );
+        $this->assertInstanceOf(
+            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy',
+            $hydrator->getStrategy('_id')
+        );
+    }
+
+    public function testSetUnderscoreSeparatedKeys()
+    {
+        $hydrator = new ClassMethods();
+
+        $this->assertSame($hydrator, $hydrator->setUnderscoreSeparatedKeys(true));
+        $this->assertInstanceOf(
+            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\UnderscoreNamingStrategy',
+            $hydrator->getNamingStrategy()
+        );
+
+        $this->assertSame($hydrator, $hydrator->setUnderscoreSeparatedKeys(false));
+        $this->assertInstanceOf(
+            '\Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\DefaultNamingStrategy',
+            $hydrator->getNamingStrategy()
         );
     }
 }

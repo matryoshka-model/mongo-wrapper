@@ -8,24 +8,24 @@
  */
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\NamingStrategy;
 
-use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\IdNameStrategy;
+use Matryoshka\Model\Wrapper\Mongo\Hydrator\NamingStrategy\UnderscoreNamingStrategy;
 
 /**
- * Class IdNameStrategyTest
+ * Class UnderscoreNamingStrategyTest
  */
-class IdNameStrategyTest  extends \PHPUnit_Framework_TestCase
+class UnderscoreNamingStrategyTest  extends \PHPUnit_Framework_TestCase
 {
     public function testExtract()
     {
-        $strategy = new IdNameStrategy();
+        $strategy = new UnderscoreNamingStrategy();
         $this->assertSame('_id', $strategy->extract('id'));
-        $this->assertSame('foo', $strategy->extract('foo'));
+        $this->assertSame('foo_bar_baz', $strategy->extract('fooBarBaz'));
     }
 
     public function testHydrate()
     {
-        $strategy = new IdNameStrategy();
+        $strategy = new UnderscoreNamingStrategy();
         $this->assertSame('id', $strategy->hydrate('_id'));
-        $this->assertSame('foo', $strategy->hydrate('foo'));
+        $this->assertSame('fooBarBaz', $strategy->hydrate('foo_bar_baz'));
     }
 }
