@@ -8,7 +8,8 @@
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
 
-use Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException;
+use Matryoshka\Model\Wrapper\Mongo\Exception\MongoResultException;
+
 /**
  * Class HandleResultTrait
  */

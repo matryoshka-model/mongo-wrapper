@@ -6,11 +6,11 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-namespace Matryoshka\Model\Wrapper\Mongo\Criteria\Exception;
+namespace Matryoshka\Model\Wrapper\Mongo\Exception;
 
 /**
- * Class MongoResultException
+ * Interface ExceptionInterface
  */
-class MongoResultException extends \RuntimeException
+interface ExceptionInterface
 {
 }

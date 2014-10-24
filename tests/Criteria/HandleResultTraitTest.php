@@ -24,9 +24,10 @@ class HandleResultTraitTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->handleResultTrait = $this->getObjectForTrait('Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait');
+        $this->handleResultTrait = $this->getObjectForTrait(
+            'Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait'
+        );
     }
-
 
     public function testHandleResult()
     {
@@ -54,7 +55,7 @@ class HandleResultTraitTest extends \PHPUnit_Framework_TestCase
         $result = $reflMethod->invoke($handleResultTrait, ['ok' => 1, 'n' => 3], true);
         $this->assertEquals(3, $result);
 
-        $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Criteria\Exception\MongoResultException');
+        $this->setExpectedException('Matryoshka\Model\Wrapper\Mongo\Exception\MongoResultException');
         $reflMethod->invoke($handleResultTrait, ['err' => 1, 'errmsg' => 'error', 'code' => 100]);
     }
 }
