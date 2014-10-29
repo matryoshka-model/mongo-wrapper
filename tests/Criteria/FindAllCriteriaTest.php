@@ -131,7 +131,7 @@ class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
         $criteria = new FindAllCriteria();
         $criteria->setSort($sortParams);
         $criteria->setSelectionCriteria($selectionParams);
-        $criteria->limit(1)->offset(1);
+        $criteria->setLimit(1)->setOffset(1);
 
         $res = $criteria->apply($model);
 
