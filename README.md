@@ -85,7 +85,7 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
     - `ClassMethods`, an hydrator that can be used with matryoshka objects when you have MongoDB collections as datagateways
     
-    - `NamingStrategy\IdNameStrategy`, a strategy that can be overridden to setup the naming rules map of your fields
+    - `NamingStrategy\DefaultNamingStrategy` and `NamingStrategy\UnderscoreNamingStrategy`, two strategies that can be overridden to setup the naming rules map of your fields. By default, both convert `_id` to `id`.
     
     - `Strategy\*`, some common strategies for MongoDB.
     
