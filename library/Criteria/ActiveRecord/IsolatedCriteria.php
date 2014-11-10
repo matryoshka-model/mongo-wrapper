@@ -15,9 +15,20 @@ use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException;
 
 /**
- * Class UpdateIfCurrentCriteria
+ * Class IsolatedCriteria
+ *
+ * Use the entire document as the query in the update() and remove() operations,
+ * applying modification only if the fields have not changed in the collection since the find query,
+ * otherwise a DocumentModifiedException will be thrown.
+ *
+ * In order to make this criteria working properly, the active record object must have the same
+ * criteria instance for its whole lifecycle.
+ *
+ *
+ * @link http://docs.mongodb.org/manual/tutorial/isolate-sequence-of-operations/
+ *
  */
-class UpdateIfCurrentCriteria extends ActiveRecordCriteria
+class IsolatedCriteria extends ActiveRecordCriteria
 {
 
     /**

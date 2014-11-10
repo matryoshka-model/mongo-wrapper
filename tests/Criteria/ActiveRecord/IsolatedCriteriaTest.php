@@ -14,12 +14,12 @@ use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\UpdateIfCurrentCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\IsolatedCriteria;
 
 /**
  * Class UpdateIfCurrentTest
  */
-class UpdateIfCurrentTest extends \PHPUnit_Framework_TestCase
+class IsolatedCriteriaTest extends \PHPUnit_Framework_TestCase
 {
     protected $modelInterfaceMock;
 
@@ -27,7 +27,7 @@ class UpdateIfCurrentTest extends \PHPUnit_Framework_TestCase
     protected $mongoCollectionMock;
 
     /**
-     * @var UpdateIfCurrentCriteria
+     * @var IsolatedCriteria
      */
     protected $criteria;
 
@@ -58,7 +58,7 @@ class UpdateIfCurrentTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($mongoCollectionMock));
 
         $this->modelInterfaceMock = $modelInterfaceMock;
-        $this->criteria = new UpdateIfCurrentCriteria();
+        $this->criteria = new IsolatedCriteria();
     }
 
     public function testApply()
