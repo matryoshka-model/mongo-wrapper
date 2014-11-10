@@ -6,12 +6,13 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
+namespace Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord;
 
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelInterface;
 use Zend\Stdlib\Hydrator\AbstractHydrator;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
 /**
  * Class ActiveRecordCriteria
@@ -55,12 +56,15 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     public function applyWrite(ModelInterface $model, array &$data)
     {
+        /** @var $dataGateway \MongoCollection */
+        $dataGateway = $model->getDataGateway();
+
         if (array_key_exists('_id', $data) && $data['_id'] === null) {
             unset($data['_id']);
         }
 
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
-        $result = $model->getDataGateway()->save($tmp, $this->getSaveOptions());
+        $result = $dataGateway->save($tmp, $this->getSaveOptions());
         $data = $tmp;
         $this->hydrateId($model, $data['_id'], $data);
         return $this->handleResult($result);

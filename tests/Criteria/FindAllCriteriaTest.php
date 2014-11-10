@@ -10,7 +10,7 @@ namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria;
 
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;

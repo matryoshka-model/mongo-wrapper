@@ -6,11 +6,11 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
-namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria;
+namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\ActiveRecord;
 
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;

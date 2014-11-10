@@ -37,7 +37,7 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
         $abstractModelMock->expects($this->atLeastOnce())
                            ->method('save')
                            ->with(
-                               $this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'),
+                               $this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'),
                                $this->identicalTo($this->mongoObject)
                            )
                            ->will($this->returnValue($result));
@@ -58,7 +58,7 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
         $result = null;
         $abstractModelMock->expects($this->atLeastOnce())
                         ->method('delete')
-                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria'))
+                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'))
                         ->will($this->returnValue($result));
 
         /** @var $abstractModelMock ModelInterface */

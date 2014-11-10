@@ -26,6 +26,7 @@ class MongoCollectionSubject
 
     /**
 	 * Saves an object to this collection
+	 *
 	 * @link http://www.php.net/manual/en/mongocollection.save.php
 	 * @param mixed $a Array to save.
 	 * @param array $options Options for the save.
@@ -37,6 +38,27 @@ class MongoCollectionSubject
         $return = $this->observer->save($a, $options);
         $a['_id'] = new \MongoId();
         return $return;
+    }
+
+    /**
+     * Inserts a document into the collection
+     *
+     * @link http://php.net/manual/en/mongocollection.insert.php
+     * @param mixed $a Array to save.
+     * @param array $options Options for the save.
+     * @throws \MongoCursorException
+     * @return mixed
+     */
+    public function insert(array &$a, array $options = [])
+    {
+        $return = $this->observer->insert($a, $options);
+        $a['_id'] = new \MongoId();
+        return $return;
+    }
+
+    public function __call($name, $params)
+    {
+        return call_user_func_array([$this->observer, $name], $params);
     }
 
 }

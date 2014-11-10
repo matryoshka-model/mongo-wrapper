@@ -10,7 +10,7 @@ namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
 use Matryoshka\Model\Object\ActiveRecord\AbstractActiveRecord;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecordCriteria;
+use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
 
 /**
