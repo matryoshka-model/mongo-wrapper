@@ -27,50 +27,6 @@ class ActiveRecordCriteria extends AbstractCriteria
     protected $saveOptions = [];
 
     /**
-     * {@inheritdoc}
-     */
-    public function apply(ModelInterface $model)
-    {
-        /** @var $dataGateway \MongoCollection */
-        $dataGateway = $model->getDataGateway();
-        return $dataGateway->find(['_id' => $this->extractId($model)])->limit(1);
-    }
-
-    /**
-     * @param ModelInterface $model
-     * @return mixed
-     */
-    protected function extractId(ModelInterface $model)
-    {
-        if (!$model->getHydrator() instanceof AbstractHydrator) {
-                throw new Exception\RuntimeException(
-                    'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
-                );
-        }
-
-        return $model->getHydrator()->extractValue('_id', $this->getId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyWrite(ModelInterface $model, array &$data)
-    {
-        /** @var $dataGateway \MongoCollection */
-        $dataGateway = $model->getDataGateway();
-
-        if (array_key_exists('_id', $data) && $data['_id'] === null) {
-            unset($data['_id']);
-        }
-
-        $tmp = $data;  // passing a referenced variable to save will fail in update the content
-        $result = $dataGateway->save($tmp, $this->getSaveOptions());
-        $data = $tmp;
-        $this->hydrateId($model, $data['_id'], $data);
-        return $this->handleResult($result);
-    }
-
-    /**
      * @return array
      */
     public function getSaveOptions()
@@ -89,21 +45,33 @@ class ActiveRecordCriteria extends AbstractCriteria
     }
 
     /**
-     * @param ModelInterface $model
-     * @param $value
-     * @param null $data
-     * @return mixed
+     * {@inheritdoc}
      */
-    protected function hydrateId(ModelInterface $model, $value, $data = null)
+    public function apply(ModelInterface $model)
     {
-        if (!$model->getHydrator() instanceof AbstractHydrator) {
-            throw new Exception\RuntimeException(
-                'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
-            );
+        /** @var $dataGateway \MongoCollection */
+        $dataGateway = $model->getDataGateway();
+        return $dataGateway->find(['_id' => $this->extractId($model)])->limit(1);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyWrite(ModelInterface $model, array &$data)
+    {
+        /** @var $dataGateway \MongoCollection */
+        $dataGateway = $model->getDataGateway();
+
+        unset($data['_id']);
+
+        if ($this->id) {
+            $data['_id'] = $this->extractId($model);
         }
 
-        $this->id = $model->getHydrator()->hydrateValue('_id', $value, $data);
-        return $this->id;
+        $tmp = $data;  // passing a referenced variable to save will fail in update the content
+        $result = $dataGateway->save($tmp, $this->getSaveOptions());
+        $data = $tmp;
+        return $this->handleResult($result);
     }
 
     /**
@@ -111,13 +79,22 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     public function applyDelete(ModelInterface $model)
     {
-        if (!$this->id) {
+        $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
+        return $this->handleResult($result, true);
+    }
+
+    /**
+     * @param ModelInterface $model
+     * @return mixed
+     */
+    protected function extractId(ModelInterface $model)
+    {
+        if (!$model->getHydrator() instanceof AbstractHydrator) {
             throw new Exception\RuntimeException(
-                'An id must be set in order to delete an object'
+                'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
             );
         }
 
-        $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
-        return $this->handleResult($result, true);
+        return $model->getHydrator()->extractValue('_id', $this->getId());
     }
 }

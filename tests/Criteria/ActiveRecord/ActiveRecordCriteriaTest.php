@@ -137,7 +137,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $model->setHydrator($hyd);
 
         $ar->applyWrite($model, $testData);
-        $this->assertInstanceOf('\MongoId', $ar->getId());
+        $this->assertInstanceOf('\MongoId', $testData['_id']);
     }
 
     public function testSaveOptions()
