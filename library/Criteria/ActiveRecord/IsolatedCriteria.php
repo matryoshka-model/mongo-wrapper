@@ -98,7 +98,7 @@ class IsolatedCriteria extends ActiveRecordCriteria
      */
     public function applyDelete(ModelInterface $model)
     {
-        $id = $this->extractId($model);
+        $id = (string) $this->extractId($model);
 
         if (!isset($this->initialStateCache[$id])) {
             throw new Exception\RuntimeException(
