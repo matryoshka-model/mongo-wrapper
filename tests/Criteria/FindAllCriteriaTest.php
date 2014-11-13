@@ -58,7 +58,22 @@ class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
     public function testDefaultSelectionCriteria()
     {
         $criteria = new FindAllCriteria();
-        $this->assertEquals([], $criteria->getSelectionCriteria());
+        $this->assertAttributeEquals([], 'selectionCriteria', $criteria);
+    }
+
+    public function testSetGetSortParams()
+    {
+        $criteria = new FindAllCriteria();
+        $this->assertAttributeEquals([], 'sortParams', $criteria);
+
+        $this->assertSame($criteria, $criteria->setOrderBy(['foo' => 'asc', 'bar' => 'desc']));
+        $this->assertEquals(['foo' => 1, 'bar' => -1], $criteria->getOrderBy());
+
+        $criteria->setOrderBy(); // Test reset
+        $this->assertEquals([], $criteria->getOrderBy());
+
+        $this->setExpectedException('\Matryoshka\Model\Exception\InvalidArgumentException');
+        $criteria->setOrderBy(['baz' => 'invalid']);
     }
 
     public function testApply()

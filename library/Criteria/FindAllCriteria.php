@@ -14,12 +14,16 @@ use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Criteria\AbstractCriteria;
 use Matryoshka\Model\Criteria\PaginableCriteriaInterface;
 use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
+use Matryoshka\Model\Exception\InvalidArgumentException;
 
 /**
  * Class FindAllCriteria
  */
 class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInterface
 {
+    const ORDER_ASC     = 'ASC';
+    const ORDER_DESC    = 'DESC';
+
     /**
      * Mongo selection criteria
      *
@@ -37,13 +41,52 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     /**
      * Mongo sort params
      *
-     * Extended class can specifies the order in which the query returns matching documents.
+     * Using setOrderBy() can specifies the order in which the query returns matching documents.
      *
      * @see http://docs.mongodb.org/manual/reference/method/cursor.sort/
      *
      * @var array
      */
     protected $sortParams = [];
+
+    /**
+     * @return array
+     */
+    public function getOrderBy()
+    {
+        return $this->sortParams;
+    }
+
+    /**
+     * @param array $orders
+     * @throws InvalidArgumentException
+     * @return $this
+     */
+    public function setOrderBy(array $orders = [])
+    {
+        $this->sortParams = [];
+
+        foreach ($orders as $fieldName => $fieldOrder) {
+            switch (strtoupper($fieldOrder)) {
+                case static::ORDER_ASC:
+                    $this->sortParams[$fieldName] = 1;
+                    break;
+
+                case static::ORDER_DESC:
+                    $this->sortParams[$fieldName] = -1;
+                    break;
+
+                default:
+                    throw new InvalidArgumentException(sprintf(
+                        '"%s" is an invalid order value for "%s". Must be "ASC" or "DESC".',
+                        (string) $fieldOrder,
+                        $fieldName
+                    ));
+            }
+        }
+
+        return $this;
+    }
 
     /**
      * @param ModelInterface $model
