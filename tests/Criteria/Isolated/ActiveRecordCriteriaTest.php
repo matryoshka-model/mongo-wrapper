@@ -22,6 +22,28 @@ use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
+    protected static $oldErrorLevel;
+
+    protected static function disableStrictErrors()
+    {
+        self::$oldErrorLevel = error_reporting();
+        error_reporting(self::$oldErrorLevel & ~E_STRICT);
+    }
+
+    protected static function restoreErrorReportingLevel()
+    {
+        error_reporting(self::$oldErrorLevel);
+    }
+
+    protected static $sharedDataGateway;
+
+    public static function setUpBeforeClass()
+    {
+        self::disableStrictErrors();
+        self::$sharedDataGateway = new MongoCollectionMockProxy();
+        self::restoreErrorReportingLevel();
+    }
+
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
     protected $mongoCollectionMock;
 
@@ -32,16 +54,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     protected $model;
 
-    protected static $oldErrorLevel;
-
-    protected static $sharedDataGateway;
-
-    public static function setUpBeforeClass()
-    {
-        self::disableStrictErrors();
-        self::$sharedDataGateway = new MongoCollectionMockProxy();
-        self::restoreErrorReportingLevel();
-    }
 
     public function setUp()
     {
@@ -67,16 +79,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    protected static function disableStrictErrors()
-    {
-        self::$oldErrorLevel = error_reporting();
-        error_reporting(self::$oldErrorLevel & ~E_STRICT);
-    }
-
-    protected static function restoreErrorReportingLevel()
-    {
-        error_reporting(self::$oldErrorLevel);
-    }
 
     protected function getDocumentFromCache($id)
     {
@@ -227,7 +229,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $criteria->setId($testId);
         $this->assertEquals(1, $criteria->applyDelete($model));
 
-        $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\RuntimeException');
+        $this->setExpectedException('\Matryoshka\Model\Exception\RuntimeException');
         $criteria->applyDelete($model);
     }
 
@@ -250,7 +252,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Matryoshka\Model\Wrapper\Mongo\Exception\RuntimeException
+     * @expectedException \Matryoshka\Model\Exception\RuntimeException
      */
     public function testApplyDeleteWithNoFindBefore()
     {

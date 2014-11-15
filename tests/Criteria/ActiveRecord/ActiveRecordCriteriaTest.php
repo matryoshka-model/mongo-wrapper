@@ -14,13 +14,27 @@ use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;
+use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
 
 /**
  * Class ActiveRecordCriteriaTest
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
-    protected $modelInterfaceMock;
+    protected static $oldErrorLevel;
+
+    protected static function disableStrictErrors()
+    {
+        self::$oldErrorLevel = error_reporting();
+        error_reporting(self::$oldErrorLevel & ~E_STRICT);
+    }
+
+    protected static function restoreErrorReportingLevel()
+    {
+        error_reporting(self::$oldErrorLevel);
+    }
+
+    protected $model;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
     protected $mongoCollectionMock;
@@ -34,24 +48,17 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock = $mongoCollectionMock;
 
-        $modelInterfaceMock = $this->getMockBuilder('\Matryoshka\Model\ModelInterface')
-            ->disableOriginalConstructor()
-            ->setMethods(
-                [
-                    'getDataGateway',
-                    'getInputFilter',
-                    'getHydrator',
-                    'getObjectPrototype',
-                    'getResultSetPrototype'
-                ]
-            )
-            ->getMock();
+        self::disableStrictErrors();
+        $mockProxy = new MongoCollectionMockProxy();
+        self::restoreErrorReportingLevel();
+        $mockProxy->__MongoCollectionMockProxy__setMock($mongoCollectionMock);
 
-        $modelInterfaceMock->expects($this->any())
-            ->method('getDataGateway')
-            ->will($this->returnValue($mongoCollectionMock));
+        $rs = new ArrayObjectResultSet();
+        $model = new Model($mockProxy, $rs);
+        $hyd = new ObjectProperty();
+        $model->setHydrator($hyd);
 
-        $this->modelInterfaceMock = $modelInterfaceMock;
+        $this->model = $model;
     }
 
     public function testApply()
@@ -71,13 +78,10 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(['_id' => $testId]))
             ->will($this->returnValue($mongoCursorMock));
 
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new ObjectProperty();
-        $model->setHydrator($hyd);
+
         $ar = new ActiveRecordCriteria();
         $ar->setId($testId);
-        $res = $ar->apply($model);
+        $res = $ar->apply($this->model);
 
         $this->assertEquals($mongoCursorMock, $res);
     }
@@ -92,12 +96,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->method('save')
             ->with($this->equalTo($testData), $this->equalTo($ar->getSaveOptions()));
 
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new ObjectProperty();
-        $model->setHydrator($hyd);
+
         $ar->setId($testId);
-        $res = $ar->applyWrite($model, $testData);
+        $res = $ar->applyWrite($this->model, $testData);
 
         $this->assertNull($res);
     }
@@ -110,12 +111,11 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $ar = new ActiveRecordCriteria();
         $testId = 1;
         $testData = ['_id' => $testId];
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new BadHydrator();
-        $model->setHydrator($hyd);
+
+        $this->model->setHydrator(new BadHydrator());
+
         $ar->setId($testId);
-        $ar->applyWrite($model, $testData);
+        $ar->applyWrite($this->model, $testData);
     }
 
     public function testApplyWriteWithoutId()
@@ -129,14 +129,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->method('save')
             ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
 
-        $mock = new MongoCollectionSubject($this->mongoCollectionMock);
-
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($mock, $rs);
-        $hyd = new ObjectProperty();
-        $model->setHydrator($hyd);
-
-        $ar->applyWrite($model, $testData);
+        $ar->applyWrite($this->model, $testData);
         $this->assertInstanceOf('\MongoId', $testData['_id']);
     }
 
@@ -159,12 +152,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with($this->equalTo($testData));
 
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new ObjectProperty();
-        $model->setHydrator($hyd);
+
         $ar->setId($testId);
-        $res = $ar->applyDelete($model);
+        $res = $ar->applyDelete($this->model);
 
         $this->assertNull($res);
     }
@@ -176,12 +166,10 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     {
         $ar = new ActiveRecordCriteria();
         $testId = 1;
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new BadHydrator();
-        $model->setHydrator($hyd);
+
+        $this->model->setHydrator(new BadHydrator());
         $ar->setId($testId);
-        $ar->applyDelete($model);
+        $ar->applyDelete($this->model);
     }
 
     /**
@@ -190,10 +178,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     public function testApplyDeleteWithoutId()
     {
         $ar = new ActiveRecordCriteria();
-        $rs = new ArrayObjectResultSet();
-        $model = new Model($this->mongoCollectionMock, $rs);
-        $hyd = new ObjectProperty();
-        $model->setHydrator($hyd);
-        $ar->applyDelete($model);
+
+        $ar->applyDelete($this->model);
     }
 }
