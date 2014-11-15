@@ -9,8 +9,8 @@
 namespace Matryoshka\Model\Wrapper\Mongo\Exception;
 
 /**
- * Class MongoResultException
+ * Class RuntimeException
  */
-class MongoResultException extends RuntimeException implements ExceptionInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 }
