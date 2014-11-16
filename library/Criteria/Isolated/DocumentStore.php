@@ -164,11 +164,13 @@ class DocumentStore
 
     public function isolatedUpsert(MongoCollection $dataGateway, array &$data, array $options = [])
     {
+        // NOTE: we must ensure that modifiers in $data are not allowed
+
         if (!isset($data['_id']) || !$this->has($dataGateway, $data['_id'])) {
             // Insert
             $tmp = $data; // passing a referenced variable to insert will fail
                           // in update the content
-            $result = $dataGateway->insert($tmp, $options);
+            $result = $dataGateway->insert($tmp, $options); // modifiers are not allowed with insert
             $result = $this->handleResult($result);
             $data = $tmp;
         } else {
@@ -176,8 +178,9 @@ class DocumentStore
             $oldDocumentData = $this->get($dataGateway, $data['_id']);
             $result = $dataGateway->update(
                 $oldDocumentData,
-                ['$set' => $data],
-                array_merge($options, ['multi' => false,'upsert' => false])
+                $data, // modifiers and non-modifiers cannot be mixed,
+                       // the _id presence ensure at least one non-modifiers
+                array_merge($options, ['multi' => false, 'upsert' => false])
             );
             $result = $this->handleResult($result);
 

@@ -212,7 +212,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->method('update')
             ->with(
                 $this->equalTo($this->documentStore->get($this->mongoCollection, $testData['_id'])),
-                $this->equalTo(['$set' => $testData]),
+                $this->equalTo($testData),
                 $this->equalTo(array_merge($options, ['multi' => false, 'upsert' => false]))
             )
             ->will($this->returnValue(['ok' => true, 'n' => 1, 'updatedExisting' => true]));
@@ -241,7 +241,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->method('update')
             ->with(
                 $this->equalTo($this->documentStore->get($this->mongoCollection, $testData['_id'])),
-                $this->equalTo(['$set' => $testData]),
+                $this->equalTo($testData),
                 $this->equalTo(array_merge($options, ['multi' => false, 'upsert' => false]))
             )
             ->will($this->returnValue(['ok' => true, 'n' => 0, 'updatedExisting' => false]));

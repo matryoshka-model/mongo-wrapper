@@ -175,7 +175,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->method('update')
             ->with(
                 $this->equalTo($currentDataState),
-                $this->equalTo(['$set' => $expectedResult]),
+                $this->equalTo($expectedResult),
                 $this->equalTo(array_merge($criteria->getSaveOptions(), ['multi' => false, 'upsert' => false]))
             )
             ->will($this->returnValue(['ok' => true, 'n' => 1, 'updatedExisting' => true]));
