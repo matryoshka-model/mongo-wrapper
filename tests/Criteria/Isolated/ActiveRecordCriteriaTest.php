@@ -11,14 +11,13 @@ namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\Isolated;
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStore;
 use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
 
 /**
- * Class UpdateIfCurrentTest
+ * Class ActiveRecordCriteriaTest
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
@@ -202,9 +201,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
 
-        $this->disableStrictErrors();
         $this->assertEquals(1, $criteria->applyWrite($model, $testData));
-        $this->restoreErrorReportingLevel();
         $this->assertInstanceOf('\MongoId', $testData['_id']);
         $testId = (string) $testData['_id'];
 

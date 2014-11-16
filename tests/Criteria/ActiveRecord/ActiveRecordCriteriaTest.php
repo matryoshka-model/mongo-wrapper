@@ -12,7 +12,6 @@ use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\MongoCollectionSubject;
 use Zend\Stdlib\Hydrator\ObjectProperty;
 use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
 

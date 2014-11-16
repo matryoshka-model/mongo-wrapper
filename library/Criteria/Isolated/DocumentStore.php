@@ -103,13 +103,12 @@ class DocumentStore
     public function has(MongoCollection $dataGateway, $id)
     {
         $id = (string) $id;
-        $storage = $this->splObjectStorage;
 
-        if (!$storage->contains($dataGateway)) {
+        if (!$this->splObjectStorage->contains($dataGateway)) {
             return false;
         }
 
-        if (isset($storage[$dataGateway][$id])) {
+        if (isset($this->splObjectStorage[$dataGateway][$id])) {
             return true;
         }
 
@@ -119,6 +118,7 @@ class DocumentStore
     public function get(MongoCollection $dataGateway, $id)
     {
         $id = (string) $id;
+
         if ($this->has($dataGateway, $id)) {
             return $this->splObjectStorage[$dataGateway][$id];
         }
@@ -128,7 +128,7 @@ class DocumentStore
     {
         $id = (string) $id;
 
-        if (!isset($this->splObjectStorage[$dataGateway])) {
+        if (!$this->splObjectStorage->contains($dataGateway)) {
             $this->splObjectStorage[$dataGateway] = new ArrayObject();
         }
 
@@ -137,6 +137,8 @@ class DocumentStore
 
     protected function remove(MongoCollection $dataGateway, $id)
     {
+        $id = (string) $id;
+
         if ($this->has($dataGateway, $id)) {
             unset($this->splObjectStorage[$dataGateway][$id]);
         }
@@ -146,8 +148,9 @@ class DocumentStore
     {
         $return = [];
         foreach ($cursor as $document) {
-            $id = $document['_id'];
-            if ($this->has($dataGateway, $id) && $document !== $this->get($dataGateway, $id)) {
+            $id = $document['_id']; //FIXME: check id presence
+            $localDocument = $this->get($dataGateway, $id);
+            if ($localDocument && $document != $localDocument) {
                 throw new Exception\DocumentModifiedException(
                     sprintf(
                         'The local copy of the document "%s" does no more reflect the current state of the document in the database',
@@ -171,8 +174,11 @@ class DocumentStore
         } else {
             // Update
             $oldDocumentData = $this->get($dataGateway, $data['_id']);
-            $result = $dataGateway->update($oldDocumentData, ['$set' => $data],
-                array_merge($options, ['multi' => false,'upsert' => false]));
+            $result = $dataGateway->update(
+                $oldDocumentData,
+                ['$set' => $data],
+                array_merge($options, ['multi' => false,'upsert' => false])
+            );
             $result = $this->handleResult($result);
 
             if ($result != 1) {
