@@ -241,8 +241,41 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
         $objB->setName('B');
         $objB->save();
+    }
+
+    public function testInterleavedDelete2()
+    {
+        $modelA = $this->serviceManager->get('IsolatedModelA');
+        $modelB = $this->serviceManager->get('IsolatedModelB');
+
+        // ensure document
+        $obj = new IsolatedActiveRecordObject();
+        $obj->setModel($modelA);
+        $obj->setName('foo');
+        $obj->save();
 
 
+        //Read from A
+        $criteria = new ActiveRecordCriteria();
+        $criteria->setId($obj->getId());
+        $objA = $modelA->find($criteria)->current();
+        $this->assertInstanceOf('\MatryoshkaModelWrapperMongoTest\Integration\Isolation\TestAsset\IsolatedActiveRecordObject', $objA);
+
+
+        //Read from B
+        $criteria = new ActiveRecordCriteria();
+        $criteria->setId($obj->getId());
+        $objB = $modelB->find($criteria)->current();
+        $this->assertInstanceOf('\MatryoshkaModelWrapperMongoTest\Integration\Isolation\TestAsset\IsolatedActiveRecordObject', $objB);
+
+        //Delete from A
+        $objA->setName('A');
+        $this->assertEquals(1, $objA->delete());
+
+        //Write from B
+        $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
+        $objB->setName('B');
+        $objB->delete();
     }
 
 
