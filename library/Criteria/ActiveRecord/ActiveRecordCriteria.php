@@ -22,6 +22,17 @@ class ActiveRecordCriteria extends AbstractCriteria
     use HandleResultTrait;
 
     /**
+     * Mongo projection
+     *
+     * Optional. Controls the fields to return, or the projection.
+     * Extended classes can override this property in order to
+     * control the fields to return.
+     *
+     * @var array
+     */
+    protected $projectionFields = [];
+
+    /**
      * @var array
      */
     protected $saveOptions = [];
@@ -51,7 +62,10 @@ class ActiveRecordCriteria extends AbstractCriteria
     {
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
-        return $dataGateway->find(['_id' => $this->extractId($model)])->limit(1);
+        return $dataGateway->find(
+            ['_id' => $this->extractId($model)],
+            $this->projectionFields
+        )->limit(1);
     }
 
     /**

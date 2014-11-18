@@ -49,6 +49,18 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
      */
     protected $sortParams = [];
 
+
+    /**
+     * Mongo projection
+     *
+     * Optional. Controls the fields to return, or the projection.
+     * Extended classes can override this property in order to
+     * control the fields to return.
+     *
+     * @var array
+     */
+    protected $projectionFields = [];
+
     /**
      * @return array
      */
@@ -116,7 +128,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
 
-        $cursor = $dataGateway->find($this->selectionCriteria);
+        $cursor = $dataGateway->find($this->selectionCriteria, $this->projectionFields);
         if (!empty($this->sortParams)) {
             $cursor->sort($this->sortParams);
         }
