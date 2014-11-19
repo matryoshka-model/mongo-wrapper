@@ -50,6 +50,7 @@ class MongoBinDataStrategy implements StrategyInterface
 
     /**
      * Ensure the value extracted is typed as \MongoBinData or null
+     *
      * @param mixed $value The original value.
      * @return null|\MongoBinData Returns the value that should be extracted.
      */
@@ -59,12 +60,11 @@ class MongoBinDataStrategy implements StrategyInterface
     }
 
     /**
-     * Ensure the value extracted is typed as string or null
      * @param mixed $value The original value.
      * @return null|string Returns the value that should be hydrated.
      */
     public function hydrate($value)
     {
-        return $value === null ? null : (string)$value;
+        return $value instanceof \MongoBinData ? $value->bin : null;
     }
 }
