@@ -55,7 +55,7 @@ class MongoBinDataStrategy implements StrategyInterface
      */
     public function extract($value)
     {
-        return null === $value ? null : new \MongoBinData($value);
+        return null === $value ? null : new \MongoBinData($value, $this->type);
     }
 
     /**
