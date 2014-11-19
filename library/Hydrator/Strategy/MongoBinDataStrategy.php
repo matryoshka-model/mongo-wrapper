@@ -27,7 +27,7 @@ class MongoBinDataStrategy implements StrategyInterface
      */
     public function __construct($type = null)
     {
-        $this->setType(null === $type ? \MongoBinData::GENERIC : $type);
+        $this->setType($type);
     }
 
     /**
