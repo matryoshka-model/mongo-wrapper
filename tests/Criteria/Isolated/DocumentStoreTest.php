@@ -250,6 +250,24 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
     }
 
+    public function testIsolatedUpsertShouldThrowDocumentModifiedExceptionWhenDuplicateKey()
+    {
+        $testData = ['test' => 'test', '_id' => 'foo'];
+        $options  = ['w' => 1];
+
+        $dupKeyEx = new \MongoCursorException('E11000 duplicate key error', 11000);
+
+        //simulate duplicate key error
+        $this->mongoCollectionMock->expects($this->atLeastOnce())
+            ->method('insert')
+            ->with($this->equalTo($testData), $this->equalTo($options))
+            ->will($this->throwException($dupKeyEx));
+
+
+        $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
+        $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options);
+     }
+
     public function testIsolatedRemove()
     {
         $testData = ['test' => 'test'];

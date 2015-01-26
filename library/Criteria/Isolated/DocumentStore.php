@@ -10,6 +10,7 @@ namespace Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated;
 
 use MongoCollection;
 use MongoCursor;
+use MongoCursorException;
 use ArrayObject;
 use SplObjectStorage;
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
@@ -148,7 +149,7 @@ class DocumentStore
     {
         $return = [];
         foreach ($cursor as $document) {
-            $id = $document['_id']; //FIXME: check id presence
+            $id = $document['_id']; // FIXME: check id presence
             $localDocument = $this->get($dataGateway, $id);
             if ($localDocument && $document != $localDocument) {
                 throw new Exception\DocumentModifiedException(
@@ -170,7 +171,20 @@ class DocumentStore
             // Insert
             $tmp = $data; // passing a referenced variable to insert will fail
                           // in update the content
-            $result = $dataGateway->insert($tmp, $options); // modifiers are not allowed with insert
+            try {
+                $result = $dataGateway->insert($tmp, $options); // modifiers are not allowed with insert
+            } catch (MongoCursorException $e) {
+                if ($e->getCode() == 11000) {
+                    $e = new Exception\DocumentModifiedException(
+                        sprintf(
+                            'Cannot insert the local copy of the new document "%s" because another ' .
+                            ' document with the same ID already exists in the database',
+                            $data['_id']
+                        ), 11000, $e
+                    );
+                }
+                throw $e;
+            }
             $result = $this->handleResult($result);
             $data = $tmp;
         } else {
