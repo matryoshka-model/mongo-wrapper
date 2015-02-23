@@ -1,7 +1,7 @@
 <phpunit bootstrap="tests/bootstrap.php" colors="true" verbose="true">
     <testsuites>
         <testsuite name="MongoDB matryoshka wrapper test suite">
-            <directory>tests/MatryoshkaModelWrapperMongoTest</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
     <filter>

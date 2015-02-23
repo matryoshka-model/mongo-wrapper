@@ -1,11 +1,12 @@
 # Matryoshka wrapper for MongoDB
 
-[![Latest Stable Version](https://poser.pugx.org/matryoshka-model/mongo-wrapper/v/stable.png)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)&nbsp;[![Dependency Status](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f/badge.svg)](https://www.versioneye.com/user/projects/5432e06f84981f0f8800004f)&nbsp;[![Total Downloads](https://poser.pugx.org/matryoshka-model/mongo-wrapper/downloads.svg)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
+[![Latest Stable Version](https://img.shields.io/packagist/v/matryoshka-model/mongo-wrapper.svg?style=flat-square)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
+[![Total Downloads](https://img.shields.io/packagist/dt/matryoshka-model/mongo-wrapper.svg?style=flat-square)](https://packagist.org/packages/matryoshka-model/mongo-wrapper)
 
 | Master  | Develop |
 |:-------------:|:-------------:|
-| [![Build Status](https://secure.travis-ci.org/matryoshka-model/mongo-wrapper.svg?branch=master)](https://travis-ci.org/matryoshka-model/mongo-wrapper)  | [![Build Status](https://secure.travis-ci.org/matryoshka-model/mongo-wrapper.svg?branch=develop)](https://travis-ci.org/matryoshka-model/mongo-wrapper)  |
-| [![Coverage Status](https://coveralls.io/repos/matryoshka-model/mongo-wrapper/badge.png?branch=master)](https://coveralls.io/r/matryoshka-model/mongo-wrapper)  | [![Coverage Status](https://coveralls.io/repos/matryoshka-model/mongo-wrapper/badge.png?branch=develop)](https://coveralls.io/r/matryoshka-model/mongo-wrapper)  |
+| [![Build Status](https://img.shields.io/travis/matryoshka-model/mongo-wrapper/master.svg?style=flat-square)](https://travis-ci.org/matryoshka-model/mongo-wrapper) | [![Build Status](https://img.shields.io/travis/matryoshka-model/mongo-wrapper/develop.svg?style=flat-square)](https://travis-ci.org/matryoshka-model/mongo-wrapper) |
+| [![Coveralls branch](https://img.shields.io/coveralls/matryoshka-model/mongo-wrapper/master.svg?style=flat-square)](https://coveralls.io/r/matryoshka-model/mongo-wrapper?branch=master) | [![Coveralls branch](https://img.shields.io/coveralls/matryoshka-model/mongo-wrapper/develop.svg?style=flat-square)](https://coveralls.io/r/matryoshka-model/mongo-wrapper?branch=develop) |
 
 ---
 
@@ -18,7 +19,7 @@ Add the following to your `composer.json` file:
 ```
 "require": {
     "php": ">=5.4",
-    "matryoshka-model/mongo-wrapper": "~0.5.0"
+    "matryoshka-model/mongo-wrapper": "~0.6.0"
 }
 ```
 
@@ -85,7 +86,7 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
     - `ClassMethods`, an hydrator that can be used with matryoshka objects when you have MongoDB collections as datagateways
     
-    - `NamingStrategy\IdNameStrategy`, a strategy that can be overridden to setup the naming rules map of your fields
+    - `NamingStrategy\DefaultNamingStrategy` and `NamingStrategy\UnderscoreNamingStrategy`, two strategies that can be overridden to setup the naming rules map of your fields. By default, both convert `_id` to `id`.
     
     - `Strategy\*`, some common strategies for MongoDB.
     

@@ -6,9 +6,11 @@
  * @copyright   Copyright (c) 2014, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
+namespace Matryoshka\Model\Wrapper\Mongo\Exception;
 
-chdir(__DIR__);
-
-if (!file_exists('../vendor/autoload.php')) {
-    throw new \RuntimeException('vendor/autoload.php not found. Run a composer install.');
+/**
+ * Class MongoResultException
+ */
+class MongoResultException extends \RuntimeException implements ExceptionInterface
+{
 }
