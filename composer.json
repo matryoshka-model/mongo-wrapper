@@ -6,7 +6,7 @@
     "require": {
         "php": ">=5.4.0",
         "ext-mongo": "*",
-        "matryoshka-model/matryoshka": "0.6.*@dev",
+        "matryoshka-model/matryoshka": "~0.6.0",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-inputfilter": "2.*",
         "zendframework/zend-paginator": "2.*",
