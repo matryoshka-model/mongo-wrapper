@@ -11,7 +11,7 @@ do
     echo " Installing mongo-${version}"
     yes "no" | pecl install mongo-${version}
 
-    composer install --dev
+    composer install --prefer-source
 
     vendor/bin/phpunit
 done
