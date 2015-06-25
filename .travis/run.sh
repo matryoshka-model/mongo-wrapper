@@ -14,7 +14,7 @@ pecl uninstall mongo >> $HOME/logs/mongo.travis.uninstall.log
 for version in "${mongo_ext[@]}"
 do
     echo "> INSTALLING: mongo-ext ${version}"
-    yes "no" | pecl install mongo-${version} >> "$HOME/logs/mongo-${version}.install.log"
+    (yes "no" | pecl install mongo-${version}) >> "$HOME/logs/mongo-${version}.install.log"
 
     echo "> INSTALLING: dependencies"
     composer install
