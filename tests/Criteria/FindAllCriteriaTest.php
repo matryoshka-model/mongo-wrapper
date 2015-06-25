@@ -20,7 +20,7 @@ use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\FindAllCriteria;
  */
 class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
 {
-    protected $modelInterfaceMock;
+    protected $ModelStubInterfaceMock;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
     protected $mongoCollectionMock;
@@ -34,7 +34,7 @@ class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock = $mongoCollectionMock;
 
-        $modelInterfaceMock = $this->getMockBuilder('\Matryoshka\Model\ModelInterface')
+        $ModelStubInterfaceMock = $this->getMockBuilder('\Matryoshka\Model\ModelStubInterface')
             ->disableOriginalConstructor()
             ->setMethods(
                 [
@@ -47,11 +47,11 @@ class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
             )
             ->getMock();
 
-        $modelInterfaceMock->expects($this->any())
+        $ModelStubInterfaceMock->expects($this->any())
             ->method('getDataGateway')
             ->will($this->returnValue($mongoCollectionMock));
 
-        $this->modelInterfaceMock = $modelInterfaceMock;
+        $this->ModelStubInterfaceMock = $ModelStubInterfaceMock;
     }
 
     public function testDefaultSelectionCriteria()
@@ -209,7 +209,7 @@ class FindAllCriteriaTest extends \PHPUnit_Framework_TestCase
             ->method('find')
             ->will($this->returnValue($mongoCursorMock));
 
-        $this->assertInstanceOf('Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter', $criteria->getPaginatorAdapter($this->modelInterfaceMock));
+        $this->assertInstanceOf('Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter', $criteria->getPaginatorAdapter($this->ModelStubInterfaceMock));
     }
 
 }

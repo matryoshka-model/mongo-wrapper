@@ -9,7 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\AbstractCriteria;
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 
 /**
  * Class FindMongoCriteria
@@ -18,10 +18,10 @@ class FindMongoCriteria extends AbstractCriteria
 {
     /**
      * Apply
-     * @param ModelInterface $model
+     * @param ModelStubInterface $model
      * @return mixed
      */
-    public function apply(ModelInterface $model)
+    public function apply(ModelStubInterface $model)
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();

@@ -9,7 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\WritableCriteriaInterface;
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
 /**
@@ -22,7 +22,7 @@ class CreateMongoCriteria implements WritableCriteriaInterface
     /**
      * {@inheritdoc}
      */
-    public function applyWrite(ModelInterface $model, array &$data)
+    public function applyWrite(ModelStubInterface $model, array &$data)
     {
         unset($data['_id']);
         /* @var $dataGatewayMongo \MongoCollection */

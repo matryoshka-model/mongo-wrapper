@@ -19,8 +19,6 @@ use Matryoshka\Model\Hydrator\ClassMethods;
 class IsolatedActiveRecordObject extends AbstractActiveRecord
 {
 
-    use IdentityAwareTrait;
-
     protected $name;
 
     protected $description;

@@ -9,7 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Criteria\TestAsset;
 
 use Matryoshka\Model\Criteria\DeletableCriteriaInterface;
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
 /**
@@ -21,7 +21,7 @@ class DeleteMongoCriteria implements DeletableCriteriaInterface
     /**
      * {@inheritdoc}
      */
-    public function applyDelete(ModelInterface $model)
+    public function applyDelete(ModelStubInterface $model)
     {
         /* @var $dataGatewayMongo \MongoCollection */
         $dataGatewayMongo = $model->getDataGateway();

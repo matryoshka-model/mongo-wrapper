@@ -9,7 +9,7 @@
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
 
 use Matryoshka\Model\Exception;
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Criteria\AbstractCriteria;
 use Matryoshka\Model\Criteria\PaginableCriteriaInterface;
@@ -101,13 +101,13 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     }
 
     /**
-     * @param ModelInterface $model
+     * @param ModelStubInterface $model
      * @param $name
      * @param $value
      * @param null $object
      * @return mixed
      */
-    protected function extractValue(ModelInterface $model, $name, $value, $object = null)
+    protected function extractValue(ModelStubInterface $model, $name, $value, $object = null)
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
             throw new Exception\RuntimeException(sprintf(
@@ -123,7 +123,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     /**
      * {@inheritdoc}
      */
-    public function apply(ModelInterface $model)
+    public function apply(ModelStubInterface $model)
     {
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
@@ -139,7 +139,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     /**
      * {@inheritdoc}
      */
-    public function getPaginatorAdapter(ModelInterface $model)
+    public function getPaginatorAdapter(ModelStubInterface $model)
     {
         return new MongoPaginatorAdapter($this->apply($model), $model->getResultSetPrototype());
     }

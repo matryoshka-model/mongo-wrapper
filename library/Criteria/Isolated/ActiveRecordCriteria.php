@@ -8,7 +8,7 @@
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated;
 
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStoreAwareTrait;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria as BaseActiveRecordCriteria;
 
@@ -27,7 +27,7 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
     /**
      * {@inheritdoc}
      */
-    public function apply(ModelInterface $model)
+    public function apply(ModelStubInterface $model)
     {
         return $this->getDocumentStore()->initIsolationFromCursor(
             $model->getDataGateway(),
@@ -39,7 +39,7 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
     /**
      * {@inheritdoc}
      */
-    public function applyWrite(ModelInterface $model, array &$data)
+    public function applyWrite(ModelStubInterface $model, array &$data)
     {
         unset($data['_id']);
 
@@ -58,7 +58,7 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
     /**
      * {@inheritdoc}
      */
-    public function applyDelete(ModelInterface $model)
+    public function applyDelete(ModelStubInterface $model)
     {
         return $this->getDocumentStore()->isolatedRemove(
             $model->getDataGateway(),

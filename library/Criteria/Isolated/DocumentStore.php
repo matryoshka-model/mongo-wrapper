@@ -15,7 +15,6 @@ use ArrayObject;
 use SplObjectStorage;
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception\RuntimeException;
-use Matryoshka\Model\ModelInterface;
 use Matryoshka\Model\Wrapper\Mongo\Exception;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
