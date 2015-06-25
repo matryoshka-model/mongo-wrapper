@@ -14,7 +14,8 @@ pecl uninstall mongo > $HOME/logs/common.log
 for version in "${mongo_ext[@]}"
 do
     echo "> INSTALLING: mongo-ext ${version}"
-    sh -c 'yes "no" | pecl install mongo-${version}' > $HOME/logs/mongo-${version}.log
+    yes "no" | pecl install "mongo-${version}" > $HOME/logs/mong-${version}.log 2>&1
+    echo $?
 
     echo "> INSTALLING: dependencies"
     composer install
