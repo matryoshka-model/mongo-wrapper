@@ -11,17 +11,19 @@ matrix:
   - php: 7
   - php: hhvm
 services:
-  - mongodb
+- mongodb
 cache:
   directories:
-    - $HOME/.composer/cache
-env:
-  global:
-    secure: OV26hbLwT/AX03/x+AR+RRXFQgVyI1bnKY8wk4jShpjE+JGBUs0v7Vq4/xgfsKV3JX745Y3m4glOEmjk+xDGx5hoewfxW98KM8/6LGodXZbR7OQZms/8w7dLcMWJiqz9KHVWqlW3qBEPkscF4zlnFJhT2ZcnTu/BOGwEuyys390=
+  - $HOME/.composer/cache
 script:
- - ./.travis/run.sh
+- composer self-update
+- composer config --global github-oauth.github.com ${GH_TOKEN}
+- ./.travis/run.sh
 after_script:
- - php vendor/bin/coveralls
+- php vendor/bin/coveralls
 notifications:
   irc: irc.freenode.org#matryoshka.dev
   email: false
+env:
+  global:
+    secure: fuadEg/WNfG73dvJMqpIEnipEOGKDRFEWddw40sWxB8bVzVslmaEbufTdP1VJzNWmNg3lyVPr+xNOggWtWEmYImiFZcN1gNJ/0CDgAjSqBUT40LLWgySqfb36HM/Ve6Epkd0ySsg/h5rn/x8irr6i+EYSU3WyDsKsZzyJjeIRxY=
