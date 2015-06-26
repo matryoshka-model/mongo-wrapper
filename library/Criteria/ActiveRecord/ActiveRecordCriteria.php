@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord;
@@ -11,8 +11,8 @@ namespace Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord;
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelStubInterface;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
+use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class ActiveRecordCriteria
@@ -108,7 +108,6 @@ class ActiveRecordCriteria extends AbstractCriteria
                 'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
             );
         }
-
         return $model->getHydrator()->extractValue('_id', $this->getId());
     }
 }

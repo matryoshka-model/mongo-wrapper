@@ -3,19 +3,13 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\Isolated;
 
-use Matryoshka\Model\Model;
-use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use Zend\Stdlib\Hydrator\ObjectProperty;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStore;
 use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
-use Zend\Crypt\PublicKey\Rsa\PublicKey;
 
 /**
  * Class DocumentStoreTest
@@ -37,6 +31,9 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 
     protected static $sharedDataGateway;
 
+    /**
+     * @var DocumentStore
+     */
     protected $documentStore;
     protected $mongoCollection;
 
@@ -71,6 +68,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         $this->mongoCollection = self::$sharedDataGateway;
     }
 
+    /**
+     * @param $id
+     * @param array $document
+     */
     protected function assertHasDocumentCache($id, array $document)
     {
         $this->assertTrue(
@@ -81,7 +82,6 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             $this->documentStore->get(self::$sharedDataGateway, $id)
         );
     }
-
 
     public function testSharedInstace()
     {
@@ -156,13 +156,15 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         ->method('next')
         ->will($this->returnValue(false));
 
-        $this->assertSame([$data], $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock));
+        $this->assertSame(
+            [$data],
+            $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock)
+        );
         $this->assertHasDocumentCache($data['_id'], $data);
     }
 
     public function testInitIsolationFromCursorShouldThrowDocumentModifiedException()
     {
-
         $data = ['_id' => new \MongoId, 'test' => 'test'];
 
         $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
@@ -187,7 +189,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         $saveMethod->invoke($this->documentStore, $this->mongoCollection, $data['_id'], $data + ['foo' => 'bar']);
 
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
-        $this->assertSame([$data], $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock));
+        $this->assertSame(
+            [$data],
+            $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock)
+        );
     }
 
     public function testIsolatedUpsert()
@@ -202,7 +207,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
 
-        $this->assertEquals(1,  $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options)
+        );
         $this->assertInstanceOf('\MongoId', $testData['_id']);
         $this->assertHasDocumentCache($testData['_id'], $testData);
 
@@ -218,7 +226,6 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 1, 'updatedExisting' => true]));
 
         $this->assertEquals(1, $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
-
     }
 
     public function testIsolatedUpsertShouldThrowDocumentModifiedException()
@@ -233,8 +240,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
 
-        $this->assertEquals(1,  $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
-
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options)
+        );
 
         //Test update with document modified
         $this->mongoCollectionMock->expects($this->atLeastOnce())
@@ -266,7 +275,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
         $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options);
-     }
+    }
 
     public function testIsolatedRemove()
     {
@@ -279,7 +288,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($testData), $this->equalTo($options))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
-        $this->assertEquals(1,  $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options)
+        );
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('remove')
@@ -287,16 +299,21 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 1]));
 
 
-        $this->assertEquals(1, $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options)
+        );
 
 
         $this->setExpectedException('\Matryoshka\Model\Exception\RuntimeException');
-        $this->assertEquals(1, $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options)
+        );
     }
 
     public function testIsolatedRemoveShouldThrowDocumentModifiedException()
     {
-
         $testData = ['test' => 'test'];
         $options  = ['w' => 1];
 
@@ -306,7 +323,10 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($testData), $this->equalTo($options))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
-        $this->assertEquals(1,  $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options)
+        );
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('remove')
@@ -314,7 +334,9 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(['ok' => true, 'n' => 0]));
 
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
-        $this->assertEquals(1, $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options));
+        $this->assertEquals(
+            1,
+            $this->documentStore->isolatedRemove($this->mongoCollection, $testData['_id'], $options)
+        );
     }
-
 }

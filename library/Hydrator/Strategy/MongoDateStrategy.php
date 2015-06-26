@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
@@ -55,7 +55,6 @@ class MongoDateStrategy implements StrategyInterface
     public function hydrate($value)
     {
         if ($value instanceof MongoDate) {
-
             $value = new DateTime(date($this->getFormat(), $value->sec));
         } else {
             $value = null;

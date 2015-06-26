@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
@@ -22,7 +22,7 @@ trait HandleResultTrait
      */
     protected function handleResult($result, $isRemoveOperation = false)
     {
-        //No info available
+        // No info available
         if ($result === true) {
             return null;
         }

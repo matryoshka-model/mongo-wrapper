@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Hydrator;
@@ -13,9 +13,12 @@ use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
 /**
  * Class ClassMethodsTest
  */
-class ClassMethodsTest  extends \PHPUnit_Framework_TestCase
+class ClassMethodsTest extends \PHPUnit_Framework_TestCase
 {
-    public function test__construct()
+    /**
+     * Ctor
+     */
+    public function testCtor()
     {
         $hydrator = new ClassMethods();
 

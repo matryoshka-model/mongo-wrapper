@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
@@ -15,12 +15,10 @@ use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
  */
 class MongoBinDataStrategy implements StrategyInterface
 {
-
     /**
      * @var int
      */
     protected $type;
-
 
     /**
      * @param int $type

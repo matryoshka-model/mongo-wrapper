@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
@@ -13,9 +13,9 @@ use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoDateStrategy;
 /**
  * Class MongoDateStrategyTest
  */
-class MongoDateStrategyTest  extends \PHPUnit_Framework_TestCase
+class MongoDateStrategyTest extends \PHPUnit_Framework_TestCase
 {
-    public function test__construct()
+    public function testCtor()
     {
         //Test default format
         $strategy = new MongoDateStrategy();

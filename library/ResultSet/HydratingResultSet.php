@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\ResultSet;
@@ -18,13 +18,11 @@ class HydratingResultSet extends BaseResultSet
 {
     /**
      * @{inheritDoc}
+     * @see http://php.net/manual/en/mongocursor.count.php
      */
     public function count()
     {
         if ($this->count === null && $this->dataSource instanceof MongoCursor) {
-            /**
-             * @see http://php.net/manual/en/mongocursor.count.php
-             */
             $this->count = $this->dataSource->count(true);
         }
         return parent::count();

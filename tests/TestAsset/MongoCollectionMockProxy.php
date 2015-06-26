@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\TestAsset;
@@ -11,30 +11,22 @@ namespace MatryoshkaModelWrapperMongoTest\TestAsset;
 /**
  * Class MongoCollectionMockProxy
  *
- * Proxy for \MongoCollection's mock in order to simulate the special behavior
- * of insert() and save().
+ * Proxy for \MongoCollection's mock in order to simulate the special behavior of insert() and save().
  *
- * MongoCollection::insert() and save() first parameter report the
- * following specification:
- * If the parameter does not have an _id key or property, a new MongoId instance
- * will be created and assigned to it.
- * This special behavior does not mean that the parameter is passed by
- * reference.
+ * MongoCollection::insert() and save() first parameter report the following specifications:
+ * if the parameter does not have an _id key or property, a new MongoId instance will be created and assigned to it.
+ * This special behavior does not mean that the parameter is passed by reference.
  *
- * The behavior can be simulated using parameter passed by reference but
- * PHPUnit mock implementation doesn't allow that.
- * MongoCollectionMockProxy bypasses the issue changing the original method
- * signature, proxing the method call to the mock and finally adding the _id.
+ * The behavior can be simulated using parameter passed by reference but PHPUnit mock implementation doesn't allow that.
+ * MongoCollectionMockProxy bypasses the issue changing the original method signature,
+ * proxing the method call to the mock and finally adding the _id.
  *
+ * NOTE: E_STRICT error reporting must be disabled due to incompatibile method signature with the parent class
  *
- * NOTE: E_STRICT error reporting must be disabled due to incompatibile method
- * signature with the parent class
- *
- * MongoCollection skeleton class by https://github.com/localgod/PeclMongoPhpDoc
+ * MongoCollection skeleton class by {@link https://github.com/localgod/PeclMongoPhpDoc}
  */
 class MongoCollectionMockProxy extends \MongoCollection
 {
-
     protected $mock;
 
     protected static $oldErrorLevel = null;
@@ -351,7 +343,7 @@ class MongoCollectionMockProxy extends \MongoCollection
      *            is passed, it will be the key used to group results.
      * @param array $initial
      *            Initial value of the aggregation counter object.
-     * @param MongoCode $reduce
+     * @param \MongoCode $reduce
      *            A function that takes two arguments (the current
      *            document and the aggregation to this point) and does the
      *            aggregation.
@@ -364,5 +356,4 @@ class MongoCollectionMockProxy extends \MongoCollection
     {
         return $this->__call(__FUNCTION__, func_get_args());
     }
-
 }
