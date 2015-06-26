@@ -8,6 +8,7 @@ echo "> UPDATING: pecl"
 pecl channel-update pecl.php.net > $HOME/logs/common.log
 echo "> UNINSTALLING: (travis-ci) mongo"
 pecl uninstall mongo > $HOME/logs/common.log
+echo "> --------------------------------------------------------"
 
 for version in "${mongo_ext[@]}"
 do
