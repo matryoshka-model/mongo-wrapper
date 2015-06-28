@@ -2,6 +2,8 @@
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/matryoshka-model/mongo-wrapper.svg?style=flat-square)](https://packagist.org/packages/matryoshka-model/mongo-wrapper) [![Build Status](https://img.shields.io/travis/matryoshka-model/mongo-wrapper/master.svg?style=flat-square)](https://travis-ci.org/matryoshka-model/mongo-wrapper) [![Coveralls branch](https://img.shields.io/coveralls/matryoshka-model/mongo-wrapper/master.svg?style=flat-square)](https://coveralls.io/r/matryoshka-model/mongo-wrapper?branch=master) [![Total Downloads](https://img.shields.io/packagist/dt/matryoshka-model/mongo-wrapper.svg?style=flat-square)](https://packagist.org/packages/matryoshka-model/mongo-wrapper) [![Matryoshka Model's Slack](http://matryoshka-slackin.herokuapp.com/badge.svg?style=flat-square)](http://matryoshka-slackin.herokuapp.com)
 
+> Use MongoDB as data gateway for [Matryoshka library](http://github.com/matryoshka-model/matryoshka).
+
 #### Community
 
 For questions and support please visit the [slack channel](http://matryoshka-slackin.herokuapp.com).
