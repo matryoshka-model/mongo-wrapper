@@ -99,4 +99,4 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
 ---
 
-[![Analytics](https://ga-beacon.appspot.com/UA-49657176-2/mongo-wrapper)](https://github.com/igrigorik/ga-beacon)
+[![Analytics](https://ga-beacon.appspot.com/UA-49657176-2/mongo-wrapper?flat)](https://github.com/igrigorik/ga-beacon)
