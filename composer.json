@@ -4,7 +4,7 @@
     "homepage": "https://github.com/matryoshka-model/mongo-wrapper",
     "license": "BSD-2-Clause",
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.5.0",
         "ext-mongo": "*",
         "matryoshka-model/matryoshka": "~0.7.0",
         "zendframework/zend-stdlib": "2.*",
