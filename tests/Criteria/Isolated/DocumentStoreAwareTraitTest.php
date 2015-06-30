@@ -3,16 +3,11 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\Isolated;
 
-use Matryoshka\Model\Model;
-use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
-use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use Zend\Stdlib\Hydrator\ObjectProperty;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStore;
 
 /**
@@ -20,15 +15,18 @@ use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStore;
  */
 class DocumentStoreAwareTraitTest extends \PHPUnit_Framework_TestCase
 {
-
+    /**
+     * @var \Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStoreAwareTrait
+     */
     protected $traitObject;
 
     protected $documentStore;
 
-
     public function setUp()
     {
-        $this->traitObject = $this->getObjectForTrait('Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStoreAwareTrait');
+        $this->traitObject = $this->getObjectForTrait(
+            'Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStoreAwareTrait'
+        );
         $this->documentStore = DocumentStore::getSharedInstance();
     }
 

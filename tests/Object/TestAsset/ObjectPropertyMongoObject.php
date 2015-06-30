@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
@@ -11,14 +11,12 @@ namespace MatryoshkaModelWrapperMongoTest\Object\TestAsset;
 use Matryoshka\Model\Hydrator\Strategy\SetTypeStrategy;
 use Matryoshka\Model\Object\ActiveRecord\AbstractActiveRecord;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
-use Matryoshka\Model\Wrapper\Mongo\Object\ObjectPropertyTrait;
 
 /**
  * Class ObjectPropertyMongoObject
  */
 class ObjectPropertyMongoObject extends AbstractActiveRecord
 {
-
     public $_id;
 
     /**

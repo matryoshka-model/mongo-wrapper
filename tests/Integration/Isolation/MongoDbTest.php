@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Integration\Isolation;
@@ -20,7 +20,6 @@ use Zend\Stdlib\Hydrator\ObjectProperty;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\ClassMethods;
 use MatryoshkaModelWrapperMongoTest\Integration\Isolation\TestAsset\IsolatedActiveRecordObject;
-
 
 /**
  * Class MongoDbTest
@@ -168,7 +167,6 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
         $objA->setName('A');
         $objA->save();
-
     }
 
     public function testInterleavedOperationsCase2()
@@ -204,8 +202,6 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
         $objB->setName('B');
         $objB->save();
-
-
     }
 
     public function testInterleavedDelete()
@@ -277,6 +273,4 @@ class MongoDbTest extends \PHPUnit_Framework_TestCase
         $objB->setName('B');
         $objB->delete();
     }
-
-
 }

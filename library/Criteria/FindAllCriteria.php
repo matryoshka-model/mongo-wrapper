@@ -3,26 +3,26 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria;
 
-use Matryoshka\Model\Exception;
-use Matryoshka\Model\ModelInterface;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
 use Matryoshka\Model\Criteria\AbstractCriteria;
 use Matryoshka\Model\Criteria\PaginableCriteriaInterface;
-use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
+use Matryoshka\Model\Exception;
 use Matryoshka\Model\Exception\InvalidArgumentException;
+use Matryoshka\Model\ModelStubInterface;
+use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
+use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class FindAllCriteria
  */
 class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInterface
 {
-    const ORDER_ASC     = 'ASC';
-    const ORDER_DESC    = 'DESC';
+    const ORDER_ASC = 'ASC';
+    const ORDER_DESC = 'DESC';
 
     /**
      * Mongo selection criteria
@@ -31,7 +31,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
      * Extended classes can override selection criteria using query operators
      * in order to restrict the selection.
      *
-     * @see http://docs.mongodb.org/manual/reference/method/db.collection.find/
+     * @see http://docs.mongodb.org/manual/reference/method/db.collection.find
      *
      * @var array
      */
@@ -89,11 +89,13 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
                     break;
 
                 default:
-                    throw new InvalidArgumentException(sprintf(
-                        '"%s" is an invalid order value for "%s". Must be "ASC" or "DESC".',
-                        (string) $fieldOrder,
-                        $fieldName
-                    ));
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            '"%s" is an invalid order value for "%s". Must be "ASC" or "DESC".',
+                            (string)$fieldOrder,
+                            $fieldName
+                        )
+                    );
             }
         }
 
@@ -101,20 +103,22 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     }
 
     /**
-     * @param ModelInterface $model
+     * @param ModelStubInterface $model
      * @param $name
      * @param $value
      * @param null $object
      * @return mixed
      */
-    protected function extractValue(ModelInterface $model, $name, $value, $object = null)
+    protected function extractValue(ModelStubInterface $model, $name, $value, $object = null)
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
-            throw new Exception\RuntimeException(sprintf(
-                'Hydrator must be an instance of "%s"; detected "%s"',
-                '\Zend\Stdlib\Hydrator\AbstractHydrator',
-                get_class($model->getHydrator())
-            ));
+            throw new Exception\RuntimeException(
+                sprintf(
+                    'Hydrator must be an instance of "%s"; detected "%s"',
+                    '\Zend\Stdlib\Hydrator\AbstractHydrator',
+                    get_class($model->getHydrator())
+                )
+            );
         }
 
         return $model->getHydrator()->extractValue($name, $value, $object);
@@ -123,7 +127,7 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     /**
      * {@inheritdoc}
      */
-    public function apply(ModelInterface $model)
+    public function apply(ModelStubInterface $model)
     {
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
@@ -139,9 +143,8 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
     /**
      * {@inheritdoc}
      */
-    public function getPaginatorAdapter(ModelInterface $model)
+    public function getPaginatorAdapter(ModelStubInterface $model)
     {
         return new MongoPaginatorAdapter($this->apply($model), $model->getResultSetPrototype());
     }
-
 }

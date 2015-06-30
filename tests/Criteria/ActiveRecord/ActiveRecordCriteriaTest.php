@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\ActiveRecord;
@@ -12,8 +12,8 @@ use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria;
 use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use Zend\Stdlib\Hydrator\ObjectProperty;
 use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
  * Class ActiveRecordCriteriaTest
@@ -33,6 +33,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         error_reporting(self::$oldErrorLevel);
     }
 
+    /**
+     * @var Model
+     */
     protected $model;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */

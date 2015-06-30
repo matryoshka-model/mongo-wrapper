@@ -3,12 +3,12 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Integration;
 
-use Matryoshka\Model\ModelInterface;
+use Matryoshka\Model\ModelStubInterface;
 use MatryoshkaModelWrapperMongoTest\Object\TestAsset\MongoObject;
 
 /**
@@ -37,12 +37,14 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
         $abstractModelMock->expects($this->atLeastOnce())
                            ->method('save')
                            ->with(
-                               $this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'),
+                               $this->isInstanceOf(
+                                   'Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'
+                               ),
                                $this->identicalTo($this->mongoObject)
                            )
                            ->will($this->returnValue($result));
 
-        /** @var $abstractModelMock ModelInterface */
+        /** @var $abstractModelMock ModelStubInterface */
         $this->mongoObject->setModel($abstractModelMock);
 
         $this->assertSame($result, $this->mongoObject->save());
@@ -58,10 +60,12 @@ class ActiveRecordTest extends \PHPUnit_Framework_TestCase
         $result = null;
         $abstractModelMock->expects($this->atLeastOnce())
                         ->method('delete')
-                        ->with($this->isInstanceOf('Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'))
+                        ->with($this->isInstanceOf(
+                            'Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord\ActiveRecordCriteria'
+                        ))
                         ->will($this->returnValue($result));
 
-        /** @var $abstractModelMock ModelInterface */
+        /** @var $abstractModelMock ModelStubInterface */
         $this->mongoObject->setModel($abstractModelMock);
         $this->mongoObject->setId('id');
 

@@ -3,18 +3,17 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace MatryoshkaModelWrapperMongoTest\Model\Wrapper\Mongo\Criteria\Isolated;
 
 use Matryoshka\Model\Model;
 use Matryoshka\Model\ResultSet\ArrayObjectResultSet;
-use MatryoshkaModelWrapperMongoTest\Criteria\TestAsset\BadHydrator;
-use Zend\Stdlib\Hydrator\ObjectProperty;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\ActiveRecordCriteria;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated\DocumentStore;
 use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
+use Zend\Stdlib\Hydrator\ObjectProperty;
 
 /**
  * Class ActiveRecordCriteriaTest
@@ -47,7 +46,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     protected $mongoCollectionMock;
 
     /**
-     * @var IsolatedCriteria
+     * @var ActiveRecordCriteria
      */
     protected $criteria;
 
@@ -75,15 +74,21 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $model->setHydrator($hyd);
 
         $this->model = $model;
-
     }
 
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     protected function getDocumentFromCache($id)
     {
         return DocumentStore::getSharedInstance()->get(self::$sharedDataGateway, $id);
     }
 
+    /**
+     * @param $id
+     * @param array $document
+     */
     protected function assertHasDocumentCache($id, array $document)
     {
         $this->assertTrue(
@@ -255,7 +260,6 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     {
         $criteria = $this->criteria;
         $testId = 1;
-        $testData = ['_id' => $testId, 'foo' => 'bar'];
 
         $criteria->setId($testId);
         $criteria->applyDelete($this->model);
@@ -269,6 +273,4 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
     {
         $this->criteria->applyDelete($this->model);
     }
-
-
 }

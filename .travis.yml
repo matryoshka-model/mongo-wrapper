@@ -1,34 +1,34 @@
----
-
+sudo: false
 language: php
-
-php:
-  - 5.4
-  - 5.5
-  - 5.6
-  - hhvm
-
-services:
-  - mongodb
-
-branches:
-  only:
-    - master
-    - develop
-
-before_script:
-  - mkdir -p build/coverage
-
-script:
- - ./.travis/run.sh
-
-after_script:
- - php vendor/bin/coveralls
-
-notifications:
-  email: false
-
 matrix:
   fast_finish: true
+  include:
+  - php: 5.5
+  - php: 5.6
+  - php: 7
+  - php: hhvm
   allow_failures:
-    - php: hhvm
+  - php: 7
+  - php: hhvm
+services:
+- mongodb
+cache:
+  directories:
+  - "$HOME/.composer/cache"
+script:
+- composer self-update
+- composer config --global github-oauth.github.com ${GH_TOKEN}
+- "./.travis/run.bash"
+after_script:
+- php vendor/bin/coveralls
+notifications:
+  webhooks:
+    urls:
+    - https://webhooks.gitter.im/e/70b21e421c7b6b4d20a8
+    on_success: change
+  email: false
+  slack:
+    secure: WgKhdydjOxlB/yP78lOqVALP3VGPWahIWYlC15zJ4iHHWOUP/NLeYe2RfnGW59YUy3KTMxh9PcWMDHQQ6+cr9QuWOJFljXVHzWZo+5n96UhFv1jUvHL+ZdI1fnG5wlrmd/2Fd3e7CCrXqj+5Mtf3gUZ3AA95IecKHdaspRwqwFw=
+env:
+  global:
+    secure: SnjqWDK3TX36AAHiwZK/xym1Ictd11UKwUAokNhTWoN0MSnq5ZuVgfekpmRy0CPcwg/TeR+S5SpZwTxLrp30VaCXGq2y2BB5y1P8BosQgYbFtInpkRaF1xZpkRlwXmy1zZ9wfeQTf6LaN3jCahXPJPR17feNL1Af45IzHQ/IBag=

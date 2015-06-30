@@ -3,7 +3,7 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria\Isolated;
@@ -15,25 +15,22 @@ use ArrayObject;
 use SplObjectStorage;
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception\RuntimeException;
-use Matryoshka\Model\ModelInterface;
 use Matryoshka\Model\Wrapper\Mongo\Exception;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
 
 /**
  * Class DocumentStore
  *
- * DocumentStore mantains a local copy of fetched documents in order to use
- * the entire document as the query in the update() and remove() operations,
- * applying modification only if the fields have not changed in the collection
- * since the find query (otherwise a DocumentModifiedException will be thrown).
+ * DocumentStore mantains a local copy of the fetched documents.
+ * It uses the entire document to perform queries in the update() and remove() operations,
+ * applying the changes only if the fields have not changed in the collection
+ * since the find query (otherwise a {@link DocumentModifiedException} will be thrown).
  *
- * In order to make the isolation pattern working properly, all objects
- * involved must share the same DocumentStore's instance throughout their
- * whole lifecycle.
+ * In order to make the isolation pattern working properly
+ * all the involved objects MUST share the same DocumentStore instance during their whole lifecycle.
  *
- *
- * @link http://docs.mongodb.org/manual/tutorial/isolate-sequence-of-operations/
- *
+ * More at:
+ * @link http://docs.mongodb.org/manual/tutorial/isolate-sequence-of-operations
  */
 class DocumentStore
 {
@@ -41,17 +38,18 @@ class DocumentStore
     use HandleResultTrait;
 
     /**
-     *
      * @var DocumentStore
      */
     protected static $instance;
 
     /**
-     *
      * @var SplObjectStorage
      */
     protected $splObjectStorage;
 
+    /**
+     * Ctor
+     */
     public function __construct()
     {
         $this->splObjectStorage = new SplObjectStorage();
@@ -101,6 +99,13 @@ class DocumentStore
         static::$instance = null;
     }
 
+    /**
+     * Check whether the given data gateway exists in the current store
+     *
+     * @param MongoCollection $dataGateway
+     * @param $id
+     * @return bool
+     */
     public function has(MongoCollection $dataGateway, $id)
     {
         $id = (string) $id;
@@ -116,6 +121,13 @@ class DocumentStore
         return false;
     }
 
+    /**
+     * Retrieve the given data gateway from the store
+     *
+     * @param MongoCollection $dataGateway
+     * @param $id
+     * @return mixed
+     */
     public function get(MongoCollection $dataGateway, $id)
     {
         $id = (string) $id;
@@ -123,8 +135,15 @@ class DocumentStore
         if ($this->has($dataGateway, $id)) {
             return $this->splObjectStorage[$dataGateway][$id];
         }
+
+        // FIXME: missing return
     }
 
+    /**
+     * @param MongoCollection $dataGateway
+     * @param $id
+     * @param array $data
+     */
     protected function save(MongoCollection $dataGateway, $id, array $data)
     {
         $id = (string) $id;
@@ -136,6 +155,10 @@ class DocumentStore
         $this->splObjectStorage[$dataGateway][$id] = $data;
     }
 
+    /**
+     * @param MongoCollection $dataGateway
+     * @param $id
+     */
     protected function remove(MongoCollection $dataGateway, $id)
     {
         $id = (string) $id;
@@ -145,6 +168,11 @@ class DocumentStore
         }
     }
 
+    /**
+     * @param MongoCollection $dataGateway
+     * @param MongoCursor $cursor
+     * @return array
+     */
     public function initIsolationFromCursor(MongoCollection $dataGateway, MongoCursor $cursor)
     {
         $return = [];
@@ -152,10 +180,10 @@ class DocumentStore
             $id = $document['_id']; // FIXME: check id presence
             $localDocument = $this->get($dataGateway, $id);
             if ($localDocument && $document != $localDocument) {
-                throw new Exception\DocumentModifiedException(
-                    sprintf(
-                        'The local copy of the document "%s" does no more reflect the current state of the document in the database',
-                        $id));
+                throw new Exception\DocumentModifiedException(sprintf(
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    $id
+                ));
             }
             $this->save($dataGateway, $id, $document);
             $return[] = $document;
@@ -163,6 +191,12 @@ class DocumentStore
         return $return;
     }
 
+    /**
+     * @param MongoCollection $dataGateway
+     * @param array $data
+     * @param array $options
+     * @return array|bool|int|null
+     */
     public function isolatedUpsert(MongoCollection $dataGateway, array &$data, array $options = [])
     {
         // NOTE: we must ensure that modifiers in $data are not allowed
@@ -180,7 +214,9 @@ class DocumentStore
                             'Cannot insert the local copy of the new document "%s" because another ' .
                             ' document with the same ID already exists in the database',
                             $data['_id']
-                        ), 11000, $e
+                        ),
+                        11000,
+                        $e
                     );
                 }
                 throw $e;
@@ -193,16 +229,16 @@ class DocumentStore
             $result = $dataGateway->update(
                 $oldDocumentData,
                 $data, // modifiers and non-modifiers cannot be mixed,
-                       // the _id presence ensure at least one non-modifiers
+                // the _id presence ensure at least one non-modifiers
                 array_merge($options, ['multi' => false, 'upsert' => false])
             );
             $result = $this->handleResult($result);
 
             if ($result != 1) {
-                throw new Exception\DocumentModifiedException(
-                    sprintf(
-                        'The local copy of the document "%s" does no more reflect the current state of the document in the database',
-                        $data['_id']));
+                throw new Exception\DocumentModifiedException(sprintf(
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    $data['_id']
+                ));
             }
         }
 
@@ -210,25 +246,29 @@ class DocumentStore
         return $result;
     }
 
+    /**
+     * @param MongoCollection $dataGateway
+     * @param $id
+     * @param array $options
+     * @return array|bool|int|null
+     */
     public function isolatedRemove(MongoCollection $dataGateway, $id, array $options = [])
     {
         if (!$this->has($dataGateway, $id)) {
-            throw new RuntimeException(
-                sprintf('No local copy found for the document "%s"', $id));
+            throw new RuntimeException(sprintf('No local copy found for the document "%s"', $id));
         }
 
         $result = $dataGateway->remove($this->get($dataGateway, $id), $options);
         $result = $this->handleResult($result, true);
 
         if ($result != 1) {
-            throw new Exception\DocumentModifiedException(
-                sprintf(
-                    'The local copy of the document "%s" does no more reflect the current state of the document in the database',
-                    $id));
+            throw new Exception\DocumentModifiedException(sprintf(
+                'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                $id
+            ));
         }
 
         $this->remove($dataGateway, $id);
         return $result;
     }
-
 }

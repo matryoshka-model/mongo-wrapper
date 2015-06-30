@@ -3,16 +3,16 @@
  * MongoDB matryoshka wrapper
  *
  * @link        https://github.com/matryoshka-model/mongo-wrapper
- * @copyright   Copyright (c) 2014, Ripa Club
+ * @copyright   Copyright (c) 2015, Ripa Club
  * @license     http://opensource.org/licenses/BSD-2-Clause Simplified BSD License
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Criteria\ActiveRecord;
 
 use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
-use Matryoshka\Model\ModelInterface;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
+use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
+use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class ActiveRecordCriteria
@@ -58,7 +58,7 @@ class ActiveRecordCriteria extends AbstractCriteria
     /**
      * {@inheritdoc}
      */
-    public function apply(ModelInterface $model)
+    public function apply(ModelStubInterface $model)
     {
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
@@ -71,7 +71,7 @@ class ActiveRecordCriteria extends AbstractCriteria
     /**
      * {@inheritdoc}
      */
-    public function applyWrite(ModelInterface $model, array &$data)
+    public function applyWrite(ModelStubInterface $model, array &$data)
     {
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
@@ -91,24 +91,23 @@ class ActiveRecordCriteria extends AbstractCriteria
     /**
      * {@inheritdoc}
      */
-    public function applyDelete(ModelInterface $model)
+    public function applyDelete(ModelStubInterface $model)
     {
         $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
         return $this->handleResult($result, true);
     }
 
     /**
-     * @param ModelInterface $model
+     * @param ModelStubInterface $model
      * @return mixed
      */
-    protected function extractId(ModelInterface $model)
+    protected function extractId(ModelStubInterface $model)
     {
         if (!$model->getHydrator() instanceof AbstractHydrator) {
             throw new Exception\RuntimeException(
                 'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
             );
         }
-
         return $model->getHydrator()->extractValue('_id', $this->getId());
     }
 }
