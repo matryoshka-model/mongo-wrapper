@@ -11,8 +11,6 @@ Matryoshka wrapper for MongoDB
 
 For questions and support please visit the [slack channel](http://matryoshka.slack.com) (get an invite [here](http://matryoshka-slackin.herokuapp.com)).
 
----
-
 ## Installation
 
 Install it using [composer](http://getcomposer.org).
