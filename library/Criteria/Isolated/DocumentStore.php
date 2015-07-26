@@ -230,7 +230,7 @@ class DocumentStore
                 $oldDocumentData,
                 $data, // modifiers and non-modifiers cannot be mixed,
                 // the _id presence ensure at least one non-modifiers
-                array_merge($options, ['multi' => false, 'upsert' => false])
+                ['multi' => false, 'upsert' => false] + $options
             );
             $result = $this->handleResult($result);
 

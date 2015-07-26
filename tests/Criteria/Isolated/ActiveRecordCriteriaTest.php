@@ -181,7 +181,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo($currentDataState),
                 $this->equalTo($expectedResult),
-                $this->equalTo(array_merge($criteria->getSaveOptions(), ['multi' => false, 'upsert' => false]))
+                $this->equalTo(['multi' => false, 'upsert' => false] + $criteria->getMongoOptions())
             )
             ->will($this->returnValue(['ok' => true, 'n' => 1, 'updatedExisting' => true]));
 
@@ -202,7 +202,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         //Test insert
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('insert')
-            ->with($this->equalTo($testData), $this->equalTo($criteria->getSaveOptions()))
+            ->with($this->equalTo($testData), $this->equalTo($criteria->getMongoOptions()))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
 
