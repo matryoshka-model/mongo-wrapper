@@ -35,23 +35,47 @@ class ActiveRecordCriteria extends AbstractCriteria
     /**
      * @var array
      */
-    protected $saveOptions = [];
+    protected $mongoOptions = [];
 
     /**
      * @return array
+     * @deprecated use getMongoOptions instead
      */
     public function getSaveOptions()
     {
-        return $this->saveOptions;
+        return $this->mongoOptions;
     }
 
     /**
      * @param array $options
      * @return $this
+     * @deprecated use setMongoOptions instead
      */
     public function setSaveOptions(array $options)
     {
-        $this->saveOptions = $options;
+        $this->mongoOptions = $options;
+        return $this;
+    }
+
+    /**
+     * Get options for Mongo save and remove operations
+     *
+     * @return array
+     */
+    public function getMongoOptions()
+    {
+        return $this->mongoOptions;
+    }
+
+    /**
+     * Set options for Mongo save and remove operations
+     *
+     * @param array $options
+     * @return $this
+     */
+    public function setMongoOptions(array $options)
+    {
+        $this->mongoOptions = $options;
         return $this;
     }
 
@@ -83,7 +107,7 @@ class ActiveRecordCriteria extends AbstractCriteria
         }
 
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
-        $result = $dataGateway->save($tmp, $this->getSaveOptions());
+        $result = $dataGateway->save($tmp, $this->getMongoOptions());
         $data = $tmp;
         return $this->handleResult($result);
     }
@@ -93,7 +117,10 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     public function applyDelete(ModelStubInterface $model)
     {
-        $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
+        $result = $model->getDataGateway()->remove(
+            ['_id' => $this->extractId($model)],
+            ['justOne' => true] + $this->getMongoOptions()
+        );
         return $this->handleResult($result, true);
     }
 

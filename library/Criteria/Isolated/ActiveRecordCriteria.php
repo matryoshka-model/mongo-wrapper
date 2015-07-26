@@ -48,7 +48,7 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
         return $this->getDocumentStore()->isolatedUpsert(
             $model->getDataGateway(),
             $data,
-            $this->getSaveOptions()
+            $this->getMongoOptions()
         );
     }
 
@@ -60,7 +60,8 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
     {
         return $this->getDocumentStore()->isolatedRemove(
             $model->getDataGateway(),
-            $this->extractId($model)
+            $this->extractId($model),
+            $this->getMongoOptions()
         );
     }
 }

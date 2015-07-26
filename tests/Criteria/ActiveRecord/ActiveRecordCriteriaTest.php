@@ -144,6 +144,16 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($saveOptions, $ar->getSaveOptions());
     }
 
+    public function testGetSetMongoOptions()
+    {
+        $ar = new ActiveRecordCriteria();
+        $this->assertEmpty($ar->getMongoOptions());
+
+        $saveOptions = ['foo', 'bar'];
+        $ar->setMongoOptions($saveOptions);
+        $this->assertEquals($saveOptions, $ar->getMongoOptions());
+    }
+
     public function testApplyDelete()
     {
         $ar = new ActiveRecordCriteria();
