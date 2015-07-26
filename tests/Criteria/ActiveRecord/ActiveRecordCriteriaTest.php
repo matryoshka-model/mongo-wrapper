@@ -90,13 +90,15 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     public function testApplyWrite()
     {
+        $options = ['foo' => 'baz'];
         $ar = new ActiveRecordCriteria();
+        $ar->setMongoOptions($options);
         $testId = 1;
         $testData = ['_id' => $testId];
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('save')
-            ->with($this->equalTo($testData), $this->equalTo($ar->getSaveOptions()));
+            ->with($this->equalTo($testData), $this->equalTo($options));
 
 
         $ar->setId($testId);
@@ -135,6 +137,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\MongoId', $testData['_id']);
     }
 
+    /**
+     * @deprecated
+     */
     public function testSaveOptions()
     {
         $saveOptions = ['foo', 'bar'];
@@ -156,13 +161,15 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     public function testApplyDelete()
     {
+        $options = ['foo' => 'baz'];
         $ar = new ActiveRecordCriteria();
+        $ar->setMongoOptions($options);
         $testId = 1;
         $testData = ['_id' => $testId];
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('remove')
-            ->with($this->equalTo($testData));
+            ->with($this->equalTo($testData), $this->equalTo(['justOne' => true] + $options));
 
 
         $ar->setId($testId);
