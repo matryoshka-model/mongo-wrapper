@@ -258,7 +258,7 @@ class DocumentStore
             throw new RuntimeException(sprintf('No local copy found for the document "%s"', $id));
         }
 
-        $result = $dataGateway->remove($this->get($dataGateway, $id), $options);
+        $result = $dataGateway->remove($this->get($dataGateway, $id), ['justOne' => true] + $options);
         $result = $this->handleResult($result, true);
 
         if ($result != 1) {

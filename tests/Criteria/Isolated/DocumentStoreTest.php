@@ -295,7 +295,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('remove')
-            ->with($this->equalTo($testData))
+            ->with($this->equalTo($testData), $this->equalTo(['justOne' => true] + $options))
             ->will($this->returnValue(['ok' => true, 'n' => 1]));
 
 
