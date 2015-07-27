@@ -99,7 +99,7 @@ It's important to always use the `HydratingResultSet` class included in this pac
 
 ## Continuous integration
 
-**CI** provided through [TravisCI](http://travis-ci.org/matryoshka-model/mongo-transactional).
+**CI** provided through [TravisCI](http://travis-ci.org/matryoshka-model/mongo-wrapper).
 
 This wrapper is tested against the following MongoDB PHP clients: **1.4.5**, **1.5.0**, **1.5.1**, **1.5.2**, **1.5.3**, **1.5.3**, **1.5.5**, **1.5.6**, **1.5.7**, **1.5.8**, **1.6.0**, **1.6.1**, **1.6.2**, **1.6.3**, **1.6.4**, **1.6.5**, **1.6.6**, **1.6.7**, **1.6.8**, **1.6.9**.
 
