@@ -63,6 +63,7 @@
     "suggest": {
         "matryoshka-model/matryoshka": "A lightweight framework that provides a standard and easy way to implement a model service layer",
         "matryoshka-model/zf2-matryoshka-module": "ZF2 module for matryoshka library",
-        "matryoshka-model/rest-wrapper": "Matryoshka wrapper aimed at creating restful API clients"
+        "matryoshka-model/rest-wrapper": "Matryoshka wrapper aimed at creating restful API clients",
+        "matryoshka-model/mongo-transactional": "Perform transactional operations with MongoDB"
     }
 }
