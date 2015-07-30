@@ -40,9 +40,16 @@
     ],
     "autoload": {
         "psr-4": {
-        	"Matryoshka\\Model\\Wrapper\\Mongo\\": "library/",
-        	"MatryoshkaModelWrapperMongoTest\\": "tests/"
+        	"Matryoshka\\Model\\Wrapper\\Mongo\\": "library/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        	"MatryoshkaModelWrapperMongoTest\\": "tests/"
+        },
+        "files": [
+        	"tests/TestAsset/MongoCollectionMockProxy.php"
+        ]
     },
     "keywords": [
         "model",
