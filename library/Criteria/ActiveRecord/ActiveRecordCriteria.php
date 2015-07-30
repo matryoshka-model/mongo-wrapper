@@ -100,7 +100,9 @@ class ActiveRecordCriteria extends AbstractCriteria
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
 
-        unset($data['_id']);
+        if (empty($data['_id'])) {
+            unset($data['_id']);
+        }
 
         if ($this->id) {
             $data['_id'] = $this->extractId($model);
