@@ -176,9 +176,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertHasDocumentCache($testId, $expectedResult);
     }
 
-    /**
-     * @depends testApplyWrite
-     */
+//     /**
+//      * @depends testApplyWrite
+//      */
     public function testApplyWriteWithoutId()
     {
         $model    = $this->model;

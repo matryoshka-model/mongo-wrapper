@@ -100,12 +100,12 @@ class ActiveRecordCriteria extends AbstractCriteria
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
 
-        if (empty($data['_id'])) {
-            unset($data['_id']);
+        if ($this->hasId()) {
+            $data['_id'] = $this->extractId($model);
         }
 
-        if ($this->id) {
-            $data['_id'] = $this->extractId($model);
+        if (array_key_exists('_id', $data) && null === $data['_id']) {
+            unset($data['_id']);
         }
 
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
