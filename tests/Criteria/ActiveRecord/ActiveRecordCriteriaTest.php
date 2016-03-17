@@ -116,22 +116,10 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('save')
-            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
+            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getMongoOptions()));
 
         $ar->applyWrite($this->model, $testData);
         $this->assertInstanceOf('\MongoId', $testData['_id']);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function testSaveOptions()
-    {
-        $saveOptions = ['foo', 'bar'];
-        $ar = new ActiveRecordCriteria();
-        $ar->setSaveOptions($saveOptions);
-
-        $this->assertEquals($saveOptions, $ar->getSaveOptions());
     }
 
     public function testGetSetMongoOptions()

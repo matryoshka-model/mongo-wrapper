@@ -37,26 +37,6 @@ class ActiveRecordCriteria extends AbstractCriteria
     protected $mongoOptions = [];
 
     /**
-     * @return array
-     * @deprecated use getMongoOptions instead
-     */
-    public function getSaveOptions()
-    {
-        return $this->mongoOptions;
-    }
-
-    /**
-     * @param array $options
-     * @return $this
-     * @deprecated use setMongoOptions instead
-     */
-    public function setSaveOptions(array $options)
-    {
-        $this->mongoOptions = $options;
-        return $this;
-    }
-
-    /**
      * Get options for Mongo save and remove operations
      *
      * @return array
