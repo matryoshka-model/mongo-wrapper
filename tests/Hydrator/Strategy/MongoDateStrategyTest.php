@@ -9,6 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
 
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoDateStrategy;
+use Matryoshka\Model\Exception\InvalidArgumentException;
 
 /**
  * Class MongoDateStrategyTest
@@ -33,8 +34,8 @@ class MongoDateStrategyTest extends \PHPUnit_Framework_TestCase
         $result = $strategy->extract(\DateTime::createFromFormat('U', $now));
         $this->assertEquals(new \MongoDate($now), $result);
 
+        $this->setExpectedException(InvalidArgumentException::class);
         $result = $strategy->extract('test invalid value');
-        $this->assertNull($result);
     }
 
     public function testHydrate()
@@ -46,8 +47,8 @@ class MongoDateStrategyTest extends \PHPUnit_Framework_TestCase
         $result = $strategy->hydrate(new \MongoDate($now));
         $this->assertEquals(new \DateTime(date($format, $now)), $result);
 
+        $this->setExpectedException(InvalidArgumentException::class);
         $result = $strategy->hydrate('test invalid value');
-        $this->assertNull($result);
     }
 
     public function testGetSetFormat()
