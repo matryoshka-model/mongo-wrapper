@@ -151,7 +151,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('insert')
-            ->with($this->equalTo($expectedResult), $this->equalTo($criteria->getSaveOptions()))
+            ->with($this->equalTo($expectedResult), $this->equalTo($criteria->getMongoOptions()))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
         $criteria->setId($testId);
