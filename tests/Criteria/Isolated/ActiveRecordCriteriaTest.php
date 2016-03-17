@@ -198,6 +198,26 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertHasDocumentCache($testId, $testData);
     }
+    
+    public function testApplyWriteWithNullId()
+    {
+        $model    = $this->model;
+        $criteria = $this->criteria;
+        $dataWithoutId = ['test' => 'test']; 
+        $testData = array_merge($dataWithoutId, ['_id' => null]);
+    
+        //Test insert
+        $this->mongoCollectionMock->expects($this->atLeastOnce())
+            ->method('insert')
+            ->with($this->equalTo($dataWithoutId), $this->equalTo($criteria->getMongoOptions()))
+            ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
+        $this->assertEquals(1, $criteria->applyWrite($model, $testData));
+        
+        $this->assertInstanceOf('\MongoId', $testData['_id']);
+        $testId = (string) $testData['_id'];
+    
+        $this->assertHasDocumentCache($testId, $testData);
+    }
 
     /**
      * @depends testApplyWriteWithoutId
