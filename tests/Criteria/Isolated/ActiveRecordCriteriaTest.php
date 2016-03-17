@@ -20,26 +20,12 @@ use Zend\Stdlib\Hydrator\ObjectProperty;
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $oldErrorLevel;
-
-    protected static function disableStrictErrors()
-    {
-        self::$oldErrorLevel = error_reporting();
-        error_reporting(self::$oldErrorLevel & ~E_STRICT);
-    }
-
-    protected static function restoreErrorReportingLevel()
-    {
-        error_reporting(self::$oldErrorLevel);
-    }
 
     protected static $sharedDataGateway;
 
     public static function setUpBeforeClass()
     {
-        self::disableStrictErrors();
         self::$sharedDataGateway = new MongoCollectionMockProxy();
-        self::restoreErrorReportingLevel();
     }
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
@@ -165,7 +151,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('insert')
-            ->with($this->equalTo($expectedResult), $this->equalTo($criteria->getSaveOptions()))
+            ->with($this->equalTo($expectedResult), $this->equalTo($criteria->getMongoOptions()))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
         $criteria->setId($testId);
@@ -181,7 +167,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
             ->with(
                 $this->equalTo($currentDataState),
                 $this->equalTo($expectedResult),
-                $this->equalTo(array_merge($criteria->getSaveOptions(), ['multi' => false, 'upsert' => false]))
+                $this->equalTo(['multi' => false, 'upsert' => false] + $criteria->getMongoOptions())
             )
             ->will($this->returnValue(['ok' => true, 'n' => 1, 'updatedExisting' => true]));
 
@@ -190,9 +176,9 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertHasDocumentCache($testId, $expectedResult);
     }
 
-    /**
-     * @depends testApplyWrite
-     */
+//     /**
+//      * @depends testApplyWrite
+//      */
     public function testApplyWriteWithoutId()
     {
         $model    = $this->model;
@@ -202,7 +188,7 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         //Test insert
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('insert')
-            ->with($this->equalTo($testData), $this->equalTo($criteria->getSaveOptions()))
+            ->with($this->equalTo($testData), $this->equalTo($criteria->getMongoOptions()))
             ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
 
 
@@ -210,6 +196,26 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\MongoId', $testData['_id']);
         $testId = (string) $testData['_id'];
 
+        $this->assertHasDocumentCache($testId, $testData);
+    }
+    
+    public function testApplyWriteWithNullId()
+    {
+        $model    = $this->model;
+        $criteria = $this->criteria;
+        $dataWithoutId = ['test' => 'test']; 
+        $testData = array_merge($dataWithoutId, ['_id' => null]);
+    
+        //Test insert
+        $this->mongoCollectionMock->expects($this->atLeastOnce())
+            ->method('insert')
+            ->with($this->equalTo($dataWithoutId), $this->equalTo($criteria->getMongoOptions()))
+            ->will($this->returnValue(['ok' => true, 'n' => 0])); // MongoDB returns 0 on insert operation
+        $this->assertEquals(1, $criteria->applyWrite($model, $testData));
+        
+        $this->assertInstanceOf('\MongoId', $testData['_id']);
+        $testId = (string) $testData['_id'];
+    
         $this->assertHasDocumentCache($testId, $testData);
     }
 

@@ -20,19 +20,6 @@ use Zend\Stdlib\Hydrator\ObjectProperty;
  */
 class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $oldErrorLevel;
-
-    protected static function disableStrictErrors()
-    {
-        self::$oldErrorLevel = error_reporting();
-        error_reporting(self::$oldErrorLevel & ~E_STRICT);
-    }
-
-    protected static function restoreErrorReportingLevel()
-    {
-        error_reporting(self::$oldErrorLevel);
-    }
-
     /**
      * @var Model
      */
@@ -50,10 +37,8 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock = $mongoCollectionMock;
 
-        self::disableStrictErrors();
-        $mockProxy = new MongoCollectionMockProxy();
-        self::restoreErrorReportingLevel();
-        $mockProxy->__MongoCollectionMockProxy__setMock($mongoCollectionMock);
+        $mockProxy = new MongoCollectionMockProxy;
+        $mockProxy->__MongoCollectionMockProxy__setMock($this->mongoCollectionMock);
 
         $rs = new ArrayObjectResultSet();
         $model = new Model($mockProxy, $rs);
@@ -90,13 +75,15 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
     public function testApplyWrite()
     {
+        $options = ['foo' => 'baz'];
         $ar = new ActiveRecordCriteria();
+        $ar->setMongoOptions($options);
         $testId = 1;
         $testData = ['_id' => $testId];
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('save')
-            ->with($this->equalTo($testData), $this->equalTo($ar->getSaveOptions()));
+            ->with($this->equalTo($testData), $this->equalTo($options));
 
 
         $ar->setId($testId);
@@ -129,30 +116,33 @@ class ActiveRecordCriteriaTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('save')
-            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getSaveOptions()));
+            ->with($this->equalTo($testUnsetData), $this->equalTo($ar->getMongoOptions()));
 
         $ar->applyWrite($this->model, $testData);
         $this->assertInstanceOf('\MongoId', $testData['_id']);
     }
 
-    public function testSaveOptions()
+    public function testGetSetMongoOptions()
     {
-        $saveOptions = ['foo', 'bar'];
         $ar = new ActiveRecordCriteria();
-        $ar->setSaveOptions($saveOptions);
+        $this->assertEmpty($ar->getMongoOptions());
 
-        $this->assertEquals($saveOptions, $ar->getSaveOptions());
+        $saveOptions = ['foo', 'bar'];
+        $ar->setMongoOptions($saveOptions);
+        $this->assertEquals($saveOptions, $ar->getMongoOptions());
     }
 
     public function testApplyDelete()
     {
+        $options = ['foo' => 'baz'];
         $ar = new ActiveRecordCriteria();
+        $ar->setMongoOptions($options);
         $testId = 1;
         $testData = ['_id' => $testId];
 
         $this->mongoCollectionMock->expects($this->at(0))
             ->method('remove')
-            ->with($this->equalTo($testData));
+            ->with($this->equalTo($testData), $this->equalTo(['justOne' => true] + $options));
 
 
         $ar->setId($testId);

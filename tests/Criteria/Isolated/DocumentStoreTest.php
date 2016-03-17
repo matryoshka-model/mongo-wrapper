@@ -16,19 +16,6 @@ use MatryoshkaModelWrapperMongoTest\TestAsset\MongoCollectionMockProxy;
  */
 class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $oldErrorLevel;
-
-    protected static function disableStrictErrors()
-    {
-        self::$oldErrorLevel = error_reporting();
-        error_reporting(self::$oldErrorLevel & ~E_STRICT);
-    }
-
-    protected static function restoreErrorReportingLevel()
-    {
-        error_reporting(self::$oldErrorLevel);
-    }
-
     protected static $sharedDataGateway;
 
     /**
@@ -39,9 +26,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::disableStrictErrors();
         self::$sharedDataGateway = new MongoCollectionMockProxy();
-        self::restoreErrorReportingLevel();
     }
 
     /** @var \PHPUnit_Framework_MockObject_MockObject $mongoCollectionMock */
@@ -295,7 +280,7 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
 
         $this->mongoCollectionMock->expects($this->atLeastOnce())
             ->method('remove')
-            ->with($this->equalTo($testData))
+            ->with($this->equalTo($testData), $this->equalTo(['justOne' => true] + $options))
             ->will($this->returnValue(['ok' => true, 'n' => 1]));
 
 

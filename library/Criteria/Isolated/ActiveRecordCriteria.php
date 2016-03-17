@@ -39,16 +39,18 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
      */
     public function applyWrite(ModelStubInterface $model, array &$data)
     {
-        unset($data['_id']);
-
-        if ($this->id) {
+        if ($this->hasId()) {
             $data['_id'] = $this->extractId($model);
+        }
+
+        if (array_key_exists('_id', $data) && null === $data['_id']) {
+            unset($data['_id']);
         }
 
         return $this->getDocumentStore()->isolatedUpsert(
             $model->getDataGateway(),
             $data,
-            $this->getSaveOptions()
+            $this->getMongoOptions()
         );
     }
 
@@ -60,7 +62,8 @@ class ActiveRecordCriteria extends BaseActiveRecordCriteria
     {
         return $this->getDocumentStore()->isolatedRemove(
             $model->getDataGateway(),
-            $this->extractId($model)
+            $this->extractId($model),
+            $this->getMongoOptions()
         );
     }
 }

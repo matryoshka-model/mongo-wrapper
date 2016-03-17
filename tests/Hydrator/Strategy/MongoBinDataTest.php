@@ -9,6 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
 
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoBinDataStrategy;
+use Matryoshka\Model\Exception\InvalidArgumentException;
 
 /**
  * Class MongoBinDataTest
@@ -47,5 +48,14 @@ class MongoBinDataTest extends \PHPUnit_Framework_TestCase
 
         $result = $strategy->hydrate(null);
         $this->assertNull($result);
+    }
+    
+    public function testHydrateShouldThrowExceptionWhenInvalidType()
+    {
+        $strategy = new MongoBinDataStrategy(\MongoBinData::CUSTOM);
+        $mongoBinData = new \MongoBinData('foo', \MongoBinData::CUSTOM);
+        
+        $this->setExpectedException(InvalidArgumentException::class);
+        $strategy->hydrate('invalid type');
     }
 }

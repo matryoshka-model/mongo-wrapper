@@ -19,7 +19,7 @@ Add the following to your `composer.json` file:
 
 ```
 "require": {
-    "matryoshka-model/mongo-wrapper": "~0.7.0"
+    "matryoshka-model/mongo-wrapper": "~0.8.0"
 }
 ```
 
@@ -96,6 +96,12 @@ It's important to always use the `HydratingResultSet` class included in this pac
 - `Matryoshka\Model\Wrapper\Mongo\ResultSet` contains the aforementioned `HydratingResultSet` which extends matryoshka's `HydratingResultSet` to make the `MongoCursor` counting functionality working properly.
 
 - `Matryoshka\Model\Wrapper\Mongo\Service` contains abstract service factories generally aimed at instantiation of `\MongoCollection` and `\MongoDb` objects. Use `mongocollection` and `mongodb` configuration nodes to respectively setup them (see [above](#configuration)).
+
+## Continuous integration
+
+**CI** provided through [TravisCI](http://travis-ci.org/matryoshka-model/mongo-wrapper).
+
+This wrapper is tested against the following MongoDB PHP clients: **1.4.5**, **1.5.0**, **1.5.1**, **1.5.2**, **1.5.3**, **1.5.3**, **1.5.5**, **1.5.6**, **1.5.7**, **1.5.8**, **1.6.0**, **1.6.1**, **1.6.2**, **1.6.3**, **1.6.4**, **1.6.5**, **1.6.6**, **1.6.7**, **1.6.8**, **1.6.9**.
 
 ---
 

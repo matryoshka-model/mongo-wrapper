@@ -14,7 +14,6 @@ use Matryoshka\Model\Exception;
 use Matryoshka\Model\Exception\InvalidArgumentException;
 use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Paginator\MongoPaginatorAdapter;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class FindAllCriteria
@@ -111,17 +110,15 @@ class FindAllCriteria extends AbstractCriteria implements PaginableCriteriaInter
      */
     protected function extractValue(ModelStubInterface $model, $name, $value, $object = null)
     {
-        if (!$model->getHydrator() instanceof AbstractHydrator) {
+        $hydrator = $model->getHydrator();
+        if (!method_exists($hydrator, 'extractValue')) {
             throw new Exception\RuntimeException(
-                sprintf(
-                    'Hydrator must be an instance of "%s"; detected "%s"',
-                    '\Zend\Stdlib\Hydrator\AbstractHydrator',
-                    get_class($model->getHydrator())
-                )
-            );
+                'Hydrator must have extractValue() method ' .
+                'in order to extract a single value'
+                );
         }
 
-        return $model->getHydrator()->extractValue($name, $value, $object);
+        return $hydrator->extractValue($name, $value, $object);
     }
 
     /**

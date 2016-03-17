@@ -12,7 +12,6 @@ use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class ActiveRecordCriteria
@@ -35,23 +34,27 @@ class ActiveRecordCriteria extends AbstractCriteria
     /**
      * @var array
      */
-    protected $saveOptions = [];
+    protected $mongoOptions = [];
 
     /**
+     * Get options for Mongo save and remove operations
+     *
      * @return array
      */
-    public function getSaveOptions()
+    public function getMongoOptions()
     {
-        return $this->saveOptions;
+        return $this->mongoOptions;
     }
 
     /**
+     * Set options for Mongo save and remove operations
+     *
      * @param array $options
      * @return $this
      */
-    public function setSaveOptions(array $options)
+    public function setMongoOptions(array $options)
     {
-        $this->saveOptions = $options;
+        $this->mongoOptions = $options;
         return $this;
     }
 
@@ -76,14 +79,16 @@ class ActiveRecordCriteria extends AbstractCriteria
         /** @var $dataGateway \MongoCollection */
         $dataGateway = $model->getDataGateway();
 
-        unset($data['_id']);
-
-        if ($this->id) {
+        if ($this->hasId()) {
             $data['_id'] = $this->extractId($model);
         }
 
+        if (array_key_exists('_id', $data) && null === $data['_id']) {
+            unset($data['_id']);
+        }
+
         $tmp = $data;  // passing a referenced variable to save will fail in update the content
-        $result = $dataGateway->save($tmp, $this->getSaveOptions());
+        $result = $dataGateway->save($tmp, $this->getMongoOptions());
         $data = $tmp;
         return $this->handleResult($result);
     }
@@ -93,7 +98,10 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     public function applyDelete(ModelStubInterface $model)
     {
-        $result = $model->getDataGateway()->remove(['_id' => $this->extractId($model)]);
+        $result = $model->getDataGateway()->remove(
+            ['_id' => $this->extractId($model)],
+            ['justOne' => true] + $this->getMongoOptions()
+        );
         return $this->handleResult($result, true);
     }
 
@@ -103,11 +111,13 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     protected function extractId(ModelStubInterface $model)
     {
-        if (!$model->getHydrator() instanceof AbstractHydrator) {
+        $hydrator = $model->getHydrator();
+        if (!method_exists($hydrator, 'extractValue')) {
             throw new Exception\RuntimeException(
-                'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
-            );
+                'Hydrator must have extractValue() method ' .
+                'in order to extract a single value'
+                );
         }
-        return $model->getHydrator()->extractValue('_id', $this->getId());
+        return $hydrator->extractValue('_id', $this->getId());
     }
 }

@@ -9,6 +9,7 @@
 namespace MatryoshkaModelWrapperMongoTest\Hydrator\Strategy;
 
 use Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy\MongoIdStrategy;
+use Matryoshka\Model\Exception\InvalidArgumentException;
 
 /**
  * Class MongoIdStrategyTest
@@ -26,6 +27,9 @@ class MongoIdStrategyTest extends \PHPUnit_Framework_TestCase
 
         $result = $strategy->extract(null);
         $this->assertNull($result);
+        
+        $this->setExpectedException(InvalidArgumentException::class);
+        $strategy->extract(['not-a-string' => 'invalid-type']);
     }
 
     public function testHydrate()
@@ -38,5 +42,9 @@ class MongoIdStrategyTest extends \PHPUnit_Framework_TestCase
 
         $result = $strategy->hydrate(null);
         $this->assertNull($result);
+        
+        $this->setExpectedException(InvalidArgumentException::class);
+        $strategy->hydrate('invalid-type');
     }
+
 }

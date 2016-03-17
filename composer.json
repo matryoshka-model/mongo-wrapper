@@ -6,7 +6,7 @@
     "require": {
         "php": ">=5.5.0",
         "ext-mongo": "*",
-        "matryoshka-model/matryoshka": "0.8.*@dev",
+        "matryoshka-model/matryoshka": "~0.8.0",
         "zendframework/zend-stdlib": "2.*",
         "zendframework/zend-paginator": "2.*",
         "zendframework/zend-servicemanager": "2.*"
@@ -40,9 +40,16 @@
     ],
     "autoload": {
         "psr-4": {
-        	"Matryoshka\\Model\\Wrapper\\Mongo\\": "library/",
-        	"MatryoshkaModelWrapperMongoTest\\": "tests/"
+        	"Matryoshka\\Model\\Wrapper\\Mongo\\": "library/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+        	"MatryoshkaModelWrapperMongoTest\\": "tests/"
+        },
+        "files": [
+        	"tests/TestAsset/MongoCollectionMockProxy.php"
+        ]
     },
     "keywords": [
         "model",
@@ -63,6 +70,7 @@
     "suggest": {
         "matryoshka-model/matryoshka": "A lightweight framework that provides a standard and easy way to implement a model service layer",
         "matryoshka-model/zf2-matryoshka-module": "ZF2 module for matryoshka library",
-        "matryoshka-model/rest-wrapper": "Matryoshka wrapper aimed at creating restful API clients"
+        "matryoshka-model/rest-wrapper": "Matryoshka wrapper aimed at creating restful API clients",
+        "matryoshka-model/mongo-transactional": "Perform transactional operations with MongoDB"
     }
 }

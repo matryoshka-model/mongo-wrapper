@@ -230,7 +230,7 @@ class DocumentStore
                 $oldDocumentData,
                 $data, // modifiers and non-modifiers cannot be mixed,
                 // the _id presence ensure at least one non-modifiers
-                array_merge($options, ['multi' => false, 'upsert' => false])
+                ['multi' => false, 'upsert' => false] + $options
             );
             $result = $this->handleResult($result);
 
@@ -258,7 +258,7 @@ class DocumentStore
             throw new RuntimeException(sprintf('No local copy found for the document "%s"', $id));
         }
 
-        $result = $dataGateway->remove($this->get($dataGateway, $id), $options);
+        $result = $dataGateway->remove($this->get($dataGateway, $id), ['justOne' => true] + $options);
         $result = $this->handleResult($result, true);
 
         if ($result != 1) {
