@@ -33,6 +33,8 @@ class MongoDateStrategyTest extends \PHPUnit_Framework_TestCase
 
         $result = $strategy->extract(\DateTime::createFromFormat('U', $now));
         $this->assertEquals(new \MongoDate($now), $result);
+        
+        $this->assertNull($strategy->extract(null));
 
         $this->setExpectedException(InvalidArgumentException::class);
         $result = $strategy->extract('test invalid value');
@@ -46,6 +48,8 @@ class MongoDateStrategyTest extends \PHPUnit_Framework_TestCase
 
         $result = $strategy->hydrate(new \MongoDate($now));
         $this->assertEquals(new \DateTime(date($format, $now)), $result);
+        
+        $this->assertNull($strategy->hydrate(null));
 
         $this->setExpectedException(InvalidArgumentException::class);
         $result = $strategy->hydrate('test invalid value');
