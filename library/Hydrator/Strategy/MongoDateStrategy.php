@@ -11,6 +11,7 @@ namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
 use DateTime;
 use MongoDate;
 use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
+use Matryoshka\Model\Exception;
 
 /**
  * Class MongoDateStrategy
@@ -34,33 +35,52 @@ class MongoDateStrategy implements StrategyInterface
         }
     }
 
+    
     /**
-     * @param mixed $value
-     * @return DateTime|mixed
-     */
-    public function extract($value)
-    {
-        if ($value instanceof DateTime) {
-            $value = new MongoDate($value->format('U'));
-        } else {
-            $value = null;
-        }
-        return $value;
-    }
-
-    /**
+     * Convert a MongoDate to a DateTime
+     * 
      * @param mixed $value
      * @return mixed|MongoDate
      */
     public function hydrate($value)
     {
         if ($value instanceof MongoDate) {
-            $value = new DateTime(date($this->getFormat(), $value->sec));
-        } else {
-            $value = null;
+            return new DateTime(date($this->getFormat(), $value->sec));
+        } 
+        
+        if ($this->nullable && $value === null) {
+            return null;
         }
-        return $value;
+        
+        throw new Exception\InvalidArgumentException(sprintf(
+            'Invalid value: must be an instance of MongoDate, "%s" given.',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
     }
+    
+    
+    /**
+     * Convert a DateTime to a MongoDate
+     * 
+     * @param mixed $value
+     * @return DateTime|mixed
+     */
+    public function extract($value)
+    {
+        if ($value instanceof DateTime) {
+            return new MongoDate($value->format('U'));
+        }
+        
+        if ($this->nullable && $value === null) {
+            return null;
+        }
+        
+        throw new Exception\InvalidArgumentException(sprintf(
+            'Invalid value: must be an instance of DateTime, "%s" given.',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
+    }
+
 
     /**
      * @param string $format

@@ -8,32 +8,61 @@
  */
 namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
 
+use MongoId;
 use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
+use Matryoshka\Model\Hydrator\Strategy\NullableStrategyTrait;
+use Matryoshka\Model\Hydrator\Strategy\NullableStrategyInterface;
+use Matryoshka\Model\Exception;
 
 /**
  * Class MongoIdStrategy
  */
-class MongoIdStrategy implements StrategyInterface
+class MongoIdStrategy implements StrategyInterface, NullableStrategyInterface
 {
-    /**
-     * Ensure the value extracted is typed as \MongoId or null
-     *
-     * @param mixed $value The original value.
-     * @return null|\MongoId Returns the value that should be extracted.
-     */
-    public function extract($value)
-    {
-        return null === $value ? null : new \MongoId($value);
-    }
-
+    use NullableStrategyTrait;
+    
     /**
      * Ensure the value extracted is typed as string or null
-     * 
+     *
      * @param mixed $value The original value.
      * @return null|string Returns the value that should be hydrated.
      */
     public function hydrate($value)
     {
-        return $value === null ? null : (string)$value;
+        if ($value instanceof MongoId) {
+            return (string)$value;
+        }
+        
+        if ($this->nullable && $value === null) {
+            return null;
+        }
+        
+        throw new Exception\InvalidArgumentException(sprintf(
+            'Invalid value: must be an instance of MongoId, "%s" given.',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
+    }
+    
+    
+    /**
+     * Ensure the value extracted is typed as MongoId or null
+     *
+     * @param mixed $value The original value.
+     * @return null|MongoId Returns the value that should be extracted.
+     */
+    public function extract($value)
+    {
+        if (is_string($value)) {
+            return new MongoId($value);
+        }
+        
+        if ($this->nullable && $value === null) {
+            return null;
+        }
+        
+        throw new Exception\InvalidArgumentException(sprintf(
+            'Invalid value: must be a string containing a valid mongo ID, "%s" given.',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
     }
 }
