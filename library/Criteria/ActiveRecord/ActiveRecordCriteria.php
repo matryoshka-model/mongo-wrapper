@@ -12,7 +12,6 @@ use Matryoshka\Model\Criteria\ActiveRecord\AbstractCriteria;
 use Matryoshka\Model\Exception;
 use Matryoshka\Model\ModelStubInterface;
 use Matryoshka\Model\Wrapper\Mongo\Criteria\HandleResultTrait;
-use Zend\Stdlib\Hydrator\AbstractHydrator;
 
 /**
  * Class ActiveRecordCriteria
@@ -132,11 +131,13 @@ class ActiveRecordCriteria extends AbstractCriteria
      */
     protected function extractId(ModelStubInterface $model)
     {
-        if (!$model->getHydrator() instanceof AbstractHydrator) {
+        $hydrator = $model->getHydrator();
+        if (!method_exists($hydrator, 'extractValue')) {
             throw new Exception\RuntimeException(
-                'Hydrator must be an instance of \Zend\Stdlib\Hydrator\AbstractHydrator'
-            );
+                'Hydrator must have extractValue() method ' .
+                'in order to extract a single value'
+                );
         }
-        return $model->getHydrator()->extractValue('_id', $this->getId());
+        return $hydrator->extractValue('_id', $this->getId());
     }
 }
