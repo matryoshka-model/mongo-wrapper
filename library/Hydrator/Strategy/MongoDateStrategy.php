@@ -11,13 +11,17 @@ namespace Matryoshka\Model\Wrapper\Mongo\Hydrator\Strategy;
 use DateTime;
 use MongoDate;
 use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
+use Matryoshka\Model\Hydrator\Strategy\NullableStrategyInterface;
+use Matryoshka\Model\Hydrator\Strategy\NullableStrategyTrait;
 use Matryoshka\Model\Exception;
 
 /**
  * Class MongoDateStrategy
  */
-class MongoDateStrategy implements StrategyInterface
+class MongoDateStrategy implements StrategyInterface, NullableStrategyInterface
 {
+    use NullableStrategyTrait;
+    
     /**
      * @var string
      */
