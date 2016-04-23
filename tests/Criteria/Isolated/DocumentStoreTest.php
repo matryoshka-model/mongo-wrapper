@@ -174,10 +174,31 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         $saveMethod->invoke($this->documentStore, $this->mongoCollection, $data['_id'], $data + ['foo' => 'bar']);
 
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
-        $this->assertSame(
-            [$data],
-            $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock)
-        );
+        $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock);
+    }
+    
+    public function testInitIsolationFromCursorShouldThrowRuntimeExceptionWhenMissingId()
+    {
+        $data = ['test' => 'test'];
+    
+        $mongoCursorMock = $this->getMockBuilder('\MongoCursor')
+        ->disableOriginalConstructor()
+        ->getMock();
+    
+        //Emulate foreach behavior
+        $mongoCursorMock->expects($this->at(0))
+        ->method('rewind');
+    
+        $mongoCursorMock->expects($this->at(1))
+        ->method('valid')
+        ->will($this->returnValue(true));
+    
+        $mongoCursorMock->expects($this->at(2))
+        ->method('current')
+        ->will($this->returnValue($data));
+    
+        $this->setExpectedException('\Matryoshka\Model\Exception\RuntimeException');
+        $this->documentStore->initIsolationFromCursor($this->mongoCollection, $mongoCursorMock);
     }
 
     public function testIsolatedUpsert()
