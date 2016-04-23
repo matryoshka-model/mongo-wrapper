@@ -126,7 +126,7 @@ class DocumentStore
      *
      * @param MongoCollection $dataGateway
      * @param $id
-     * @return mixed
+     * @return mixed|null
      */
     public function get(MongoCollection $dataGateway, $id)
     {
@@ -135,8 +135,6 @@ class DocumentStore
         if ($this->has($dataGateway, $id)) {
             return $this->splObjectStorage[$dataGateway][$id];
         }
-
-        // FIXME: missing return
     }
 
     /**
@@ -177,11 +175,14 @@ class DocumentStore
     {
         $return = [];
         foreach ($cursor as $document) {
-            $id = $document['_id']; // FIXME: check id presence
+            if (!isset($document['_id'])) {
+                throw new RuntimeException('Cannot init isolation: missing _id field in document');
+            }
+            $id = $document['_id'];
             $localDocument = $this->get($dataGateway, $id);
             if ($localDocument && $document != $localDocument) {
                 throw new Exception\DocumentModifiedException(sprintf(
-                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                     $id
                 ));
             }
@@ -208,11 +209,11 @@ class DocumentStore
             try {
                 $result = $dataGateway->insert($tmp, $options); // modifiers are not allowed with insert
             } catch (MongoCursorException $e) {
-                if ($e->getCode() == 11000) {
+                if (isset($data['_id']) && $e->getCode() == 11000 && preg_match('/\.\$_id_\s/', $e->getMessage())) {
                     $e = new Exception\DocumentModifiedException(
                         sprintf(
                             'Cannot insert the local copy of the new document "%s" because another ' .
-                            ' document with the same ID already exists in the database',
+                            'document with the same ID already exists in the db\'s collection',
                             $data['_id']
                         ),
                         11000,
@@ -236,7 +237,7 @@ class DocumentStore
 
             if ($result != 1) {
                 throw new Exception\DocumentModifiedException(sprintf(
-                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                     $data['_id']
                 ));
             }
@@ -263,7 +264,7 @@ class DocumentStore
 
         if ($result != 1) {
             throw new Exception\DocumentModifiedException(sprintf(
-                'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                 $id
             ));
         }
