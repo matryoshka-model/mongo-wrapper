@@ -182,7 +182,7 @@ class DocumentStore
             $localDocument = $this->get($dataGateway, $id);
             if ($localDocument && $document != $localDocument) {
                 throw new Exception\DocumentModifiedException(sprintf(
-                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                     $id
                 ));
             }
@@ -213,7 +213,7 @@ class DocumentStore
                     $e = new Exception\DocumentModifiedException(
                         sprintf(
                             'Cannot insert the local copy of the new document "%s" because another ' .
-                            'document with the same ID already exists in the database',
+                            'document with the same ID already exists in the db\'s collection',
                             $data['_id']
                         ),
                         11000,
@@ -237,7 +237,7 @@ class DocumentStore
 
             if ($result != 1) {
                 throw new Exception\DocumentModifiedException(sprintf(
-                    'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                    'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                     $data['_id']
                 ));
             }
@@ -264,7 +264,7 @@ class DocumentStore
 
         if ($result != 1) {
             throw new Exception\DocumentModifiedException(sprintf(
-                'The local copy of the document "%s" no longer reflects the current state of the document in the database',
+                'The local copy of the document "%s" no longer reflects the current state of the document in the db\'s collection',
                 $id
             ));
         }
