@@ -208,11 +208,11 @@ class DocumentStore
             try {
                 $result = $dataGateway->insert($tmp, $options); // modifiers are not allowed with insert
             } catch (MongoCursorException $e) {
-                if ($e->getCode() == 11000) {
+                if (isset($data['_id']) && $e->getCode() == 11000 && preg_match('/\.\$_id_\s/', $e->getMessage())) {
                     $e = new Exception\DocumentModifiedException(
                         sprintf(
                             'Cannot insert the local copy of the new document "%s" because another ' .
-                            ' document with the same ID already exists in the database',
+                            'document with the same ID already exists in the database',
                             $data['_id']
                         ),
                         11000,

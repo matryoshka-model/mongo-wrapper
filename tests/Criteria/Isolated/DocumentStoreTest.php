@@ -244,21 +244,39 @@ class DocumentStoreTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options));
     }
 
-    public function testIsolatedUpsertShouldThrowDocumentModifiedExceptionWhenDuplicateKey()
+    public function testIsolatedUpsertShouldThrowDocumentModifiedExceptionWhenDuplicateId()
     {
         $testData = ['test' => 'test', '_id' => 'foo'];
         $options  = ['w' => 1];
 
-        $dupKeyEx = new \MongoCursorException('E11000 duplicate key error', 11000);
+        $dupKeyEx = new \MongoCursorException('E11000 duplicate key error index: foo.bar.$_id_ dup key: { : "foo" }', 11000);
 
         //simulate duplicate key error
         $this->mongoCollectionMock->expects($this->atLeastOnce())
-            ->method('insert')
-            ->with($this->equalTo($testData), $this->equalTo($options))
-            ->will($this->throwException($dupKeyEx));
+                                   ->method('insert')
+                                   ->with($this->equalTo($testData), $this->equalTo($options))
+                                   ->will($this->throwException($dupKeyEx));
 
 
         $this->setExpectedException('\Matryoshka\Model\Wrapper\Mongo\Exception\DocumentModifiedException');
+        $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options);
+    }
+    
+    public function testIsolatedUpsertShouldNotThrowDocumentModifiedExceptionWhenDuplicateKeyOnAnotherField()
+    {
+        $testData = ['test' => 'test', '_id' => 'baz'];
+        $options  = ['w' => 1];
+    
+        $dupKeyEx = new \MongoCursorException('E11000 duplicate key error index: foo.bar.$uid_1 dup key: { : 1 }', 11000);
+    
+        //simulate duplicate key error
+        $this->mongoCollectionMock->expects($this->atLeastOnce())
+                                   ->method('insert')
+                                   ->with($this->equalTo($testData), $this->equalTo($options))
+                                   ->will($this->throwException($dupKeyEx));
+    
+    
+        $this->setExpectedException('\MongoCursorException');
         $this->documentStore->isolatedUpsert($this->mongoCollection, $testData, $options);
     }
 
